@@ -27,12 +27,32 @@ class GuzzleController extends Controller
 				$item1 = preg_split('/[\s,]+/', $item1);
 			});
 			//var_dump($arr);
-			
-			foreach ($arr as $key => $value) 
-			{
-				$guzz=new Guzzle($value);
-				$guzz->makerequest();
-			}
+			//--------传入二维数组进行批输入------------
+			// foreach ($arr as $key => $value) 
+			// {
+			// 	$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
+			// 	$guzz->makerequest();
+			// }
+            //=======================
+
+            //-------查询可用指标----------------
+            $guzz=new Guzzle();
+           
+
+
+           $guzz->getallykjjid();
+           $kjhdata=$guzz->makerequest();
+           $kjhdata=(string)$kjhdata;
+
+           $kjhdata=$guzz->makekjhdata($kjhdata);
+
+            dump($kjhdata);
+            
+
+
+
+            //===============================
+            
 
 			
 			
