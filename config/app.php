@@ -146,6 +146,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\AccServiceProvider::class,
+        App\Providers\LxyServiceProvider::class,
+        App\Providers\LljServiceProvider::class,
 
 
     ],
@@ -196,6 +198,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Illuminate\Html\FormFacade::class,
+        'Lxy'      => App\Facade\LxyFacade::class,
 
     ],
 
