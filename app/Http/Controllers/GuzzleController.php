@@ -28,31 +28,14 @@ class GuzzleController extends Controller
 			});
 			//var_dump($arr);
 			//--------传入二维数组进行批输入------------
-			// foreach ($arr as $key => $value) 
-			// {
-			// 	$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
-			// 	$guzz->makerequest();
-			// }
+			foreach ($arr as $key => $value) 
+			{
+				$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
+				$guzz->add_post();
+			}
             //=======================
 
-            //-------查询可用指标----------------
-            $guzz=new Guzzle();
-           
 
-
-           $guzz->getallykjjid();
-           $kjhdata=$guzz->makerequest();
-           $kjhdata=(string)$kjhdata;
-
-           $kjhdata=$guzz->makekjhdata($kjhdata);
-
-            dump($kjhdata);
-            
-
-
-
-            //===============================
-            
 
 			
 			
@@ -62,9 +45,27 @@ class GuzzleController extends Controller
 	
 
     
-    public function create()
+    public function find()
     {
         //
+                    //-------查询可用指标----------------
+            $guzz=new Guzzle();
+           
+
+
+          
+           $kjhdata=$guzz->find_post();
+           $kjhdata=(string)$kjhdata;
+
+           $kjhdata=$guzz->makekjharray($kjhdata);
+
+            dump($kjhdata);
+            
+
+
+
+            //===============================
+            
     }
 
     

@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/guzzle', 'GuzzleController@index');
+Route::get('/find', 'GuzzleController@find');
 Route::get('/account', 'AccountController@index');
 Route::get('/test', 'TestController@index');
 
