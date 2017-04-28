@@ -67,12 +67,6 @@ class GuzzleController extends Controller
             //===============================
             
     }
-    public function reflash()
-    {
-        //
-        $hello=new Guzzle();
-        $hello->updatedb();
-    }
 
     
     public function store(Request $request)

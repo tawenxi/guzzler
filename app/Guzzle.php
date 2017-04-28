@@ -6,6 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Client;
+use App\Guzzledb;
 
 class Guzzle extends Model
 {
@@ -138,14 +139,51 @@ class Guzzle extends Model
 	public function __construct($payee=[])//默认发送guzzledata.txt的数据 后需要如果需要发送别的数据需要对$this->insertbody进行修改
 			{
 				$this->payee=$payee;//一条数据：一位数组
+
 				$this->insertbody=file_get_contents(dirname(__FILE__)."//Http//Controllers//guzzledata.txt");//这个body需要修改成data
 				//$this->balancebody=file_get_contents(dirname(__FILE__)."//Http//Controllers//balancebody.txt");
+				
+				//$zb=ZB::where('ZBID',$payee['5'])-get();
+				//$this->insertbody=$zb->zbbq;
 			}
 
 
 	public function updatedb()
 	{
-		echo 'ok';
+
+
+			$finddata=$this->getfinddata();
+			$collection = collect($finddata);
+			$collection = $collection->map(function ($item)
+				{	
+					
+			Guzzledb::updateOrCreate(['ZBID' => $item['ZBID']],
+                        $item);
+
+   					// return $item['ZBID']==$payee['5'];
+					
+				});
+
+
+			
+           
+			// $collection = collect($finddata);
+
+			// $filtered = $collection->filter(function ($item) use($payee)
+			// 	{	
+					
+   // 					 return $item['ZBID']==$payee['5'];
+					
+			// 	});
+
+			// //dump($filtered->pop());
+			//  $zb=$filtered->pop();
+
+
+			//   $amountstring=$zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$payee['3'];
+			//  return $amountstring;
+			 
+		
 	}
 		
 	
