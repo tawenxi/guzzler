@@ -9,6 +9,7 @@ use App\Guzzle;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
+use App\Guzzledb;
 
 
 
@@ -19,6 +20,19 @@ class GuzzleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function dpt()
+    {
+        $hello=new Guzzle();
+        $info = $hello->updatedb();
+        $guzzledbs=Guzzledb::orderBy("KYJHJE","desc")->get();
+        
+        
+       return view('guzzle.index',compact('guzzledbs'));
+
+           
+
+
+    }
     public function index()
     {	
 			header("Content-Type: text/html;charset=utf-8");
@@ -28,12 +42,29 @@ class GuzzleController extends Controller
 			});
 			//var_dump($arr);
 			//--------传入二维数组进行批输入------------
+          
+
+            foreach ($arr as $key => $value) 
+            {
+                if (count($value)<6) {
+
+                    session()->flash('danger', '请输入指标编号');
+                    return redirect()->action('GuzzleController@dpt');
+                }
+            }
+
+            $successi=0;
 			foreach ($arr as $key => $value) 
 			{
 				$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
 				$guzz->add_post();
+
+                $successi++;
 			}
+
             //=======================
+            session()->flash('success',  $successi.'条数据拨款成功');
+            return redirect()->action('GuzzleController@dpt');
 
 
 
@@ -71,13 +102,33 @@ class GuzzleController extends Controller
     {
         //
         $hello=new Guzzle();
-        $hello->updatedb();
+        $info = $hello->updatedb();
+
+
+        session()->flash('success', '更新数据库成功');
+        return redirect()->action('GuzzleController@dpt');
+
+        
     }
 
     
-    public function store(Request $request)
+    public function store(\Illuminate\Http\Request $request)
     {
         //
+        $this->validate($request, 
+            [
+                'body' => 'required', //必填 必须32位
+            ]);
+
+        $zbid=$request->zbid;
+        $Guzzledb=Guzzledb::where('ZBID',$zbid)->firstOrfail();
+        $a=$Guzzledb->update(['body'=>trim($request->body)]);
+
+        if ($a) {   
+                    session()->flash('success', '更新成功');
+                     return redirect()->action('GuzzleController@edit',$request->id);
+                }
+        
     }
 
     
@@ -89,7 +140,11 @@ class GuzzleController extends Controller
     
     public function edit($id)
     {
-        //
+        $guzzledb=Guzzledb::findOrfail($id);
+        
+        
+       return view('guzzle.edit',compact('guzzledb'));
+
     }
 
     

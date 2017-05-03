@@ -14,7 +14,7 @@ class CreateGuzzledbsTable extends Migration
     {
         Schema::create('guzzledbs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('body');
+            $table->text('body');
             $table->string('DZKDM');
             $table->string('DZKMC');
             $table->string('YSDWDM');

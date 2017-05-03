@@ -16,15 +16,16 @@ class Guzzle extends Model
 	public $payee=[]; //需要替换的银行信息
 	public $data;  //用来转化utf->GBK
 	public $balancebody;//查询余额的dp
+
 	
 	
 	
 	public function makerequest($dq)//根据body属性发送请求
 	{	//$dq= iconv('UTF-8','GB2312',$dq);//发送请求之前进行转码GB2312->utf8
-		echo "=============!request=================<br/>";
-		 iconv('GB2312','UTF-8',$dq);
+		//echo "=============!request=================<br/>";//调试
+		 //iconv('GB2312','UTF-8',$dq);
 
-		echo "<br/>=============request=================<br/>";
+		//echo "<br/>=============request=================<br/>";//调试
 		$client = new Client();
 		$response = $client->request('POST', 'http://10.108.8.1:7007/Proxy', 
 		[
@@ -35,12 +36,13 @@ class Guzzle extends Model
 				],
 		
 		]);
-			//$code = $response->getStatusCode(); // 200
+			$code = $response->getStatusCode(); // 200
 			$responsebody = $response->getBody();
 			$responsebody = iconv('GB2312','UTF-8', $responsebody);
 
 			if(strlen($responsebody)<520){
 				echo "success<br/>";
+
 
 				//echo "$responsebody--";
 			}else{
@@ -52,16 +54,27 @@ class Guzzle extends Model
 	}
 	public function add_post()
 	{	
-		echo $zbamount=$this->get_amountstring($this->payee);//获取最新数据
+		$zb=$this->get_zbdata($this->payee);//获取最新数据
+		if ($zb["KYJHJE"]<$this->payee['3']) {
+			echo $zb["KYJHJE"];
+			echo "===;";
+			echo $this->payee['3'];
+			redirect()->action("GuzzleController@dpt");
+			die();
+			
+		}
+		$zbamount=$zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$this->payee['3'];
 
 		$this->accountreplace($this->payee);
 		$this->amountreplace($zbamount);
 
 		$this->insertbody=$this->timereplace($this->insertbody);
+		// $this->insertbody=iconv('GB2312','UTF-8',$this->insertbody);//拿到请求数据
+		// dd($this->insertbody);//拿到请求数据
 		return $this->makerequest($this->insertbody);
 	}
 
-	public function get_amountstring($payee)
+	public function get_zbdata($payee)
 	{		
 
 
@@ -84,8 +97,8 @@ class Guzzle extends Model
 			 $zb=$filtered->pop();
 
 
-			  $amountstring=$zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$payee['3'];
-			 return $amountstring;
+			 // $amountstring=$zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$payee['3'];
+			 return $zb;
 			 
 
 
@@ -110,15 +123,22 @@ class Guzzle extends Model
 		$this->insertbody=str_replace('中行遂川支行',$payee[2],$this->insertbody);
 		//$this->insertbody=str_replace('1.61',$payee[3],$this->insertbody);
 		$this->insertbody=str_replace('2016年计生事业费',$payee[4],$this->insertbody);
+		$this->insertbody=str_replace('摘要',$payee[4],$this->insertbody);
+		$this->insertbody=str_replace('99900114','',$this->insertbody);//替换助记码
+		$this->insertbody=str_replace('\'005\'','\'\'',$this->insertbody);//删除银行行号
+		//dd($this->insertbody);
 		$this->insertbody = iconv('UTF-8', 'GB2312', $this->insertbody);
+
 		//echo $this->insertbody;	
 	}
 	public function timereplace($data)
 	{
 		$pattern="/\'201([0-9]{5})\'/";
 		$pattern1="/\'201([0-9]{3})\'/"; 
+		$pattern2="/\'201([0-9]{1})\'/"; 
 		$data=preg_replace($pattern,"to_char(sysdate,'yyyymmdd')",$data);
 		$data=preg_replace($pattern1,"to_char(sysdate,'yyyymm')",$data);
+		$data=preg_replace($pattern1,"to_char(sysdate,'yyyy')",$data);
 		return $data;
 	}
 		//-----------------------950,0 950, 
@@ -130,7 +150,7 @@ class Guzzle extends Model
            $kjhdata=(string)$kjhdata;
 
            $kjhdata=$zbobject->makekjharray($kjhdata);
-           dump($kjhdata);
+           //dump($kjhdata);//调试
            return $kjhdata;
 
 	}
@@ -140,11 +160,21 @@ class Guzzle extends Model
 			{
 				$this->payee=$payee;//一条数据：一位数组
 
-				$this->insertbody=file_get_contents(dirname(__FILE__)."//Http//Controllers//guzzledata.txt");//这个body需要修改成data
+				if (!empty($payee)) 
+					{
+					# code...
+				
+				
+				$zb=Guzzledb::where('ZBID',$payee[5])->firstOrFail();
+				// dump($zb[0]->body);
+				 //dd($zb);
+				$this->insertbody = trim($zb->body);
+
+					}
+				//$this->insertbody=file_get_contents(dirname(__FILE__)."//Http//Controllers//guzzledata.txt");//这个body需要修改成data
 				//$this->balancebody=file_get_contents(dirname(__FILE__)."//Http//Controllers//balancebody.txt");
 				
-				//$zb=ZB::where('ZBID',$payee['5'])-get();
-				//$this->insertbody=$zb->zbbq;
+
 			}
 
 
@@ -156,11 +186,13 @@ class Guzzle extends Model
 			$collection = collect($finddata);
 			$collection = $collection->map(function ($item)
 				{	
-					
-			Guzzledb::updateOrCreate(['ZBID' => $item['ZBID']],
+					//dump($item);  //调试数据
+
+			$info = Guzzledb::updateOrCreate(['ZBID' => $item['ZBID']],
                         $item);
 
    					// return $item['ZBID']==$payee['5'];
+			return $info;
 					
 				});
 
@@ -220,6 +252,7 @@ class Guzzle extends Model
 
 		 $this->balancebody=$this->jiema($findquery);
 		 $this->balancebody=$this->timereplace($this->balancebody);
+		 
 		return $this->makerequest($this->balancebody);
 	}
 
