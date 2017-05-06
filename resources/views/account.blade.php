@@ -23,7 +23,7 @@
  			@foreach($e as $p)
 			  <td id="td_id_1" class="td-class-1">
 			
-			{{  $p }}
+			{{  $p }} 
 			
 			 </td>
 			  @endforeach
