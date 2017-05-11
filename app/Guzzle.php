@@ -55,6 +55,7 @@ class Guzzle extends Model
 	public function add_post()
 	{	
 		$zb=$this->get_zbdata($this->payee);//获取最新数据
+		//dd($zb);
 		if ($zb["KYJHJE"]<$this->payee['3']) {
 			echo $zb["KYJHJE"];
 			echo "===;";
@@ -119,6 +120,7 @@ class Guzzle extends Model
 		$this->insertbody=$this->jiema($this->insertbody);//替换之前进行解码
 		$this->insertbody = iconv('GB2312', 'UTF-8', $this->insertbody);
 		$this->insertbody=str_replace('吉安遂川县财政局',$payee[0],$this->insertbody);
+		$this->insertbody=str_replace('遂川县财政局枚江乡财政所','遂川县枚江镇财政所',$this->insertbody);
 		$this->insertbody=str_replace('190207313396',$payee[1],$this->insertbody);
 		$this->insertbody=str_replace('中行遂川支行',$payee[2],$this->insertbody);
 		//$this->insertbody=str_replace('1.61',$payee[3],$this->insertbody);
@@ -149,9 +151,16 @@ class Guzzle extends Model
            $kjhdata=$zbobject->find_post();
            $kjhdata=(string)$kjhdata;
 
+           $kjhdata_benji=$zbobject->find_post("benji");
+           $kjhdata_benji=(string)$kjhdata_benji;
+           
+
            $kjhdata=$zbobject->makekjharray($kjhdata);
-           //dump($kjhdata);//调试
-           return $kjhdata;
+           $kjhdata_benji=$zbobject->makekjharray($kjhdata_benji);
+           $kjhdata_all=array_merge($kjhdata,$kjhdata_benji);
+
+           //dd($kjhdata_all);//调试
+           return $kjhdata_all;
 
 	}
 
@@ -246,11 +255,25 @@ class Guzzle extends Model
 	}
 
 
-		public function find_post()
+		public function find_post($xingzheng_benji="xingzheng")
 	{	
+		/*=============================================
+		=            Section comment block            =
+		=============================================*/
+		
 		$findquery='<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006001%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170425%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%274%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
-
+		//*********************************************************************
+		$findquery_benji='<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006000%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170511%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%275%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
+		
+		/*=====  End of Section comment block  ======*/
+		
+		
+		if ($xingzheng_benji=="benji") {
+			$findquery=$findquery_benji;
+			
+		}
 		 $this->balancebody=$this->jiema($findquery);
+		 //dd($this->balancebody);
 		 $this->balancebody=$this->timereplace($this->balancebody);
 		 
 		return $this->makerequest($this->balancebody);

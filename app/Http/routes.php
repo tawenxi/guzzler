@@ -21,6 +21,7 @@ Route::get('/reflash', 'GuzzleController@reflash');
 Route::get('/account', 'AccountController@index');
 Route::get('/test', 'TestController@index');
 Route::get('/dpt', 'GuzzleController@dpt');
+Route::get('/benji', 'GuzzleController@benji');
 
 
 Route::get('/edit/{id}', 'GuzzleController@edit'); 	 	

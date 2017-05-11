@@ -24,7 +24,7 @@ class GuzzleController extends Controller
     {
         $hello=new Guzzle();
         $info = $hello->updatedb();
-        $guzzledbs=Guzzledb::orderBy("KYJHJE","desc")->get();
+        $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")->orderBy("KYJHJE","desc")->get();
         
         
        return view('guzzle.index',compact('guzzledbs'));
@@ -129,6 +129,23 @@ class GuzzleController extends Controller
                      return redirect()->action('GuzzleController@edit',$request->id);
                 }
         
+    }
+
+    /**
+     * summary
+     *
+     * @return void
+     * @author 
+     */
+    
+    public function benji()
+    {
+        $hello=new Guzzle();
+        $info = $hello->updatedb();
+        $guzzledbs=Guzzledb::orderBy("KYJHJE","desc")->get();
+        
+        
+       return view('guzzle.index',compact('guzzledbs'));
     }
 
     

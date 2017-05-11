@@ -10,7 +10,7 @@
 
 		<thead>
 			<tr class='success'>
-				<th>指标ID</th><th>摘要</th><th>可用金额</th><th>编辑</th>
+				<th>指标ID</th><th>摘要</th><th>预算项目</th><th>可用金额</th><th>编辑</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
@@ -24,6 +24,11 @@
 				<td>
 				
 					{{$guzzledb->ZY}}
+				
+				</td>
+				<td>
+				
+					{{$guzzledb->ZJXZMC}}
 				
 				</td>
 				<td>
