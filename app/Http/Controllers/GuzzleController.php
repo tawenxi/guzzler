@@ -114,13 +114,22 @@ class GuzzleController extends Controller
     
     public function store(\Illuminate\Http\Request $request)
     {
-        //
+       // dd($request);
+        $zbid=$request->zbid;
+        $zbidmowei=substr($zbid, -4);
+        
         $this->validate($request, 
             [
-                'body' => 'required', //必填 必须32位
-            ]);
+                'body' => "required|regex:/<?xml.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
+         
+            ],[
 
-        $zbid=$request->zbid;
+            'body.regex' => '数据源格式不正确,请检查Fillder是否有误',
+
+        ]
+            );
+
+        
         $Guzzledb=Guzzledb::where('ZBID',$zbid)->firstOrfail();
         $a=$Guzzledb->update(['body'=>trim($request->body)]);
 

@@ -53,7 +53,7 @@ class ArticleController extends Controller
     {
         //
        $article= Article::findOrFail($id);
-       Article::
+       //Article::
 
         return view("article.show",compact("article"));
     }
