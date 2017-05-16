@@ -21,10 +21,12 @@ Route::get('/reflash', 'GuzzleController@reflash');
 Route::get('/account', 'AccountController@index');
 Route::get('/test', 'TestController@index');
 Route::get('/dpt', 'GuzzleController@dpt');
+Route::get('/hyy', 'GuzzleController@hyy');
 Route::get('/benji', 'GuzzleController@benji');
 
 
-Route::get('/edit/{id}', 'GuzzleController@edit'); 	 	
+Route::get('/edit/{id}', 'GuzzleController@edit'); 
+Route::get('/preview', 'GuzzleController@preview'); 		 	
 
 
 Route::get('/dd', function () {

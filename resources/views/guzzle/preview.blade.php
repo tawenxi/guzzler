@@ -11,41 +11,49 @@
 
 		<thead>
 			<tr class='success'>
-				<th>指标ID</th><th>摘要</th><th>预算项目</th><th>可用金额</th><th>编辑</th>
+				<th>摘要</th><th>收款人</th><th>收款账号</th><th>收款银行</th><th>金额</th><th>指标来源</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
-				@foreach ($guzzledbs as $guzzledb)
+				@foreach ($arr as $ar)
 			<tr>
 				<td>
 				
-					{{$guzzledb->ZBID}}
+					{{$ar[4]}}
 				
 				</td>
 				<td>
 				
-					{{$guzzledb->ZY}}
+					{{$ar[0]}}
 				
 				</td>
 				<td>
 				
-					{{$guzzledb->ZJXZMC}}
+					{{$ar[1]}}
 				
 				</td>
 				<td>
 				
-					{{$guzzledb->KYJHJE}}
+					{{$ar[2]}}
 				
 				</td>
-				<td class='btn btn-link'>
+				<td>
 				
-					<a href="edit/{{ $guzzledb->id }}" > 编辑</a>
+					{{$ar[3]}}
+				
+				</td>
+				<td>
+				
+					{{$ar[5]}}
 				
 				</td>
 			</tr>	
 			@endforeach
 		</tbody>
 	</table>
+
+	<a href="/guzzle"><p class="btn btn-block btn-success">确认无误</p></a>
+	
 
 
 

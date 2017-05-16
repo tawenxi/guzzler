@@ -23,7 +23,7 @@ class Guzzle extends Model
 	public function makerequest($dq)//根据body属性发送请求
 	{	//$dq= iconv('UTF-8','GB2312',$dq);//发送请求之前进行转码GB2312->utf8
 		//echo "=============!request=================<br/>";//调试
-		 //iconv('GB2312','UTF-8',$dq);
+		// echo iconv('GB2312','UTF-8',$dq);
 
 		//echo "<br/>=============request=================<br/>";//调试
 		$client = new Client();
@@ -40,14 +40,24 @@ class Guzzle extends Model
 			$responsebody = $response->getBody();
 			$responsebody = iconv('GB2312','UTF-8', $responsebody);
 
+			
+
+			/*=============================================
+			=            判断Response中是否包含错误信息          =
+			=============================================*/
 			if(strlen($responsebody)<520){
-				echo "success<br/>";
-
-
-				//echo "$responsebody--";
-			}else{
-			 //	echo "$responsebody";
+			echo "success<br/>";			
+			//echo "$responsebody--";
 			};
+		    if (stristr($responsebody, "ERROR")) {
+			echo iconv('GB2312','UTF-8',$dq);
+				dd("sql语句错误----$responsebody");
+
+			}
+			
+			/*=====  End of  判断Response中是否包含错误信息 ======*/
+				
+
 
 
 			return $responsebody;
@@ -58,7 +68,7 @@ class Guzzle extends Model
 		//dd($zb);
 		if ($zb["KYJHJE"]<$this->payee['3']) {
 			echo $zb["KYJHJE"];
-			echo "===;";
+			echo "<";
 			echo $this->payee['3'];
 			redirect()->action("GuzzleController@dpt");
 			die();
@@ -72,7 +82,48 @@ class Guzzle extends Model
 		$this->insertbody=$this->timereplace($this->insertbody);
 		// $this->insertbody=iconv('GB2312','UTF-8',$this->insertbody);//拿到请求数据
 		// dd($this->insertbody);//拿到请求数据
-		return $this->makerequest($this->insertbody);
+
+		$response2 = $this->makerequest($this->insertbody);
+		
+		/*=============================================
+		=            进行日志增加            =
+		=============================================*/
+		
+		$response3=(string)($response2);
+		if (stristr($response3, "RES=")) {
+			echo $pid=substr($response3, 5+strpos($response3, 'RES="'),5);
+			echo "<br>";
+
+			echo $djbh=substr($response3, 6+strpos($response3, 'DJBH="'),6);
+			echo "<br>";
+			if (!(is_numeric($pid)&&is_numeric($djbh))) {
+				dd("取回的编码错误");
+			}
+			$this->add_rizhi($pid);
+
+
+		
+		/*=====  End of  进行日志增加   ======*/
+
+		/*==========================
+		=            删除 DJBHFJ           =
+		==========================*/
+		
+		$this->deletefj($pid);
+
+		
+		/*=====  End of 删除 DJBHFJ  ======*/
+		
+
+			
+			
+			
+
+		}else{
+			dd("取回编码失败,没再进行日志插入和删除FJ");
+		}
+
+		return $response2;
 	}
 
 	public function get_zbdata($payee)
@@ -140,7 +191,7 @@ class Guzzle extends Model
 		$pattern2="/\'201([0-9]{1})\'/"; 
 		$data=preg_replace($pattern,"to_char(sysdate,'yyyymmdd')",$data);
 		$data=preg_replace($pattern1,"to_char(sysdate,'yyyymm')",$data);
-		$data=preg_replace($pattern1,"to_char(sysdate,'yyyy')",$data);
+		$data=preg_replace($pattern2,"to_char(sysdate,'yyyy')",$data);
 		return $data;
 	}
 		//-----------------------950,0 950, 
@@ -309,5 +360,69 @@ class Guzzle extends Model
             	}
             return $kjhdata;
 	}
+
+
+	/**
+	 * summary
+	 *
+	 * @return void
+	 * @author 
+	 */
+	
+	public function add_rizhi($pid)
+	{
+	           
+         $data= '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">%20begin%20%20%20declare%20maxNo%20int;%20%20%20begin%20%20%20%20%20%20Select%20nvl%28Max%28no%29%2C0%29%2B1%20into%20maxNo%20from%20ZB_czrz%20%20%20where%20station%20like%20%27PC%2D20161129CAOZ%25%27%20;%20%20%20%20insert%20into%20ZB_czrz%28station%2C%20no%2C%20name%2C%20%26quot;DATE%26quot;%2C%20zwrq%2C%20qssj%2C%20zzsj%2C%20cznr%2Ccznrkz%29%20%20%20%20values%20%28%27PC%2D20161129CAOZ_10%2E111%2E102%2E41%27%2CmaxNo%2C%27%B8%B5%B0%AE%C7%ED%27%2C%20TO_CHAR%28SYSDATE%2C%27YYYYMMDD%27%29%2C%2720170516%27%20%20%20%20%2CTO_CHAR%28SYSDATE%2C%27HH24:MI:SS%27%29%2CTO_CHAR%28SYSDATE%2C%27HH24:MI:SS%27%29%2C%27[%CA%DA%C8%A8%D6%A7%B8%B6%C6%BE%D6%A4][%D0%C2%D4%F6][001%2C2017%2C201705%2C21886]%27%2C%27%27%29%20;%20%20%20%20%20commit;%20%20%20%20%20%20open%20:pRecCur%20for%20select%20maxNo%20NewNo%20from%20dual;%20%20%20%20end;%20end;</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
+         $data=$this->jiema($data);
+
+
+		$timepattern="/\'201([0-9]{5})\'/"; 
+		
+		$data=preg_replace($timepattern,"to_char(sysdate,'yyyymmdd')",$data);
+		
+
+        $pattern="/\[001,.+\]/";
+        $Y=(string)(date('Y'));
+         $Ym=(string)(date('Ym'));
+         
+
+         $data2="[001,$Y,$Ym,$pid]";
+
+        
+        $data=preg_replace($pattern,$data2,$data);
+        //dd($data);
+        $ifsuccess=$this->makerequest($data);
+        if (!stristr($ifsuccess,"NEWNO" )) {
+        	dd("$ifsuccess");//更改NEWNO就可以调试增加日志的response
+        }
+        return true;
+        
+	}
+
+
+	/**
+	 * summary
+	 *
+	 * @return void
+	 * @author 
+	 */
+	
+	public function deletefj($pid)
+	{
+	    $data = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">Begin%20%20%20delete%20from%20ZB_ZFPZFJ%20where%20%20%20%20%20%20GSDM=%27001%27%20%20and%20KJND=%272017%27%20%20and%20PDQJ=%27201705%27%20%20and%20ZFLB=%270%27%20%20and%20PDH=21886%20;%20%20commit%20;%20%20%20open%20:pRecCur%20for%20select%200%20ierrCount%20from%20dual;%20Exception%20when%20others%20then%20RollBack%20;%20end;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
+	    $data=$this->jiema($data);
+	    $data=$this->timereplace($data);
+	    $data=str_replace("21886", "$pid", $data);
+	    //dd($data);
+
+
+	    $ifsuccess=$this->makerequest($data);
+        if (!stristr($ifsuccess,"ZB_ZFPZFJ" )) {
+        	dd("$ifsuccess");//更改NEWNO就可以调试增加日志的response
+        }
+        return true;
+
+	}
+
 	
 }

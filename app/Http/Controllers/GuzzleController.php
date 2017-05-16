@@ -20,7 +20,7 @@ class GuzzleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function dpt()
+     public function dpt()  //带了更新功能
     {
         $hello=new Guzzle();
         $info = $hello->updatedb();
@@ -33,6 +33,59 @@ class GuzzleController extends Controller
 
 
     }
+    public function hyy()
+    {
+
+        $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")->orderBy("KYJHJE","desc")->get();
+        
+        
+       return view('guzzle.index',compact('guzzledbs'));
+
+           
+
+
+    }
+    /**
+     * 预览
+     *
+     * @return void
+     * @author 
+     */
+    
+    public function preview()
+    {
+        header("Content-Type: text/html;charset=utf-8");
+            $arr = file(dirname(__FILE__)."//payee.txt");
+            array_walk($arr, function(&$item1, $key) {
+                $item1 = preg_split('/[\s,]+/', $item1);
+            });
+            //var_dump($arr);
+            //--------传入二维数组进行批输入------------
+          
+            foreach ($arr as $key => $data) 
+            {
+                $Validator=\Validator::make($data, [
+                    "1"=>"numeric",
+                    "3"=>"numeric",
+                    "5"=>"size:15"
+                    ],[
+                    "numeric"=>":attribute 必须为纯数字",
+                    "size"=>":attribute 必须为15位",
+                    ],['5'=>"指标ID",
+                    "3"=>"金额",
+                    "1"=>"银行账号"
+                ]);
+                if ($Validator->fails()) {
+                    return \Redirect::to('/hyy')->withErrors($Validator);
+                    dd("cuowu");
+                    
+                }
+            }
+
+            return view('guzzle.preview', compact('arr'));
+
+        
+    }
     public function index()
     {	
 			header("Content-Type: text/html;charset=utf-8");
@@ -43,10 +96,30 @@ class GuzzleController extends Controller
 			//var_dump($arr);
 			//--------传入二维数组进行批输入------------
           
+            foreach ($arr as $key => $data) 
+            {
+                $Validator=\Validator::make($data, [
+                    "1"=>"numeric",
+                    "3"=>"numeric",
+                    "5"=>"size:15"
+                    ],[
+                    "numeric"=>":attribute 必须为纯数字",
+                    "size"=>":attribute 必须为15位",
+                    ],['5'=>"指标ID",
+                    "3"=>"金额",
+                    "1"=>"银行账号"
+                ]);
+                if ($Validator->fails()) {
+                    return \Redirect::to('/hyy')->withErrors($Validator);
+                    dd("cuowu");
+                    
+                }
+            }
+            // dd("meicuo");
 
             foreach ($arr as $key => $value) 
             {
-                if (count($value)<6) {
+                if (count($value)!=6) {
 
                     session()->flash('danger', '请输入指标编号');
                     return redirect()->action('GuzzleController@dpt');
@@ -57,6 +130,7 @@ class GuzzleController extends Controller
 			foreach ($arr as $key => $value) 
 			{
 				$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
+
 				$guzz->add_post();
 
                 $successi++;
@@ -120,8 +194,7 @@ class GuzzleController extends Controller
         
         $this->validate($request, 
             [
-                'body' => "required|regex:/<?xml.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
-         
+                'body' => "required|regex:/<?xml.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
             ],[
 
             'body.regex' => '数据源格式不正确,请检查Fillder是否有误',
