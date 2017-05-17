@@ -26,7 +26,8 @@ Route::get('/benji', 'GuzzleController@benji');
 
 
 Route::get('/edit/{id}', 'GuzzleController@edit'); 
-Route::get('/preview', 'GuzzleController@preview'); 		 	
+Route::get('/preview', 'GuzzleController@preview'); 	
+Route::get('/payout', 'GuzzleController@payoutlist'); 	 	
 
 
 Route::get('/dd', function () {

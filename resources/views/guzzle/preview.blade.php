@@ -11,7 +11,7 @@
 
 		<thead>
 			<tr class='success'>
-				<th>摘要</th><th>收款人</th><th>收款账号</th><th>收款银行</th><th>金额</th><th>指标来源</th>
+				<th>摘要</th><th>收款人</th><th>收款账号</th><th>收款银行</th><th>金额</th><th>指标来源</th><th>科目</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
@@ -48,9 +48,29 @@
 
 				
 				</td>
+				<td>
+				
+			@if (!is_array($ar["kemuname"]))
+				
+			{{ $ar["kemuname"] }}
+
+			@else
+
+				@foreach ($ar["kemuname"] as $record)
+					<p style="color:red">{{$record}}</p>
+				@endforeach
+					
+			@endif
+
+
+
+
+				
+				</td>
 			</tr>	
 			@endforeach
-			<tr>	<td colspan=6 align="center">
+			<tr>	<td colspan=7 align="center">
+
 				{{ $collection->sum('amount') }}
 			</td>	</tr>	
 			
@@ -68,7 +88,3 @@
 	
 	</h2>
 </article>
-{{-- {!! Form::open() !!}
- {!! Form::text("name") !!}
-{!! Form::close() !!} --}}
-@stop

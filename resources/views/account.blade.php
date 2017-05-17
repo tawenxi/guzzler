@@ -16,7 +16,7 @@
 		</tr>
 	</thead>
 	<tbody>
-@foreach($es as $k=>$e)
+@foreach($kemu as $k=>$e)
 		<tr class="info">
 			  <td id="td_id_1" class="td-class-1">{{ $k }}</td>
 

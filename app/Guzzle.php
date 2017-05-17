@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Client;
 use App\Guzzledb;
-
+use App\Acc\Acc;
+use App\Payout;
 class Guzzle extends Model
 {
     //
@@ -442,6 +443,23 @@ class Guzzle extends Model
         }
         return true;
 
+	}
+
+	/**
+	 * 进行数据库存档
+	 *
+	 * @return void
+	 * @author 
+	 */
+	
+	public function savesql($data)
+	{
+		//dd();
+		$res=Payout::create($data);
+
+	    
+
+	    
 	}
 
 	

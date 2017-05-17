@@ -8,7 +8,7 @@
     @include('layouts._header')
 
     <div class="container">
-      <div class="col-md-offset-1 col-md-10">
+      <div class="col-md-offset-0 col-md-12">
         @include('shared.messages')
         @yield('content')
         @include('layouts._footer')
