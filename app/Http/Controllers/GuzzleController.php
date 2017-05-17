@@ -58,22 +58,36 @@ class GuzzleController extends Controller
             $arr = file(dirname(__FILE__)."//payee.txt");
             array_walk($arr, function(&$item1, $key) {
                 $item1 = preg_split('/[\s,]+/', $item1);
+                $item1['payee']=$item1['0'];
+                $item1['payeeaccount']=$item1['1'];
+                $item1['payeebanker']=$item1['2'];
+                $item1['amount']=$item1['3'];
+                $item1['zhaiyao']=$item1['4'];
+                $item1['zbid']=$item1['5'];
+                array_splice($item1, 0, 6); 
+                unset($item1[0]);
+                //$item1 = array_values($item1);//重建索引
             });
+
+
             //var_dump($arr);
             //--------传入二维数组进行批输入------------
-          
+
+
+          //dd($arr);
             foreach ($arr as $key => $data) 
             {
+
                 $Validator=\Validator::make($data, [
-                    "1"=>"numeric",
-                    "3"=>"numeric",
-                    "5"=>"size:15"
+                    "payeeaccount"=>"numeric",
+                    "amount"=>"numeric|between:0.01,300000",
+                    "shujuyuan"=>"size:15"
                     ],[
                     "numeric"=>":attribute 必须为纯数字",
                     "size"=>":attribute 必须为15位",
-                    ],['5'=>"指标ID",
-                    "3"=>"金额",
-                    "1"=>"银行账号"
+                    ],['zbid'=>"指标ID",
+                    "amount"=>"金额",
+                    "payeebanker"=>"银行账号"
                 ]);
                 if ($Validator->fails()) {
                     return \Redirect::to('/hyy')->withErrors($Validator);
@@ -82,32 +96,44 @@ class GuzzleController extends Controller
                 }
             }
 
-            return view('guzzle.preview', compact('arr'));
+            $collection = collect($arr);
+
+            return view('guzzle.preview', compact('collection'));
 
         
     }
     public function index()
     {	
-			header("Content-Type: text/html;charset=utf-8");
-			$arr = file(dirname(__FILE__)."//payee.txt");
-			array_walk($arr, function(&$item1, $key) {
-				$item1 = preg_split('/[\s,]+/', $item1);
-			});
+        header("Content-Type: text/html;charset=utf-8");
+            $arr = file(dirname(__FILE__)."//payee.txt");
+            array_walk($arr, function(&$item1, $key) {
+                $item1 = preg_split('/[\s,]+/', $item1);
+                $item1['payee']=$item1['0'];
+                $item1['payeeaccount']=$item1['1'];
+                $item1['payeebanker']=$item1['2'];
+                $item1['amount']=$item1['3'];
+                $item1['zhaiyao']=$item1['4'];
+                $item1['zbid']=$item1['5'];
+                array_splice($item1, 0, 6); 
+                unset($item1[0]);
+               // $item1 = array_values($item1);//重建索引
+            });
+            
 			//var_dump($arr);
 			//--------传入二维数组进行批输入------------
           
             foreach ($arr as $key => $data) 
             {
                 $Validator=\Validator::make($data, [
-                    "1"=>"numeric",
-                    "3"=>"numeric",
-                    "5"=>"size:15"
+                    "payeeaccount"=>"numeric",
+                    "amount"=>"numeric|between:0.01,300000",
+                    "shujuyuan"=>"size:15"
                     ],[
                     "numeric"=>":attribute 必须为纯数字",
                     "size"=>":attribute 必须为15位",
-                    ],['5'=>"指标ID",
-                    "3"=>"金额",
-                    "1"=>"银行账号"
+                    ],['zbid'=>"指标ID",
+                    "amount"=>"金额",
+                    "payeebanker"=>"银行账号"
                 ]);
                 if ($Validator->fails()) {
                     return \Redirect::to('/hyy')->withErrors($Validator);
@@ -120,6 +146,7 @@ class GuzzleController extends Controller
             foreach ($arr as $key => $value) 
             {
                 if (count($value)!=6) {
+                    dd($value);
 
                     session()->flash('danger', '请输入指标编号');
                     return redirect()->action('GuzzleController@dpt');

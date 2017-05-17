@@ -18,7 +18,19 @@ class Guzzle extends Model
 	public $balancebody;//查询余额的dp
 
 	
+	/**
+	 * summary
+	 *
+	 * @return void
+	 * @author 
+	 */
 	
+	public function checkreplace($data1,$data2)
+	{
+	    if ($data1==$data2) {
+	    	dd("替换失败");
+	    }
+	}
 	
 	public function makerequest($dq)//根据body属性发送请求
 	{	//$dq= iconv('UTF-8','GB2312',$dq);//发送请求之前进行转码GB2312->utf8
@@ -66,15 +78,15 @@ class Guzzle extends Model
 	{	
 		$zb=$this->get_zbdata($this->payee);//获取最新数据
 		//dd($zb);
-		if ($zb["KYJHJE"]<$this->payee['3']) {
+		if ($zb["KYJHJE"]<$this->payee['amount']) {
 			echo $zb["KYJHJE"];
 			echo "<";
-			echo $this->payee['3'];
+			echo $this->payee['amount'];
 			redirect()->action("GuzzleController@dpt");
 			die();
 			
 		}
-		$zbamount=$zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$this->payee['3'];
+		$zbamount=$zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$this->payee['amount'];
 
 		$this->accountreplace($this->payee);
 		$this->amountreplace($zbamount);
@@ -96,7 +108,7 @@ class Guzzle extends Model
 
 			echo $djbh=substr($response3, 6+strpos($response3, 'DJBH="'),6);
 			echo "<br>";
-			if (!(is_numeric($pid)&&is_numeric($djbh))) {
+			if (!(is_numeric($pid)&&is_numeric($djbh)&&$pid>20000&&$pid<100000&&$djbh>700&&$djbh<1000000)) {
 				dd("取回的编码错误");
 			}
 			$this->add_rizhi($pid);
@@ -141,7 +153,7 @@ class Guzzle extends Model
 			$filtered = $collection->filter(function ($item) use($payee)
 				{	
 					
-   					 return $item['ZBID']==$payee['5'];
+   					 return $item['ZBID']==$payee['zbid'];
 					
 				});
 
@@ -162,7 +174,10 @@ class Guzzle extends Model
 		 //$this->insertbody=$this->jiema($this->insertbody);//替换之前进行解码
 
 		$pattern3='/\d{1,}(.[0-9]{1,})?,\s+\d{1,}(.[0-9]{1,})?,\s+\d{1,}(.[0-9]{1,})?,\s+\d{1,}(.[0-9]{1,})?/';
+		 $copydata=$this->insertbody;
 		 $this->insertbody=preg_replace($pattern3,$zbamount,$this->insertbody);
+
+		 $this->checkreplace($copydata,$this->insertbody);
 		
 		//$this->insertbody = iconv('UTF-8', 'GB2312', $this->insertbody);
 	}
@@ -170,13 +185,13 @@ class Guzzle extends Model
 	{	
 		$this->insertbody=$this->jiema($this->insertbody);//替换之前进行解码
 		$this->insertbody = iconv('GB2312', 'UTF-8', $this->insertbody);
-		$this->insertbody=str_replace('吉安遂川县财政局',$payee[0],$this->insertbody);
+		$this->insertbody=str_replace('吉安遂川县财政局',$payee['payee'],$this->insertbody);
 		$this->insertbody=str_replace('遂川县财政局枚江乡财政所','遂川县枚江镇财政所',$this->insertbody);
-		$this->insertbody=str_replace('190207313396',$payee[1],$this->insertbody);
-		$this->insertbody=str_replace('中行遂川支行',$payee[2],$this->insertbody);
+		$this->insertbody=str_replace('190207313396',$payee["payeeaccount"],$this->insertbody);
+		$this->insertbody=str_replace('中行遂川支行',$payee['payeebanker'],$this->insertbody);
 		//$this->insertbody=str_replace('1.61',$payee[3],$this->insertbody);
-		$this->insertbody=str_replace('2016年计生事业费',$payee[4],$this->insertbody);
-		$this->insertbody=str_replace('摘要',$payee[4],$this->insertbody);
+		$this->insertbody=str_replace('2016年计生事业费',$payee['zhaiyao'],$this->insertbody);
+		$this->insertbody=str_replace('zhaiyao',$payee['zhaiyao'],$this->insertbody);
 		$this->insertbody=str_replace('99900114','',$this->insertbody);//替换助记码
 		$this->insertbody=str_replace('\'005\'','\'\'',$this->insertbody);//删除银行行号
 		//dd($this->insertbody);
@@ -189,6 +204,7 @@ class Guzzle extends Model
 		$pattern="/\'201([0-9]{5})\'/";
 		$pattern1="/\'201([0-9]{3})\'/"; 
 		$pattern2="/\'201([0-9]{1})\'/"; 
+
 		$data=preg_replace($pattern,"to_char(sysdate,'yyyymmdd')",$data);
 		$data=preg_replace($pattern1,"to_char(sysdate,'yyyymm')",$data);
 		$data=preg_replace($pattern2,"to_char(sysdate,'yyyy')",$data);
@@ -225,7 +241,7 @@ class Guzzle extends Model
 					# code...
 				
 				
-				$zb=Guzzledb::where('ZBID',$payee[5])->firstOrFail();
+				$zb=Guzzledb::where('ZBID',$payee["zbid"])->firstOrFail();
 				// dump($zb[0]->body);
 				 //dd($zb);
 				$this->insertbody = trim($zb->body);
@@ -377,9 +393,10 @@ class Guzzle extends Model
 
 
 		$timepattern="/\'201([0-9]{5})\'/"; 
-		
+		$copydata=$data;
 		$data=preg_replace($timepattern,"to_char(sysdate,'yyyymmdd')",$data);
 		
+		 $this->checkreplace($copydata,$data);
 
         $pattern="/\[001,.+\]/";
         $Y=(string)(date('Y'));
@@ -388,8 +405,9 @@ class Guzzle extends Model
 
          $data2="[001,$Y,$Ym,$pid]";
 
-        
+        $copydata=$data;
         $data=preg_replace($pattern,$data2,$data);
+        $this->checkreplace($copydata,$data);
         //dd($data);
         $ifsuccess=$this->makerequest($data);
         if (!stristr($ifsuccess,"NEWNO" )) {
@@ -412,7 +430,9 @@ class Guzzle extends Model
 	    $data = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">Begin%20%20%20delete%20from%20ZB_ZFPZFJ%20where%20%20%20%20%20%20GSDM=%27001%27%20%20and%20KJND=%272017%27%20%20and%20PDQJ=%27201705%27%20%20and%20ZFLB=%270%27%20%20and%20PDH=21886%20;%20%20commit%20;%20%20%20open%20:pRecCur%20for%20select%200%20ierrCount%20from%20dual;%20Exception%20when%20others%20then%20RollBack%20;%20end;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
 	    $data=$this->jiema($data);
 	    $data=$this->timereplace($data);
+	    $copydata=$data;
 	    $data=str_replace("21886", "$pid", $data);
+	     $this->checkreplace($copydata,$data);
 	    //dd($data);
 
 

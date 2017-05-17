@@ -15,40 +15,47 @@
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
-				@foreach ($arr as $ar)
+			@foreach ($collection as $ar)
 			<tr>
 				<td>
 				
-					{{$ar[4]}}
+					{{$ar['zhaiyao']}}
 				
 				</td>
 				<td>
 				
-					{{$ar[0]}}
+					{{$ar['payee']}}
 				
 				</td>
 				<td>
 				
-					{{$ar[1]}}
+					{{$ar['payeeaccount']}}
 				
 				</td>
 				<td>
 				
-					{{$ar[2]}}
+					{{$ar["payeebanker"]}}
 				
 				</td>
 				<td>
 				
-					{{$ar[3]}}
+					{{$ar['amount']}}
 				
 				</td>
 				<td>
 				
-					{{$ar[5]}}
+					{{$ar["zbid"]}}
+
 				
 				</td>
 			</tr>	
 			@endforeach
+			<tr>	<td colspan=6 align="center">
+				{{ $collection->sum('amount') }}
+			</td>	</tr>	
+			
+
+
 		</tbody>
 	</table>
 
