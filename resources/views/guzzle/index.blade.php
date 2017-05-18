@@ -19,7 +19,9 @@
 			<tr>
 				<td>
 				
-					{{$guzzledb->ZBID}}
+					<a href="{{ $guzzledb->ZBID }}/show">{{$guzzledb->ZBID}} 
+
+					</a>
 				
 				</td>
 				<td>

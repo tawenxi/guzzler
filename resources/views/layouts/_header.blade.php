@@ -1,6 +1,6 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-    <div class="col-md-offset-1 col-md-10">
+    <div class="col-md-offset-0 col-md-12">
       <a href="/preview" id="logo">拨款按钮</a>
       <nav>
         <ul class="nav navbar-nav navbar-right">
@@ -26,8 +26,10 @@
               </ul>
             </li>
           @else
-            <li><a href="/dpt">大平台</a></li>
-            <li><a href="reflash">更新数据</a></li>
+            <li><a href="/payout">支出</a></li>
+            <li><a href="/hyy">外网查询</a></li>
+            <li><a href="/dpt">大平台更新</a></li>
+           
           @endif
         </ul>
       </nav>

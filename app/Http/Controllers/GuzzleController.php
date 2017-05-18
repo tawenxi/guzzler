@@ -68,7 +68,11 @@ class GuzzleController extends Controller
         //--------传入二维数组进行批输入------------
         foreach ($arr as $key => $data) 
         {
-            $Validator=\Validator::make($data, [
+            if (count($arr[$key]['kemuname'])==1&&is_array($arr[$key]['kemuname'])) {
+                $arr[$key]['kemuname']=(string)(reset($arr[$key]['kemuname']));
+                
+            }
+            $Validator=\Validator::make($arr[$key], [
                 "payeeaccount"=>"numeric",
                 "amount"=>"numeric|between:0.01,300000",
                 "shujuyuan"=>"size:15"
@@ -83,6 +87,9 @@ class GuzzleController extends Controller
             return \Redirect::to('/hyy')->withErrors($Validator);
             dd("cuowu");
             }
+
+
+
             
  
            
@@ -149,19 +156,19 @@ class GuzzleController extends Controller
             if (count($value)!=8) {
                 dd($value);
                 session()->flash('warning', '输入字段数量不为8');
-                return redirect()->action('GuzzleController@dpt');
+                return redirect()->action('GuzzleController@hyy');
             }
           
-            if (count($value['kemuname'])==1&&is_array($value['kemuname'])) {
-                $value['kemuname']=(string)(reset($value['kemuname']));
+            if (count($arr[$key]['kemuname'])==1&&is_array($arr[$key]['kemuname'])) {
+                $arr[$key]['kemuname']=(string)(reset($arr[$key]['kemuname']));
                 
             }//这里使用了reset函数
             //dd($value["kemuname"]);
             
-            if (is_array($value["kemuname"])) {
+            if (is_array($arr[$key]["kemuname"])) {
                 
                 session()->flash('info', '请选择确认会计科目并包含@，或者修改关键字');
-                return redirect()->action('GuzzleController@dpt');
+                return redirect()->action('GuzzleController@hyy');
 
             }
 
@@ -172,14 +179,29 @@ class GuzzleController extends Controller
 		foreach ($arr as $key => $value) 
 		{
 			$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
-			//$guzz->add_post();
-            $res=$guzz->savesql($value);
+            if (stristr($arr[$key]['kemu'], "#")) {
+                session()->flash('info',  "第".(1+$successi).'条数据做账成功但授权支付');
+            }else{
+
+               // dd("拨款成功");//开关
+                
+                $guzz->add_post();
+            }
+			
+
+            if (stristr($arr[$key]['kemu'], "***")) {
+                session()->flash('info',  "第".(1+$successi).'条数据完成重录，没做账保存');
+            }else{
+                $res=$guzz->savesql($value);
+            }
+
+            
             $successi++;
 		}
 
         //=======================
         session()->flash('success',  $successi.'条数据拨款成功');
-        return redirect()->action('GuzzleController@dpt');		
+        return redirect()->action('GuzzleController@hyy');		
     }
 	
 
@@ -239,16 +261,40 @@ class GuzzleController extends Controller
     
     public function payoutlist()
     {
-        $payoutdatas=Payout::paginate(10)->reject(function($item){
-            return $item->amount==0;
-        });
+        $payoutdatas=Payout::paginate(10);
+
         return view('guzzle.payout',compact('payoutdatas'));
     }
     public function show($id)
     {
-        //
+        $payoutdatas=Payout::where('zbid',$id)->paginate(10);
+        return view('guzzle.show',compact('payoutdatas'));
     }
 
+    public function editkemu($id)
+    {
+        $detail=Payout::find($id);
+        
+        return view('guzzle.editkemu',compact('detail'));
+        
+    }
+        public function savekemu(\Illuminate\Http\Request $request)
+    {
+
+        $this->validate($request, 
+            [
+                'kemuname' => "required|regex:/.+@.+/", //必填 必须32位
+                'amount' => "required|numeric", //必填 必须32位
+                'payeeaccount' => "required|alpha_num",
+                
+            ]);
+        $Guzzledb=Guzzledb::where('ZBID',$zbid)->firstOrfail();
+        $a=$Guzzledb->update(['body'=>trim($request->body)]);
+        if ($a) {   
+                    session()->flash('success', '更新成功');
+                    return redirect()->action('GuzzleController@edit',$request->id);
+                }
+    }
     
     public function edit($id)
     {
@@ -257,10 +303,7 @@ class GuzzleController extends Controller
     }
 
     
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
 
    
     public function destroy($id)

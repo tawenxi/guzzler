@@ -25,7 +25,8 @@
 
 				<td>
 				
-					<a href= {{ route('editkemu',$payoutdata->id)  }} ><font style="color:green">{{$payoutdata->zhaiyao}}</font></a>
+										<a href= {{ route('editkemu',$payoutdata->id)  }} ><font style="color:green">{{$payoutdata->zhaiyao}}</font></a>
+				
 				
 				</td>
 				<td>
