@@ -12,7 +12,8 @@
 		<thead>
 			<tr class='success'>
 				<th>时间</th><th>摘要</th><th>收款人</th><th>金额</th><th>科目</th><th>指标ID</th>
-			<th>T</th></tr>
+			<th>T</th>
+			<th>D</th></tr>
 		</thead>
 		<tbody class='alert-info'>
 				@foreach ($payoutdatas as $payoutdata)
@@ -60,6 +61,18 @@
 							
 				
 				</td>
+
+				<td>
+				
+		<form action="{{ route('delete', $payoutdata->id) }}" method="post">
+        {{ csrf_field() }}
+        {{ method_field('DELETE') }}
+        <button type="submit" class="btn btn-sm btn-danger delete-btn">删除</button>
+      </form>
+
+				
+				</td>
+
 			</tr>	
 			@endforeach
 		</tbody>

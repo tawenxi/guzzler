@@ -180,7 +180,7 @@ class GuzzleController extends Controller
 		{
 			$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
             if (stristr($arr[$key]['kemu'], "#")) {
-                session()->flash('info',  "第".(1+$successi).'条数据做账成功但授权支付');
+                session()->flash('info',  "第".(1+$successi).'条数据做账成功但未授权支付');
             }else{
 
                // dd("拨款成功");//开关
@@ -231,10 +231,10 @@ class GuzzleController extends Controller
         $zbidmowei=substr($zbid, -4);
         $this->validate($request, 
             [
-                'body' => "required|regex:/<?xml.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
+                'body' => "required|regex:/<?xml.+to_char%28iPDh%2B1%29%2C%270%27%2C%20%20zfpzdjbh.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
             ],[
 
-            'body.regex' => '数据源格式不正确,请检查Fillder是否有误',]);
+            'body.regex' => '数据源格式不正确,请检查Fillder是否有误或者支付类型有变',]);
         $Guzzledb=Guzzledb::where('ZBID',$zbid)->firstOrfail();
         $a=$Guzzledb->update(['body'=>trim($request->body)]);
         if ($a) {   
@@ -308,6 +308,36 @@ class GuzzleController extends Controller
    
     public function destroy($id)
     {
-        //
+        $payout=Payout::findOrFail($id);
+                $payout->delete();
+        session()->flash('success', '成功删除拨款记录！');
+        return back();
+        
+    }
+
+    public function postsql(\Illuminate\Http\Request $request)
+    {
+
+
+          $this->validate($request, 
+            [
+                'body' => "required|regex:/^((?!000931).)*$/is|regex:/^((?!22708).)*$/is", //必填 必须32位
+            ],[
+
+            'body.regex' => '数据源格式不正确,请检查Fillder是否有误或者支付类型有变',]);
+        
+
+
+
+        $sql=$request->body;
+        $sql= iconv('UTF-8','GB2312',$sql);
+        $post=new Guzzle();
+        $info = $post->makerequest($sql);
+        dd($info);
+    }
+
+    public function getsql()
+    {
+        return view('guzzle.getsql');
     }
 }
