@@ -9,10 +9,40 @@
 	<table class="table table-bordered table-striped table-hover table-condensed">
 		<caption><center>{{ date("Y-m-d H:i:s") }}</center></caption>
 
+		{!! Form::open(['method' => 'POST', 'route' => 'payout', 'class' => 'form-horizontal']) !!}
+		
+		 
+
+
+		    <div class="form-group{{ $errors->has('date1') ? ' has-error' : '' }}">
+		        {!! Form::label('date', '开始日期') !!}
+		        {!! Form::date('date1', old('date1'), ['class' => 'form-control', 'required' => 'required']) !!}
+		        <small class="text-danger">{{ $errors->first('date') }}</small>
+		    </div>
+		    		    <div class="form-group{{ $errors->has('date2') ? ' has-error' : '' }}">
+		        {!! Form::label('date', '结束日期') !!}
+		        {!! Form::date('date2', null, ['class' => 'form-control', 'required' => 'required']) !!}
+		        <small class="text-danger">{{ $errors->first('date') }}</small>
+		    </div>
+		
+		    
+		    
+		        {!! Form::submit("Add", ['class' => 'btn btn-block btn-success ']) !!}
+		   
+
+
+
+
+		
+		{!! Form::close() !!}
+
+
+
+
 		<thead>
 			<tr class='success'>
 				<th>时间</th><th>摘要</th><th>收款人</th><th>金额</th><th>科目</th><th>指标ID</th>
-			<th>T</th></tr>
+			<th>T</th><th>D</th></tr>
 		</thead>
 		<tbody class='alert-info'>
 				@foreach ($payoutdatas as $payoutdata)
@@ -57,6 +87,16 @@
 							1001&
 							001</font>
 							
+				
+				</td>
+								<td>
+				
+		<form action="{{ route('delete', $payoutdata->id) }}" method="post">
+        {{ csrf_field() }}
+        {{ method_field('DELETE') }}
+        <button type="submit" class="btn btn-sm btn-danger delete-btn">删除</button>
+      </form>
+
 				
 				</td>
 			</tr>	

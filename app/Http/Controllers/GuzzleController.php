@@ -259,12 +259,17 @@ class GuzzleController extends Controller
     }
 
     
-    public function payoutlist()
-    {
-        $payoutdatas=Payout::paginate(10);
+    public function payoutlist(\Illuminate\Http\Request $request)
+    {   
 
+        
+        $date1 = \Input::has('date1')?\Input::get('date1'):"2017-05-01";
+        $date2 = \Input::has('date2')?\Input::get('date2'):date("Y-m-d H:i:s",time()+86400);
+        $payoutdatas=Payout::whereBetween('created_at', [$date1, $date2])->paginate(10);
         return view('guzzle.payout',compact('payoutdatas'));
     }
+
+
     public function show($id)
     {
         $payoutdatas=Payout::where('zbid',$id)->paginate(10);

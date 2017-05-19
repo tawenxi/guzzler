@@ -27,7 +27,7 @@ Route::get('/benji', 'GuzzleController@benji');
 
 Route::get('/edit/{id}', 'GuzzleController@edit'); 
 Route::get('/preview', 'GuzzleController@preview'); 	
-Route::get('/payout', 'GuzzleController@payoutlist'); 
+Route::any('/payout', 'GuzzleController@payoutlist')->name('payout'); 
 Route::get('/{id}/show', 'GuzzleController@show'); 
 
 Route::DELETE('/{id}/delete', 'GuzzleController@destroy')->name('delete'); 
