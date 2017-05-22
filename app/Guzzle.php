@@ -104,15 +104,34 @@ class Guzzle extends Model
 		
 		$response3=(string)($response2);
 		if (stristr($response3, "RES=")) {
-			echo $pid=substr($response3, 5+strpos($response3, 'RES="'),5);
+			//echo $pid=substr($response3, 5+strpos($response3, 'RES="'),5);
+			preg_match('/RES="\d+"/', $response3,$pid);
+			preg_match('/\d+/', $pid[0],$pid);
+			$pid=(string)$pid[0];
 			echo "<br>";
 
-			echo $djbh=substr($response3, 6+strpos($response3, 'DJBH="'),6);
+			//echo $djbh=substr($response3, 6+strpos($response3, 'DJBH="'),6);
+
+			preg_match('/DJBH="\d+"/', $response3,$djbh);
+			preg_match('/\d+/', $djbh[0],$djbh);
+			$djbh=(string)$djbh[0];
+			echo "<br>";
+
+			/*==================================
+			=            记录增加的sql日志            =
+			==================================*/
+			
+			\App\Sql::create(['pid'=>$pid,'type'=>'addshouquan','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$this->insertbody)]);
+			
+			/*=====  End of 进行增加的sql日志  ======*/
+			
+
+
 			echo "<br>";
 			if (!(is_numeric($pid)&&is_numeric($djbh)&&$pid>20000&&$pid<100000&&$djbh>700&&$djbh<1000000)) {
 				dd("取回的编码错误");
 			}
-			$this->add_rizhi($pid);
+			$this->add_rizhi($pid,$djbh);
 
 
 		
@@ -122,7 +141,7 @@ class Guzzle extends Model
 		=            删除 DJBHFJ           =
 		==========================*/
 		
-		$this->deletefj($pid);
+		$this->deletefj($pid,$djbh);
 
 		
 		/*=====  End of 删除 DJBHFJ  ======*/
@@ -386,7 +405,7 @@ class Guzzle extends Model
 	 * @author 
 	 */
 	
-	public function add_rizhi($pid)
+	public function add_rizhi($pid,$djbh)
 	{
 	           
          $data= '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">%20begin%20%20%20declare%20maxNo%20int;%20%20%20begin%20%20%20%20%20%20Select%20nvl%28Max%28no%29%2C0%29%2B1%20into%20maxNo%20from%20ZB_czrz%20%20%20where%20station%20like%20%27PC%2D20161129CAOZ%25%27%20;%20%20%20%20insert%20into%20ZB_czrz%28station%2C%20no%2C%20name%2C%20%26quot;DATE%26quot;%2C%20zwrq%2C%20qssj%2C%20zzsj%2C%20cznr%2Ccznrkz%29%20%20%20%20values%20%28%27PC%2D20161129CAOZ_10%2E111%2E102%2E41%27%2CmaxNo%2C%27%B8%B5%B0%AE%C7%ED%27%2C%20TO_CHAR%28SYSDATE%2C%27YYYYMMDD%27%29%2C%2720170516%27%20%20%20%20%2CTO_CHAR%28SYSDATE%2C%27HH24:MI:SS%27%29%2CTO_CHAR%28SYSDATE%2C%27HH24:MI:SS%27%29%2C%27[%CA%DA%C8%A8%D6%A7%B8%B6%C6%BE%D6%A4][%D0%C2%D4%F6][001%2C2017%2C201705%2C21886]%27%2C%27%27%29%20;%20%20%20%20%20commit;%20%20%20%20%20%20open%20:pRecCur%20for%20select%20maxNo%20NewNo%20from%20dual;%20%20%20%20end;%20end;</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
@@ -414,6 +433,11 @@ class Guzzle extends Model
         if (!stristr($ifsuccess,"NEWNO" )) {
         	dd("$ifsuccess");//更改NEWNO就可以调试增加日志的response
         }
+
+        \App\Sql::create(['pid'=>$pid,'type'=>'addrizhi','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$data)]);
+
+
+
         return true;
         
 	}
@@ -426,13 +450,17 @@ class Guzzle extends Model
 	 * @author 
 	 */
 	
-	public function deletefj($pid)
+	public function deletefj($pid,$djbh)
 	{
-	    $data = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">Begin%20%20%20delete%20from%20ZB_ZFPZFJ%20where%20%20%20%20%20%20GSDM=%27001%27%20%20and%20KJND=%272017%27%20%20and%20PDQJ=%27201705%27%20%20and%20ZFLB=%270%27%20%20and%20PDH=21886%20;%20%20commit%20;%20%20%20open%20:pRecCur%20for%20select%200%20ierrCount%20from%20dual;%20Exception%20when%20others%20then%20RollBack%20;%20end;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
+	    $data = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">Begin%20%20%20delete%20from%20ZB_ZFPZFJ%20where%20%20%20%20%20%20GSDM=%27001%27%20%20and%20KJND=%272017%27%20%20and%20PDQJ=%27201704%27%20%20and%20ZFLB=%270%27%20%20and%20PDH=21886%20;%20%20commit%20;%20%20%20open%20:pRecCur%20for%20select%200%20ierrCount%20from%20dual;%20Exception%20when%20others%20then%20RollBack%20;%20end;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
 	    $data=$this->jiema($data);
-	    $data=$this->timereplace($data);
+	    //进行日期替换  这里把月份修改成201704
 	    $copydata=$data;
-	    $data=str_replace("21886", "$pid", $data);
+	    $data=$this->timereplace($data);
+	    $this->checkreplace($copydata,$data);
+
+	    $copydata=$data;
+	    $data=str_replace("21886", $pid, $data);
 	     $this->checkreplace($copydata,$data);
 	    //dd($data);
 
@@ -441,6 +469,8 @@ class Guzzle extends Model
         if (!stristr($ifsuccess,"ZB_ZFPZFJ" )) {
         	dd("$ifsuccess");//更改NEWNO就可以调试增加日志的response
         }
+
+        \App\Sql::create(['pid'=>$pid,'type'=>'deletefj','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$data)]);
         return true;
 
 	}

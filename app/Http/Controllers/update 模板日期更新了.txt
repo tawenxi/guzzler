@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin  declare   ierrCount smallint;   szDjBh Varchar(20);   iRowCount smallint ;   iFlen int ;  begin   declare     iPDh int ;     szRBH  char(6) ;     TempExp Exception ;   begin  select '000942' into szDjBh from dual ;  select count(*) into iRowCount from zb_zfpzml_y  where gsdm='001'    and kjnd='2017'    and 
+
+                                                   pdqj=to_char(sysdate,'yyyymm')  and  
+
+
+                                                   
+  
+                                                     pdh='22857' ; 
+             if iRowCount&gt;0 then  
+
+                update ZB_ZFPZNR_Y set          
+je=320 
+             where gsdm='001'    and kjnd='2017'    and 
+                                                       pdqj=to_char(sysdate,'yyyymm') 
+                                  and 
+                                                      pdh='22857' ;  
+
+update zb_zfpzml_y set      
+  
+Zy='4月电费'  
+
+where Gsdm='001'    and KJND='2017'    and 
+
+                                                        PDQJ=to_char(sysdate,'yyyymm')    and 
+                                                        PDH='22857' ;                                                                                           
+commit;     select 100 into ierrCount from dual ;  else rollback; end if ;   Exception     when others then       RollBack;       select 0 into ierrCount from dual ;   end ;   Open :pRecCur for     select ierrCount RES,szDJBH DJBH from dual;  end; end; </DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>

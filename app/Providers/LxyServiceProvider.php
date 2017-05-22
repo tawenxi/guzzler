@@ -25,7 +25,7 @@ class LxyServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->singleton('lxy',function() {
+        $this->app->singleton(['lxy'=>"lxysalias"],function() {
             return new Lxy(app('llj'));
         });
     }

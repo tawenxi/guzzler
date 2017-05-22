@@ -22,9 +22,9 @@ class GuzzleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function dpt()  //带了更新功能
+     public function dpt(\App\Guzzle $hello)  //带了更新功能
     {
-        $hello=new Guzzle();
+        //$hello=new Guzzle();
         $info = $hello->updatedb();
         $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")->orderBy("KYJHJE","desc")->get();
         return view('guzzle.index',compact('guzzledbs'));
