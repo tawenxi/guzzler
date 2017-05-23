@@ -60,7 +60,7 @@ class TestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function diff (\App\Pay $p)
+    public function diff (\App\Play $p)
     {
         // dd(app('lxy'));
         // //dd($a);
@@ -69,10 +69,22 @@ class TestController extends Controller
 
         // dd(app());
 
-        $p->say();
-        new \App\play("2");
+        //$p->say();
+
+
+        echo "<br>";
+         app()->make('\App\Play',[app('play2')]);
+         // app()->make('\App\Play',new \App\Play2);
       
     }
+
+    public function testioc (\App\Pay $pay)
+    {
+
+       // $pay->say();
+
+    }
+
 
    
 }

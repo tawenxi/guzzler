@@ -4,16 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Play2 extends Model
+class Play3 extends Model
 {
     //
     public function ok()
     {
-    	echo "play2";
+    	echo "play3";
     }
-    public function __construct(\App\Play3 $p)
-	{
 
-		$p->ok();
-	}
+
 }

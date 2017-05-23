@@ -41,7 +41,8 @@ Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
     =            测试依赖注入            =
     ==============================*/
     
-    Route::get('/testioc', 'TestController@show');
+    Route::get('/testioc', 'TestController@testioc');
+    //Route::get('/testioc', 'TestController@show');
     
     /*=====  End of 测试依赖注入  ======*/
     /*============================
