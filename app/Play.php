@@ -15,9 +15,9 @@ class Play extends Model
     	$this->lxy->show();
 
     }
-    	public function __construct(\App\play2 $play2)
+    	public function __construct(\App\Pay $p)
 	{
 
-		dd($play2);
+		dd($p);
 	}
 }

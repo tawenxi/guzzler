@@ -15,19 +15,24 @@
 
 
 		    <div class="form-group{{ $errors->has('date1') ? ' has-error' : '' }}">
-		        {!! Form::label('date', '开始日期') !!}
-		        {!! Form::date('date1', old('date1'), ['class' => 'form-control', 'required' => 'required']) !!}
+		        {!! Form::label('date', '开始日期(my参数可以控制page)') !!}
+		        {!! Form::date('date1', date('Y-m-01',time()), ['class' => 'form-control', 'required' => 'required']) !!}
 		        <small class="text-danger">{{ $errors->first('date') }}</small>
 		    </div>
 		    		    <div class="form-group{{ $errors->has('date2') ? ' has-error' : '' }}">
-		        {!! Form::label('date', '结束日期') !!}
-		        {!! Form::date('date2', null, ['class' => 'form-control', 'required' => 'required']) !!}
+		        {!! Form::label('date', '结束日期(order控制排序方式)') !!}
+		        {!! Form::date('date2', date('Y-m-d',time()+86400), ['class' => 'form-control', 'required' => 'required']) !!}
 		        <small class="text-danger">{{ $errors->first('date') }}</small>
+		    </div>
+		    <div class="form-group{{ $errors->has('order') ? ' has-error' : '' }}">
+		        {!! Form::label('order', '排序（默认按时间排序，默认时间为本月）') !!}
+		        {!! Form::select('order', ['created_at'=>"时间",'kemuname'=>"科目",'amount'=>"金额"], ['id' => 'order', 'class' => 'form-control', 'required' => 'required', 'multiple']) !!}
+		        <small class="text-danger">{{ $errors->first('order') }}</small>
 		    </div>
 		
 		    
 		    
-		        {!! Form::submit("Add", ['class' => 'btn btn-block btn-success ']) !!}
+		        {!! Form::submit("查询", ['class' => 'btn btn-block btn-success ']) !!}
 		   
 
 
@@ -102,7 +107,8 @@
 			</tr>	
 			@endforeach
 		</tbody>
-	{!! $payoutdatas->render() !!}
+	{!! $payoutdatas->appends(['order' => $a,'my' => $my])->render() !!}
+
 	</table>
 
 

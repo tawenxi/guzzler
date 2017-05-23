@@ -115,7 +115,8 @@ class GuzzleController extends Controller
         $item1['zhaiyao']=$item1['4'];
         $item1['zbid']=$item1['5'];
         $item1['kemu']=$item1['6'];
-        $item1['kemuname']=stristr($item1['kemu'], "@")?$item1['kemu']:$searchobject->findac($item1['kemu']);
+        $item1['kemuname']=stristr($item1['kemu'], "@")?$item1['kemu']:$searchobject->findac(str_replace('#', '', $item1['kemu']));
+
         //进行科目判断
         
         array_splice($item1, 0, 6); 
@@ -260,19 +261,21 @@ class GuzzleController extends Controller
 
     
     public function payoutlist(\Illuminate\Http\Request $request)
-    {   
-
-        
-        $date1 = \Input::has('date1')?\Input::get('date1'):"2017-05-01";
+    {   //$a='created_at';
+        $a=is_null($request->order)?"created_at":$request->order;
+        $my=is_null($request->my)?"50":$request->my;
+       // dd($a);
+       
+        $date1 = \Input::has('date1')?\Input::get('date1'):date("Y-m-01",time());
         $date2 = \Input::has('date2')?\Input::get('date2'):date("Y-m-d H:i:s",time()+86400);
-        $payoutdatas=Payout::whereBetween('created_at', [$date1, $date2])->paginate(10);
-        return view('guzzle.payout',compact('payoutdatas'));
+        $payoutdatas=Payout::whereBetween('created_at', [$date1, $date2])->orderBy($a,'desc')->paginate($my);
+        return view('guzzle.payout',compact('payoutdatas','a','my'));
     }
 
 
     public function show($id)
     {
-        $payoutdatas=Payout::where('zbid',$id)->paginate(10);
+        $payoutdatas=Payout::where('zbid',$id)->orderBy("created_at",'desc')->paginate(10);
         return view('guzzle.show',compact('payoutdatas'));
     }
 

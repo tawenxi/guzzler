@@ -60,14 +60,17 @@ class TestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function diff (\App\Pay $p)
     {
-        dd(app('lxy'));
-        //dd($a);
-        app()->make('lxy',['llsssj']);
-        dd(app("App\Contracts\Lxy"));
+        // dd(app('lxy'));
+        // //dd($a);
+        // app()->make('lxy',['llsssj']);
+        // dd(app("App\Contracts\Lxy"));
 
-        dd(app());
+        // dd(app());
+
+        $p->say();
+        new \App\play("2");
       
     }
 

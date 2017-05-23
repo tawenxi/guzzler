@@ -16,7 +16,7 @@
 		</thead>
 		<tbody class='alert-info'>
 				@foreach ($guzzledbs as $guzzledb)
-			<tr>
+			<tr class={{ empty($guzzledb->body)?'alert-danger':""}}>
 				<td>
 				
 					<a href="{{ $guzzledb->ZBID }}/show">{{$guzzledb->ZBID}} 
