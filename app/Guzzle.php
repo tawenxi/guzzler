@@ -207,6 +207,7 @@ class Guzzle extends Model
 		$this->insertbody = iconv('GB2312', 'UTF-8', $this->insertbody);
 		$this->insertbody=str_replace('吉安遂川县财政局',$payee['payee'],$this->insertbody);
 		$this->insertbody=str_replace('遂川县财政局枚江乡财政所','遂川县枚江镇财政所',$this->insertbody);
+		$this->insertbody=str_replace('遂川县枚江镇财政所2','遂川县枚江镇财政所',$this->insertbody);
 		$this->insertbody=str_replace('190207313396',$payee["payeeaccount"],$this->insertbody);
 		$this->insertbody=str_replace('中行遂川支行',$payee['payeebanker'],$this->insertbody);
 		//$this->insertbody=str_replace('1.61',$payee[3],$this->insertbody);

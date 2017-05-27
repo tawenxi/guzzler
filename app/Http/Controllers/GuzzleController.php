@@ -41,27 +41,38 @@ class GuzzleController extends Controller
      * @author 
      */
     
-    public function preview()
+    public function preview(\App\UserListImport $import)
     {
         
         header("Content-Type: text/html;charset=utf-8");
-        $arr = file(dirname(__FILE__)."//payee.txt");
-        $searchobject=\App::make('acc');//初始化
-        array_walk($arr, function(&$item1, $key) use ($searchobject) {
-        $item1 = preg_split('/[\s,]+/', $item1);
-        $item1['payee']=$item1['0'];
-        $item1['payeeaccount']=$item1['1'];
-        $item1['payeebanker']=$item1['2'];
-        $item1['amount']=$item1['3'];
-        $item1['zhaiyao']=$item1['4'];
-        $item1['zbid']=$item1['5'];
-        $item1['kemu']=$item1['6'];
-        //进行科目判断
-        $item1['kemuname']=stristr($item1['kemu'], "@")?$item1['kemu']:$searchobject->findac($item1['kemu']);
-        array_splice($item1, 0, 6); 
-        unset($item1[0]);
-        //$item1 = array_values($item1);//重建索引
-            });
+         $searchobject=\App::make('acc');//初始化
+        $arr=$import->each(function($item) use ($searchobject){
+
+            $item['kemuname']=stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
+        })->toArray();
+
+
+
+        // $arr = file(dirname(__FILE__)."//payee.txt");
+        // $searchobject=\App::make('acc');//初始化
+        // array_walk($arr, function(&$item1, $key) use ($searchobject) {
+        // $item1 = preg_split('/[\s,]+/', $item1);
+        // $item1['payee']=$item1['0'];
+        // $item1['payeeaccount']=$item1['1'];
+        // $item1['payeebanker']=$item1['2'];
+        // $item1['amount']=$item1['3'];
+        // $item1['zhaiyao']=$item1['4'];
+        // $item1['zbid']=$item1['5'];
+        // $item1['kemu']=$item1['6'];
+        // //进行科目判断
+        // $item1['kemuname']=stristr($item1['kemu'], "@")?$item1['kemu']:$searchobject->findac($item1['kemu']);
+        // array_splice($item1, 0, 6); 
+        // unset($item1[0]);
+        // //$item1 = array_values($item1);//重建索引
+        //     });
+
+
+     
 
         //dd($arr);
 
@@ -74,7 +85,7 @@ class GuzzleController extends Controller
             }
             $Validator=\Validator::make($arr[$key], [
                 "payeeaccount"=>"numeric",
-                "amount"=>"numeric|between:0.01,300000",
+                "amount"=>"numeric|between:0.01,3000000",
                 "shujuyuan"=>"size:15"
                 ],[
                 "numeric"=>":attribute 必须为纯数字",
@@ -101,7 +112,7 @@ class GuzzleController extends Controller
         $collection = collect($arr);
         return view('guzzle.preview', compact('collection'));   
     }
-    public function index()
+    public function index(\App\UserListImport $import)
     {	
         header("Content-Type: text/html;charset=utf-8");
         $arr = file(dirname(__FILE__)."//payee.txt");

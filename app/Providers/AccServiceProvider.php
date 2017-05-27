@@ -25,7 +25,7 @@ class AccServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->singleton('acc',function() {
+        $this->app->bind('acc',function() {
             return new Acc();
         });
     }

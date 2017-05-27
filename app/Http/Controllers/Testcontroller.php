@@ -86,5 +86,12 @@ class TestController extends Controller
     }
 
 
+
+    public function excel(\App\UserListImport $import)
+    {
+        dd($import->toArray());
+    }
+
+
    
 }
