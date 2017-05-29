@@ -62,6 +62,7 @@ Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
   Route::get('/testdb', 'TestController@testdb');
     Route::get('/salary', 'TestController@salary');
     Route::get('/gz', 'SalaryController@index');
+     Route::get('/addmember', 'SalaryController@member');
     
     /*=====  End of excel  ======*/
     

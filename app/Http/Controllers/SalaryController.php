@@ -17,10 +17,10 @@ class SalaryController extends Controller
          $v->put('ok',$v->gjj_dw*2);  
 
        });
+
+
       $result->map(function($v){
-        Salary::updateOrCreate(['name'=>$v['name']],$v->toArray());
-      
- }
+        Salary::updateOrCreate(['name'=>$v['name']],4)})
 
      $res=Salary::all();
         return view('salary.index',compact('res'))->render();
@@ -43,7 +43,7 @@ class SalaryController extends Controller
              $result->map(function($v){
         Salary::updateOrCreate(['name'=>$v['name']],$v->toArray());
       
- }
+ });
 
 
            
