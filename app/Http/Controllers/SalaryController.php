@@ -19,8 +19,7 @@ class SalaryController extends Controller
        });
 
 
-      $result->map(function($v){
-        Salary::updateOrCreate(['name'=>$v['name']],4)})
+
 
      $res=Salary::all();
         return view('salary.index',compact('res'))->render();
@@ -40,8 +39,12 @@ class SalaryController extends Controller
 
        });
 
+
+
              $result->map(function($v){
-        Salary::updateOrCreate(['name'=>$v['name']],$v->toArray());
+             //	dd($v->toArray());
+        $a=\App\Member::create($v->toArray());
+       
       
  });
 
