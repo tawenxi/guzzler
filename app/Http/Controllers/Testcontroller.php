@@ -93,7 +93,20 @@ class TestController extends Controller
     {
         // $res= $import->all()->sortByDesc('amount')->all();
         // $a=$res[1]->payee;
+
+        $import->each(function($v){
+            dd($v);
+        });
+
+
+
        $res= $import->all();
+
+       foreach ($res as $key => $value) {
+        $res[$key]['amount']=$res[$key]['payeeaccount']*2;
+           # code...
+       }
+
 
 
 

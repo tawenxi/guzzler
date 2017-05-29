@@ -11,7 +11,7 @@
 
 		<thead>
 			<tr class='success'>
-				<th>ID</th><th>姓名</th><th>基本工资</th><th>津补贴</th><th>应发合计</th>
+				<th>ID</th><th>姓名</th><th>基本工资</th><th>津补贴</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
@@ -20,7 +20,7 @@
 			<tr class={{ empty($re->id)?'alert-danger':""}}>
 				<td>
 				
-					<a href="{{ $re->name }}/show">{{$re->name}} 
+					<a href="{{ $re->id }}/show">{{$re->id}} 
 
 					</a>
 				
