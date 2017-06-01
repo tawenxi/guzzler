@@ -10,13 +10,22 @@ use App\Salary;
 
 class SalaryController extends Controller
 {
-        public function index(\App\SalaryListImport $import)
+        public function index(\App\SalaryListImport $import ,Request $request)
     {
-        $ziduan=['name',"account",'bumen','yishu_bz','tuixiu_gz','jiben_gz','jinbutie','gongche_bz','bufa_gz','nianzhong_jj','gjj_dw','sb_dw','gjj_gr','sb_gr','zhiye_nj','daikou_gz','hongfang_zj','yiliao_bx','shiye_bx','shengyu_bx','gongshang_bx','yirijuan','sb_js','gjj_js','tiaozheng_gjj','tiaozheng_sb','date'];
-       $re = $import->skipRows(1)->get($ziduan)->each(function($v){
-         $v->put('ok',$v->gjj_dw*2);  
 
-       });
+    	/*=============================================
+    	=            Section comment block            =
+    	=============================================*/
+    	
+    	
+       //  $ziduan=['name',"account",'bumen','yishu_bz','tuixiu_gz','jiben_gz','jinbutie','gongche_bz','bufa_gz','nianzhong_jj','gjj_dw','sb_dw','gjj_gr','sb_gr','zhiye_nj','daikou_gz','hongfang_zj','yiliao_bx','shiye_bx','shengyu_bx','gongshang_bx','yirijuan','sb_js','gjj_js','tiaozheng_gjj','tiaozheng_sb','date'];
+       // $re = $import->skipRows(1)->get($ziduan)->each(function($v){
+       //   $v->put('ok',$v->gjj_dw*2);  
+
+       // });
+    	
+    	/*=====  End of Section comment block  ======*/
+    	
 
 
  //      $result->map(function($v){
@@ -26,38 +35,39 @@ class SalaryController extends Controller
 
 
 
-     $res=Salary::all();
-    // dd($res);
-        return view('salary.index',compact('res'))->render();
+
+ //echo \Carbon\Carbon::parse('2014-01')->todatestring();
+      $dt=$request->date?$request->date:substr(str_replace('-','',\Carbon\Carbon::now()->toDateString()),0,-2);
+      //dd($dt);
+
+       $res=Salary::where('date','<=',\Carbon\Carbon::parse($dt.'31'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get();
+       $dates=Salary::groupBy('date')->get()->pluck('date');
+      // $dates=Salary::groupBy('date')->get()->groupBy('date');
+       return view('salary.index',compact('res','dates'))->render();
     
 
 	}
 
 
+   public function bumen(\App\SalaryListImport $import ,Request $request)
+    {
 
-	 public function member(\App\SalaryListImport $import){
-        $ziduan=['name',"borthday",'bumen','class','gangwei','sex','educational','worktime','ruraltime','xiangzhen_bz','sb_js','resume'];
-       $result = $import
-       ->skipRows(1)
-       ->get($ziduan)
-       ->each(function($v){
-         $v->put('ok',$v->gjj_dw*2);  
+      $dt=$request->date?$request->date:substr(str_replace('-','',\Carbon\Carbon::now()->toDateString()),0,-2);
 
-       });
+       $res=Salary::where('date','<=',\Carbon\Carbon::parse($dt.'31'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get()->groupBy('bumen');
+       $resv=Salary::where('date','<=',\Carbon\Carbon::parse($dt.'31'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get();
 
-
-
-             $result->map(function($v){
-             //	dd($v->toArray());
-        $a=\App\Member::create($v->toArray());
        
-      
- });
+       $dates=Salary::groupBy('date')->get()->pluck('date');
+
+       return view('salary.bumen',compact('res','dates','resv'))->render();
+    
+
+  }
 
 
-           
 
-}
+	
 
 
 
