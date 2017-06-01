@@ -1,8 +1,6 @@
 @extends('layouts.default')
 @section('content')
-@foreach ($dates as $date)
-	<a href="?date={{ str_replace('-','',substr($date, 0,-3)) }}" class="btn btn-success">{{ str_replace('-','',substr($date, 0,-3)) }}</a> 
-@endforeach
+@include('salary.date')
 
 
 
@@ -58,9 +56,9 @@
 			@foreach ($res as $re)
 			<tr class={{ empty($re->id)?'alert-info':""}}>
 				<td>
-				<a href="{{ $re->id }}/show">{{$re->member_id}} </a>
+				{{$re->member_id}} 
 				</td>
-				<td>{{$re->name}}</td>
+				<td><a href={{ route('sarary',$re->member_id)}}>{{$re->name}}</a></td>
 				{{-- <td>{{$re->account}}</td> --}}
 				@if ($res->sum('tuixiu_gz'))<td>{{$re->tuixiu_gz}}</td>@endif
 				@if ($res->sum('yishu_bz'))<td>{{$re->yishu_bz}}</td>@endif
@@ -212,6 +210,7 @@
 				@if ($res->sum('tiaozheng_sb'))<th>{{ $res->sum('tiaozheng_sb') }}</th>@endif
 				<th>
 					{{
+						round(
 					$res->sum('gjj_gr')+
 					$res->sum('gjj_dw')+
 					$res->sum('sb_gr')+
@@ -227,6 +226,7 @@
 					$res->sum('other_daikou')+
 					$res->sum('tiaozheng_gjj')+
 					$res->sum('tiaozheng_sb')
+					,2) 
 					}}
 				</th><th>
 	  	{{  		round(

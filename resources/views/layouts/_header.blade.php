@@ -26,6 +26,9 @@
               </ul>
             </li>
           @else
+          <li><a href="/salary">工资</a></li>
+          <li><a href="/bumen">部门</a></li>
+          <li><a href="/geren">个人</a></li>
             <li><a href="/payout">支出</a></li>
             <li><a href="/hyy">外网查询</a></li>
             <li><a href="/dpt">大平台更新</a></li>

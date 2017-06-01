@@ -147,7 +147,7 @@ class TestController extends Controller
       $res->map(function($v){
        
        // dd($v);
-        Salary::updateOrCreate(['name'=>$v['name']],$v->toArray());
+        Salary::updateOrCreate(['member_id'=>$v['member_id'],'date'=>$v['date']],$v->toArray());
       });
 
       

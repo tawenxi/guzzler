@@ -10,7 +10,7 @@ use App\Salary;
 
 class SalaryController extends Controller
 {
-        public function index(\App\SalaryListImport $import ,Request $request)
+        public function index(Request $request)
     {
 
     	/*=============================================
@@ -49,7 +49,7 @@ class SalaryController extends Controller
 	}
 
 
-   public function bumen(\App\SalaryListImport $import ,Request $request)
+   public function bumen(Request $request)
     {
 
       $dt=$request->date?$request->date:substr(str_replace('-','',\Carbon\Carbon::now()->toDateString()),0,-2);
@@ -61,6 +61,23 @@ class SalaryController extends Controller
        $dates=Salary::groupBy('date')->get()->pluck('date');
 
        return view('salary.bumen',compact('res','dates','resv'))->render();
+    
+
+  }
+
+
+  public function geren($id=1)
+    {
+
+      
+
+       $res=Salary::where('member_id',$id)->get()->groupBy('date');
+       $resv=Salary::where('member_id',$id)->get();
+
+       
+       $dates=Salary::groupBy('date')->get()->pluck('date');
+
+       return view('salary.geren',compact('res','dates','resv'))->render();
     
 
   }
