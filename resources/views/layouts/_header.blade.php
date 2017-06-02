@@ -27,8 +27,10 @@
             </li>
           @else
           <li><a href="/salary">工资</a></li>
-          <li><a href="/bumen">部门</a></li>
-          <li><a href="/geren">个人</a></li>
+          <li><a href="/bumen?date=201705">月部门</a></li>
+          <li><a href="/byear/2017/">分部汇总</a></li>
+          <li><a href="/myear/2017/">分月汇总</a></li>
+          <li><a href="/geren?id=39">个人</a></li>
             <li><a href="/payout">支出</a></li>
             <li><a href="/hyy">外网查询</a></li>
             <li><a href="/dpt">大平台更新</a></li>

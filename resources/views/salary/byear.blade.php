@@ -1,11 +1,13 @@
 @extends('layouts.default')
 @section('content')
-@include('salary.date')
+@foreach ($dates as $date)
+  <a href="?year={{ $date }}" class="btn btn-success">{{ $date }}</a> 
+@endforeach
 
 
 
 {{-- //http://article.app/bumen?date=201705 --}}
-<h1>枚江镇工资部门汇总bumen?date=201704({{ $resv[0]['date'] }})</h1>
+<h1>枚江镇工资部门汇总byear/2017/1({{ $resv[0]['date'] }})</h1>
 @include('shared.errors')
 
 <article>

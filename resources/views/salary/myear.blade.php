@@ -1,11 +1,11 @@
 @extends('layouts.default')
 @section('content')
-@include('salary.date')
 
 
 
-{{-- //http://article.app/bumen?date=201705 --}}
-<h1>枚江镇工资部门汇总bumen?date=201704({{ $resv[0]['date'] }})</h1>
+
+
+<h1>枚江镇工资分月汇总({{ $resv[0]['date'] }})</h1>
 @include('shared.errors')
 
 <article>
@@ -17,7 +17,7 @@
 		<thead>
 			<tr class='success'>
 				
-				<th>部门</th>
+				<th>日期</th>
 				{{-- <th>账号</th> --}}
 
 
@@ -211,6 +211,7 @@
 				@if ($resv->sum('tiaozheng_sb'))<th>{{ $resv->sum('tiaozheng_sb') }}</th>@endif
 				<th>
 					{{
+						round(
 					$resv->sum('gjj_gr')+
 					$resv->sum('gjj_dw')+
 					$resv->sum('sb_gr')+
@@ -226,6 +227,7 @@
 					$resv->sum('other_daikou')+
 					$resv->sum('tiaozheng_gjj')+
 					$resv->sum('tiaozheng_sb')
+						,2) 
 					}}
 				</th><th>
 	  	{{  		round(
