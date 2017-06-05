@@ -30,4 +30,9 @@ class Salary extends Model
     public function member(){
 	return $this->belongsTo('App\Member','member_id','id');
 	}
+
+    public function setNameAtAttribute($name){
+        $name=str_replace(" ", '', $name);
+         $this->attributes['name'] = trim($name);
+    }
 }

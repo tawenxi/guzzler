@@ -61,12 +61,12 @@ Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
  Route::get('/excel', 'TestController@excel');
   Route::get('/testdb', 'TestController@testdb');
     Route::get('/addsalary', 'TestController@salary');
-    Route::get('/salary', 'SalaryController@index');
+    Route::get('/salary/{date?}/{jj?}', 'SalaryController@index')->name('sarary');
      Route::get('/addmember', 'TestController@member');
-     Route::get('/bumen', 'SalaryController@bumen');
-     Route::get('/geren/{id?}', 'SalaryController@geren')->name('sarary');
-     Route::get('/byear/{year?}/{jj?}', 'SalaryController@byear')->name('sarary.byear');
-      Route::get('/myear/{year?}/{jj?}', 'SalaryController@myear')->name('sarary.myear');
+     Route::get('/bumen/{date?}/{jj?}', 'SalaryController@bumen')->name('bumen');
+     Route::get('/geren/{id?}/{jj?}', 'SalaryController@geren')->name('geren');
+     Route::get('/byear/{year?}/{jj?}', 'SalaryController@byear')->name('byear');
+      Route::get('/myear/{year?}/{jj?}', 'SalaryController@myear')->name('myear');
     
     /*=====  End of excel  ======*/
     
