@@ -69,7 +69,7 @@
 				@if ($resv->sum('nianzhong_jj'))<td>{{$re->sum('nianzhong_jj')}}</td>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<td>{{$re->sum('gaowen_jiangwen')}}</td>@endif
 				@if ($resv->sum('jiangjin'))<td>{{$re->sum('jiangjin')}}</td>
-				<td>{{$re->beizhu}}</td>@endif
+				<td>{{$re[0]['beizhu']}}</td>@endif
 				@if ($resv->sum('bufa_gz'))<td>{{$re->sum('bufa_gz')}}</td>@endif
 				@if ($resv->sum('gjj_dw'))<td>{{$re->sum('gjj_dw')}}</td>@endif
 				@if ($resv->sum('sb_dw'))<td>{{$re->sum('sb_dw')}}</td>@endif

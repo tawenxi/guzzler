@@ -72,19 +72,9 @@ class SalaryController extends Controller
     {
 
       
-
-       $res=Salary::where('member_id',$id);
-
-         if ($jj!=null) {
-         $res=$res->where('jjbz',($jj==1)?null:2);
-       }
-
-       $res=$res->get()->groupBy('date');
-       $resv=Salary::where('member_id',$id);
-       if ($jj!=null) {
-         $resv=$resv->where('jjbz',($jj==1)?null:2);
-       }
-       $resv=$resv->get();
+      //dd($jj);
+       $res=Salary::where('member_id',$id)->Hasjj($jj)->get()->groupBy('date');
+       $resv=Salary::where('member_id',$id)->Hasjj($jj)->get();
 
        
        $dates=Salary::groupBy('date')->get()->pluck('date');
@@ -99,64 +89,38 @@ class SalaryController extends Controller
   public function byear($year=2017,$jj=null)//1只显示工资，2只显示奖金
     {
 
-     
-      if ($jj==null) {
-               $res=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
+       $res=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
+          ->Hasjj($jj)
          ->get()
          ->groupBy('bumen');
 
        $resv=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))   ->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
+            ->Hasjj($jj)
             ->get();
-      }elseif ($jj==1) {
-        $res=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
-          ->where('jjbz',null)
-         ->get()
-         ->groupBy('bumen');
-
-       $resv=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))   ->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
-            ->where('jjbz',null)
-            ->get();
-      }else {
-        $res=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
-          ->where('jjbz',2)
-         ->get()
-         ->groupBy('bumen');
-
-       $resv=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))   ->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
-            ->where('jjbz',2)
-            ->get();
-      }
-
-
-       
-       $dates=Salary::groupBy('date')
+        $dates=Salary::groupBy('date')
        ->get()
        ->pluck('date')
        ->map(function($v){
-
-        return $v=substr($v,0,4);
-
-       });
-       
-
-       return view('salary.byear',compact('res','dates','resv'))->render();
-    
-
-  }
+          return $v=substr($v,0,4);
+        })->toarray();
+       $dates=collect($dates);
+       $dates = $dates->unique();
+       $dates->values()->all();
+        return view('salary.byear',compact('res','dates','resv'))->render();
+ }
 
 
 
    public function myear($year=2017,$jj=null)//1只显示工资，2只显示奖金
     {
 
-     
-
        $res=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
-         
+         ->Hasjj($jj)
          ->get()
          ->groupBy('date');
 
        $resv=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))   ->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
+            ->Hasjj($jj)
             ->get();
 
        
@@ -164,21 +128,15 @@ class SalaryController extends Controller
        ->get()
        ->pluck('date')
        ->map(function($v){
-
-        return $v=substr($v,0,4);
-
-       });
-       
-
-       return view('salary.myear',compact('res','dates','resv'))->render();
+              return $v=substr($v,0,4);
+           })->toarray();
+       $dates=collect($dates);
+       $dates = $dates->unique();
+       $dates->values()->all();
+         return view('salary.myear',compact('res','dates','resv'))->render();
     
 
   }
-
-
-
-	
-
 
 
 

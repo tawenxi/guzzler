@@ -282,18 +282,21 @@ class GuzzleController extends Controller
         public function savekemu(\Illuminate\Http\Request $request)
     {
 
-        $this->validate($request, 
+               $this->validate($request, 
             [
                 'kemuname' => "required|regex:/.+@.+/", //必填 必须32位
                 'amount' => "required|numeric", //必填 必须32位
                 'payeeaccount' => "required|alpha_num",
                 
             ]);
-        $Guzzledb=Guzzledb::where('ZBID',$zbid)->firstOrfail();
-        $a=$Guzzledb->update(['body'=>trim($request->body)]);
+
+        $detail=Payout::findOrfail($request->id);
+
+        $a=$detail->update(['kemuname'=>trim($request->kemuname)]);
+       
         if ($a) {   
                     session()->flash('success', '更新成功');
-                    return redirect()->action('GuzzleController@edit',$request->id);
+                    return redirect()->action('GuzzleController@editkemu',$request->id);
                 }
     }
     
