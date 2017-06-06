@@ -34,7 +34,7 @@
 			@foreach ($res as $k=>$re)
 			<tr class='alert-info'>
 				
-				<td><a href={{ route('sarary',$re[0]->member_id)}}>{{$k}}</a></td>
+				<td><a href={{ route('geren',$re[0]->member_id)}}>{{$k}}</a></td>
 				{{-- <td>{{$re->account}}</td> --}}
 				@if ($resv->sum('tuixiu_gz'))<td>{{$re->sum('tuixiu_gz')}}</td>@endif
 				@if ($resv->sum('yishu_bz'))<td>{{$re->sum('yishu_bz')}}</td>@endif
