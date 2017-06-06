@@ -6,7 +6,11 @@
 				@if ($resv->sum('xiangzhen_bz'))<th>乡镇补贴</th>@endif	
 				@if ($resv->sum('nianzhong_jj'))<th>年终奖金</th>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<th>高温降温</th>@endif
-				@if ($resv->sum('jiangjin'))<th>奖金</th><th>备注</th>@endif
+				@if ($resv->sum('jiangjin'))<th>奖金</th>
+				@if (Route::currentRouteName()!='byear')
+				<th>备注</th>
+				@endif
+				@endif
 				@if ($resv->sum('bufa_gz'))<th>补发工资</th>@endif
 				@if ($resv->sum('gjj_dw'))<th>单位公积金</th>@endif
 				@if ($resv->sum('sb_dw'))<th>单位社保</th>@endif
@@ -45,12 +49,16 @@
 				@if ($resv->sum('nianzhong_jj'))<td>{{$re->sum('nianzhong_jj')}}</td>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<td>{{$re->sum('gaowen_jiangwen')}}</td>@endif
 				@if ($resv->sum('jiangjin'))<td>{{$re->sum('jiangjin')}}</td>
+				@if (Route::currentRouteName()!='byear')
 				<td>
+				
 				@foreach ($re->unique('jiangjin_beizhu') as $r)
 					{{ $r->jiangjin_beizhu }}
 				@endforeach
+				</td>
+				@endif
 
-				</td>@endif
+				@endif
 				@if ($resv->sum('bufa_gz'))<td>{{$re->sum('bufa_gz')}}</td>@endif
 				@if ($resv->sum('gjj_dw'))<td>{{$re->sum('gjj_dw')}}</td>@endif
 				@if ($resv->sum('sb_dw'))<td>{{$re->sum('sb_dw')}}</td>@endif
@@ -162,7 +170,11 @@
 				@if ($resv->sum('xiangzhen_bz'))<th>{{ $resv->sum('xiangzhen_bz') }}</th>@endif	
 				@if ($resv->sum('nianzhong_jj'))<th>{{ $resv->sum('nianzhong_jj') }}</th>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<th>{{ $resv->sum('gaowen_jiangwen') }}</th>@endif
-				@if ($resv->sum('jiangjin'))<th>{{ $resv->sum('jiangjin') }}</th><th>备注</th>@endif
+				@if ($resv->sum('jiangjin'))<th>{{ $resv->sum('jiangjin') }}</th>
+				@if (Route::currentRouteName()!='byear')
+				<th>备注</th>
+				@endif
+				@endif
 				@if ($resv->sum('bufa_gz'))<th>{{ $resv->sum('bufa_gz') }}</th>@endif
 				@if ($resv->sum('gjj_dw'))<th>{{ $resv->sum('gjj_dw') }}</th>@endif
 				@if ($resv->sum('sb_dw'))<th>{{ round($resv->sum('sb_dw'),2) }}</th>@endif
