@@ -1,7 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
     <div class="col-md-offset-0 col-md-12">
-      <a href="/preview" id="logo">拨款按钮</a>
+      <a href="/preview" id="logo">罗旭东</a>
       <nav>
         <ul class="nav navbar-nav navbar-right">
           @if (Auth::check())

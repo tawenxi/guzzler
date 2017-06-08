@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class SalaryListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
@@ -13,7 +14,11 @@ class SalaryListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
     public function getFile()
     {
-        return storage_path('excel/salary.xls');
+       
+         $file = $_GET['report'];
+         
+       
+        return storage_path("excel/$file.xls");
     }
 
     public function getFilters()

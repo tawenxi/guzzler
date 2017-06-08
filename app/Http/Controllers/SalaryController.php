@@ -33,7 +33,7 @@ class SalaryController extends Controller
 	}
 
 
-   public function bumen($date='201705',$jj=null)
+   public function bumen($date='201703',$jj=null)
     {
 
       // $dt=$request->date?$request->date:substr(str_replace('-','',\Carbon\Carbon::now()->toDateString()),0,-2);
@@ -43,6 +43,9 @@ class SalaryController extends Controller
 
 
        $resv=Salary::hasJJ($jj)->where('date','<=',\Carbon\Carbon::parse($dt.'27'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get();
+
+
+  
 
        
        $dates=Salary::groupBy('date')->get()->pluck('date');
@@ -119,6 +122,59 @@ class SalaryController extends Controller
        $dates = $dates->unique();
        $dates->values()->all();
          return view('salary.myear',compact('res','dates','resv'))->render();
+    
+
+  }
+
+     public function phb($year=2017,$jj=null)//1只显示工资，2只显示奖金
+    {
+
+       $res=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
+         ->Hasjj($jj)
+         ->get()
+         ->groupBy('name')->sortByDesc(function ($product, $key) {
+             return        
+            $product->sum('yishu_bz')+
+          $product->sum('tuixiu_gz')+
+          $product->sum('jb_gz1')+
+          $product->sum('jb_gz2')+
+          $product->sum('jinbutie')+
+          $product->sum('gongche_bz')+
+          $product->sum('xiangzhen_bz')+
+          $product->sum('bufa_gz')+
+          $product->sum('nianzhong_jj')+
+          $product->sum('gaowen_jiangwen')+
+          $product->sum('jiangjin')+
+          $product->sum('gjj_dw')+
+          $product->sum('sb_dw')-
+          (
+          $product->sum('gjj_gr')+
+          $product->sum('gjj_dw')+
+          $product->sum('sb_gr')+
+          $product->sum('sb_dw')+
+          $product->sum('zhiye_nj')+
+          $product->sum('daikou_gz')+
+          $product->sum('fanghong_zj')+
+          $product->sum('yiliao_bx')+
+          $product->sum('shiye_bx')+
+          $product->sum('shengyu_bx')+
+          $product->sum('gongshang_bx')+
+          $product->sum('yirijuan')+
+          $product->sum('other_daikou')+
+          $product->sum('tiaozheng_gjj')+
+          $product->sum('tiaozheng_sb')
+              );
+              
+
+          });;
+
+     //    dd($res->sum());
+
+       $resv=Salary::where('date','>=',\Carbon\Carbon::parse($year.'-01-01'))   ->where('date','<=',\Carbon\Carbon::parse($year.'-12-31'))
+            ->Hasjj($jj)
+            ->get();
+
+         return view('salary.phb',compact('res','resv'))->render();
     
 
   }

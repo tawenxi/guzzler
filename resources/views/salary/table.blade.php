@@ -7,7 +7,7 @@
 				@if ($resv->sum('nianzhong_jj'))<th>年终奖金</th>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<th>高温降温</th>@endif
 				@if ($resv->sum('jiangjin'))<th>奖金</th>
-				@if (Route::currentRouteName()!='byear')
+				@if (!(Route::currentRouteName()=='byear'||Route::currentRouteName()=='phb'))
 				<th>备注</th>
 				@endif
 				@endif
@@ -49,7 +49,7 @@
 				@if ($resv->sum('nianzhong_jj'))<td>{{$re->sum('nianzhong_jj')}}</td>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<td>{{$re->sum('gaowen_jiangwen')}}</td>@endif
 				@if ($resv->sum('jiangjin'))<td>{{$re->sum('jiangjin')}}</td>
-				@if (Route::currentRouteName()!='byear')
+				@if (!(Route::currentRouteName()=='byear'||Route::currentRouteName()=='phb'))
 				<td>
 				
 				@foreach ($re->unique('jiangjin_beizhu') as $r)
@@ -171,7 +171,7 @@
 				@if ($resv->sum('nianzhong_jj'))<th>{{ $resv->sum('nianzhong_jj') }}</th>@endif
 				@if ($resv->sum('gaowen_jiangwen'))<th>{{ $resv->sum('gaowen_jiangwen') }}</th>@endif
 				@if ($resv->sum('jiangjin'))<th>{{ $resv->sum('jiangjin') }}</th>
-				@if (Route::currentRouteName()!='byear')
+				@if (!(Route::currentRouteName()=='byear'||Route::currentRouteName()=='phb'))
 				<th>备注</th>
 				@endif
 				@endif
