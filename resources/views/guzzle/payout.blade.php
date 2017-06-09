@@ -2,18 +2,11 @@
 @section('content')
 <h1>枚江乡授权支付支出明细表</h1>
 @include('shared.errors')
-
 <article>
-	
 	<h2>
 	<table class="table table-bordered table-striped table-hover table-condensed">
 		<caption><center>{{ date("Y-m-d H:i:s") }}</center></caption>
-
 		{!! Form::open(['method' => 'POST', 'route' => 'payout', 'class' => 'form-horizontal']) !!}
-		
-		 
-
-
 		    <div class="form-group{{ $errors->has('date1') ? ' has-error' : '' }}">
 		        {!! Form::label('date', '开始日期(my参数可以控制page)') !!}
 		        {!! Form::date('date1', date('Y-m-01',time()), ['class' => 'form-control', 'required' => 'required']) !!}
@@ -28,21 +21,10 @@
 		        {!! Form::label('order', '排序（默认按时间排序，默认时间为本月）') !!}
 		        {!! Form::select('order', ['created_at'=>"时间",'kemuname'=>"科目",'amount'=>"金额"], ['id' => 'order', 'class' => 'form-control', 'required' => 'required', 'multiple']) !!}
 		        <small class="text-danger">{{ $errors->first('order') }}</small>
-		    </div>
-		
-		    
-		    
+		    </div>    
 		        {!! Form::submit("查询", ['class' => 'btn btn-block btn-success ']) !!}
-		   
-
-
-
-
-		
-		{!! Form::close() !!}
-
-
-
+		   	
+	        	{!! Form::close() !!}
 
 		<thead>
 			<tr class='success'>
@@ -52,10 +34,8 @@
 		<tbody class='alert-info'>
 				@foreach ($payoutdatas as $payoutdata)
 			<tr>
-				<td>
-				
-					{{substr($payoutdata->created_at, 0,10)}}
-				
+				<td>			
+					{{substr($payoutdata->created_at, 0,10)}}			
 				</td>
 
 				<td>
@@ -64,59 +44,25 @@
 				
 				</td>
 				<td>
-				
-					{{$payoutdata->payee}}
-				
-				</td>
-				<td>
-				
-					{{$payoutdata->amount}}
-				
-				</td>
-				<td>
-				
-					{{  substr($payoutdata->kemuname, 1+strpos($payoutdata->kemuname, "@"))}}
-				
-				</td>
-								<td>
-				
-					{{substr($payoutdata->zbid, -4)}}
-
-				
-				</td>
-				<td>
-				
-							<font style="font-size: 2px " >{{  substr($payoutdata->kemuname, 0,strpos($payoutdata->kemuname, "@"))}}&
-							{{ $payoutdata->zhaiyao }}&
-							{{ $payoutdata->amount }}&
-							1001&
-							001</font>
-							
-				
-				</td>
-								<td>
-				
-		<form action="{{ route('delete', $payoutdata->id) }}" method="post">
+					{{$payoutdata->payee}}</td>
+				<td>{{$payoutdata->amount}}</td>
+				<td>{{  substr($payoutdata->kemuname, 1+strpos($payoutdata->kemuname, "@"))}}</td>
+				<td>{{substr($payoutdata->zbid, -4)}}</td>
+				<td><font style="font-size: 2px " >{{  substr($payoutdata->kemuname, 0,strpos($payoutdata->kemuname, "@"))}}&
+				{{ $payoutdata->zhaiyao }}&
+				{{ $payoutdata->amount }}&
+				1001&001</font></td>
+				<td><form action="{{ route('delete', $payoutdata->id) }}" method="post">
         {{ csrf_field() }}
         {{ method_field('DELETE') }}
         <button type="submit" class="btn btn-sm btn-danger delete-btn">删除</button>
-      </form>
-
-				
-				</td>
+      </form></td>
 			</tr>	
 			@endforeach
 		</tbody>
 	{!! $payoutdatas->appends(['order' => $a,'my' => $my])->render() !!}
 
 	</table>
-
-
-
-
-
-
-
 			<hr>
 	
 	</h2>
