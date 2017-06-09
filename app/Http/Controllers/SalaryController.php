@@ -20,7 +20,7 @@ class SalaryController extends Controller
       $dt=$date;
       //dd($dt);
 
-       $res=Salary::hasJJ($jj)->where('date','<=',\Carbon\Carbon::parse($dt.'27'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get()->groupBy('name');
+       $res=Salary::hasJJ($jj)->where('date','<=',\Carbon\Carbon::parse($dt.'27'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get()->groupBy('member_id');
        $dates=Salary::groupBy('date')->get()->pluck('date');
 
             $resv=Salary::hasJJ($jj)->where('date','<=',\Carbon\Carbon::parse($dt.'27'))->where('date','>=',\Carbon\Carbon::parse($dt.'01'))->get();
@@ -166,7 +166,7 @@ class SalaryController extends Controller
               );
               
 
-          });;
+          });
 
      //    dd($res->sum());
 

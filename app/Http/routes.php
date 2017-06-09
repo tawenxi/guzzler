@@ -61,7 +61,7 @@ Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
  Route::get('/excel', 'TestController@excel');
   Route::get('/testdb', 'TestController@testdb');
     Route::get('/addsalary', 'TestController@salary');
-    Route::get('/salary/{date?}/{jj?}', 'SalaryController@index')->name('sarary');
+    Route::get('/salary/{date?}/{jj?}', 'SalaryController@index')->name('salary');
      Route::get('/addmember', 'TestController@member');
      Route::get('/bumen/{date?}/{jj?}', 'SalaryController@bumen')->name('bumen');
      Route::get('/geren/{id?}/{jj?}', 'SalaryController@geren')->name('geren');

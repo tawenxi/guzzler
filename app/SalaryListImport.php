@@ -15,9 +15,9 @@ class SalaryListImport extends \Maatwebsite\Excel\Files\ExcelFile {
     public function getFile()
     {
        
-         $file = $_GET['report'];
+         $file = $GLOBALS['exce'];
          
-       
+       // dd($file);
         return storage_path("excel/$file.xls");
     }
 

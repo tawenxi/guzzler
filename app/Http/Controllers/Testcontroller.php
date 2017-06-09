@@ -143,7 +143,7 @@ class TestController extends Controller
     'updated_at',
     'date'
 ))->get($ziduan);
-     //  dd($res);
+       dd($res);
       $res->map(function($v){
        
        // dd($v);

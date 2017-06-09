@@ -4,7 +4,7 @@
 
 
 
-<h1>枚江镇工资分月汇总({{ $resv[0]['date'] }})</h1>
+<h1>枚江镇工资封神榜({{ $resv[0]['date'] }})</h1>
 @include('shared.errors')
 
 <article>
