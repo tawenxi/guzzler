@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('geren');
 });
 Route::post('/store', 'GuzzleController@store')->name('store');
 Route::get('/guzzle', 'GuzzleController@index');
@@ -71,3 +71,16 @@ Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
     
     /*=====  End of excel  ======*/
 
+// 认证路由...
+Route::get('auth/login', 'Auth\AuthController@getLogin')->name('loginpage');
+Route::post('auth/login', 'Auth\AuthController@postLogin')->name('login');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+// 注册路由...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister')->name('users.store');
+Route::get('profile','UserController@profile');
+Route::delete("logout", "UserController@logout")->name('logout');
+
+Route::get('profile','UserController@profile');
+Route::get('edit','UserController@edit')->name('edit');
+Route::post('update','UserController@update')->name('update');

@@ -39,7 +39,28 @@
 			@foreach ($ck as $k=>$re)
 			<tr class='alert-info'>
 				
-				<td><a href={{ route('geren',$re[0]->member_id)}}>{{$re[0]->name}}</a></td>
+				<td><a href={{ route('geren',$re[0]->member_id)}}>
+
+@if (Route::currentRouteName()=='salary')
+{{$re[0]->name}}
+@elseif(Route::currentRouteName()=='byear')
+{{$re[0]->bumen}}
+@elseif(Route::currentRouteName()=='bumen')
+{{$re[0]->bumen}}
+@elseif(Route::currentRouteName()=='myear')
+{{$re[0]->date}}
+@elseif(Route::currentRouteName()=='geren')
+{{$re[0]->date}}
+@elseif(Route::currentRouteName()=='phb')
+{{$re[0]->name}}
+@endif
+
+
+
+				</a></td>
+
+
+
 				{{-- <td>{{$re->account}}</td> --}}
 				@if ($resv->sum('tuixiu_gz'))<td>{{$re->sum('tuixiu_gz')}}</td>@endif
 				@if ($resv->sum('yishu_bz'))<td>{{$re->sum('yishu_bz')}}</td>@endif

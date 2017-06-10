@@ -10,6 +10,12 @@ use App\Salary;
 
 class SalaryController extends Controller
 {
+      public function __construct(){
+        $this->middleware('auth', [            
+           'only' => ['geren']
+            ]);
+    }
+
         public function index($date='201705',$jj=null)
     {
        $dt=$date;
@@ -52,6 +58,9 @@ class SalaryController extends Controller
 
   public function geren($id=39,$jj=null)
     {
+       if (\Auth::check()) {
+          $id=\Auth::user()->id;
+        } 
        $res=Salary::hasJJ($jj)
            ->where('member_id',$id)
            ->Hasjj($jj)
