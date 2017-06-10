@@ -1,14 +1,14 @@
 <div class="col-md-12">
   <footer class="footer">
     <small class="slogon">
-      <img class="brand-icon" src="https://dn-phphub.qbox.me/uploads/images/201612/12/1/iq7WQc2iuW.png?imageView2/1/w/34/h/34">
+      <img class="brand-icon" src="/image/chuan.png">
       <a href="">
-        优帆远扬 | 创造不息，交付不止
+        大美枚江 | 郊游圣地 
       </a>
     </small>
     <nav>
       <ul>
-        <li><a href="/dpt">大平台</a></li>
+        <li><a href="">枚江财政所</a></li>
       </ul>
     </nav>
   </footer>

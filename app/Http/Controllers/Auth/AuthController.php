@@ -29,6 +29,7 @@ class AuthController extends Controller
      * @return void
      */
     protected $redirectPath = '/geren/';
+    protected $username = 'name';  // 数据库中字段的名称
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);

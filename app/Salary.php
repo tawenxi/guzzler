@@ -31,7 +31,7 @@ class Salary extends Model
 	return $this->belongsTo('App\Member','member_id','id');
 	}
 
-    public function setNameAtAttribute($name){
+    public function setNameAttribute($name){
         $name=str_replace(" ", '', $name);
          $this->attributes['name'] = trim($name);
     }

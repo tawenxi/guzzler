@@ -15,9 +15,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
       public function __construct(){
-        $this->middleware('auth', [            
-           'only' => ['geren']
-            ]);
+        $this->middleware('auth');
     }
 
     public function profile(Request $request)
@@ -35,6 +33,7 @@ class UserController extends Controller
         public function edit()
     {
         $user=\Auth::user();
+         $this->authorize('update', $user);
         return view('auth.edit', compact('user'));
     }
  public function update(Request $request)

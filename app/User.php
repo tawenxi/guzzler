@@ -36,4 +36,8 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+    public function setNameAttribute($name){
+    $name=str_replace(" ", '', $name);
+     $this->attributes['name'] = trim($name);
+}
 }

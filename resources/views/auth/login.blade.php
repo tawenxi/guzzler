@@ -1,22 +1,22 @@
 @extends('layouts.default')
-@section('title',"a")
+@section('title',"")
 @section('content')
 
 <div class="col-md-offset-2 col-md-8">
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h5 class="panel-title">登陆</h5>
+		<h3 class="panel-title" ><center><b><h3>登 陆	</h3></b></center></h3>
 	</div>
 	<div class="panel-body">
 		{!! Form::open(['method' => 'POST', 'route' => 'login']) !!}
 		
-		    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-		        {!! Form::label('email', 'Email address') !!}
-		        {!! Form::email('email', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'eg: foo@bar.com']) !!}
-		        <small class="text-danger">{{ $errors->first('email') }}</small>
-		    </div>
+<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+    {!! Form::label('name', '姓名') !!}
+    {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+    <small class="text-danger">{{ $errors->first('name') }}</small>
+</div>
 		    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-		        {!! Form::label('password', 'Password') !!}
+		        {!! Form::label('password', '密码') !!}
 		        {!! Form::password('password', ['class' => 'form-control', 'required' => 'required']) !!}
 		        <small class="text-danger">{{ $errors->first('password') }}</small>
 		    </div>
@@ -30,8 +30,8 @@
 		    </div>
 		
 		    <div class="btn-group btn-block">
-		        {!! Form::reset("Reset", ['class' => 'btn btn-warning']) !!}
-		        {!! Form::submit("Add", ['class' => 'btn btn-success']) !!}
+		        
+		        {!! Form::submit("登陆", ['class' => 'btn btn-success']) !!}
 		    </div>
 		
 		{!! Form::close() !!}

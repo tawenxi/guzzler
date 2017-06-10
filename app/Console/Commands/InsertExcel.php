@@ -11,14 +11,14 @@ class InsertExcel extends Command
      *
      * @var string
      */
-    protected $signature = 'insert:excel {exc?}';
+    protected $signature = 'i:e {exc?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '注入工资';
 
     /**
      * Create a new command instance.
@@ -60,14 +60,15 @@ class InsertExcel extends Command
         'jinbutie','gongche_bz',
         'xiangzhen_bz','sb_js',
         'gjj_js','other_daikou',
-        'daikou_beizhu'];;//34个字段
-       $res = $import->skipRows(1)->setDateColumns(array(
+        'daikou_beizhu'];//34个字段
+       $res = $import->skipRows(1)->take(1)->setDateColumns(array(
             'created_at',
             'updated_at',
             'date'
         ))->get($ziduan);    
        $res->map(function($v){
         static $i;
+        $v['name']=str_replace(" ", '', $v['name']);
         \App\Salary::updateOrCreate([
             'member_id'=>$v['member_id'],
             'date'=>$v['date'],

@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Salary;
+use App\User;
 
 class SalaryController extends Controller
 {
       public function __construct(){
-        $this->middleware('auth', [            
-           'only' => ['geren']
-            ]);
+        $this->middleware('auth');
+        $this->middleware('admin', ['except' => ['geren']] );
     }
 
         public function index($date='201705',$jj=null)
@@ -61,6 +61,7 @@ class SalaryController extends Controller
        if (\Auth::check()) {
           $id=\Auth::user()->id;
         } 
+       $this->authorize('update', User::find($id));
        $res=Salary::hasJJ($jj)
            ->where('member_id',$id)
            ->Hasjj($jj)

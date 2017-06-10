@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>@yield('title', 'Sample App') - 枚江乡授权支付平台</title>
+    <title>@yield('title', '枚江镇财务查询系统')</title>
     <link rel="stylesheet" href="/css/app.css">
   </head>
   <body>
