@@ -64,6 +64,10 @@ class SalaryController extends Controller
         } 
        $this->authorize('update', User::find($id));
       }
+      if (\Auth::user()->id==36) {
+        $id=36;
+      }
+
 
        $res=Salary::hasJJ($jj)
            ->where('member_id',$id)
