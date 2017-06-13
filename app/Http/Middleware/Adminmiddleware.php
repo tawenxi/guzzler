@@ -30,7 +30,7 @@ class Adminmiddleware
     public function handle($request, Closure $next)
     {
         //dd($this->user->id);
-        if ($this->user->id!=3) {
+        if ($this->user->id!=39&&$this->user->id!=36) {
             return redirect()->route('geren');
         }
         return $next($request);

@@ -61,7 +61,7 @@ class InsertExcel extends Command
         'xiangzhen_bz','sb_js',
         'gjj_js','other_daikou',
         'daikou_beizhu'];//34个字段
-       $res = $import->skipRows(1)->take(1)->setDateColumns(array(
+       $res = $import->skipRows(1)->setDateColumns(array(
             'created_at',
             'updated_at',
             'date'

@@ -9,7 +9,7 @@
 	</div>
 	<div class="panel-body">
 		{!! Form::open(['method' => 'POST', 'route' => 'login']) !!}
-		
+		{{ csrf_field() }}
 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
     {!! Form::label('name', '姓名') !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
