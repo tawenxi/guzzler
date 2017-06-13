@@ -56,16 +56,13 @@ class SalaryController extends Controller
   }
 
 
-  public function geren($id=39,$jj=null)
+  public function geren($id=36,$jj=null)
     {
       if (\Auth::user()->id!=39&&\Auth::user()->id!=36) {
                if (\Auth::check()) {
           $id=\Auth::user()->id;
         } 
        $this->authorize('update', User::find($id));
-      }
-      if (\Auth::user()->id==36) {
-        $id=36;
       }
 
 
