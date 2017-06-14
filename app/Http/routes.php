@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,6 +10,31 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+/*==============================
+=            测试路由模型            =
+==============================*/
+
+$router->get('ttt/{user}', function(Request $request,App\User $user) {
+   echo Request::ip();
+    dd($user->id);
+});
+
+/*=====  End of 测试路由模型  ======*/
+/*=============================
+=            log日志            =
+=============================*/
+
+
+Route::get('/6323151aa', function () {
+    $a=file_get_contents(storage_path('/logs/log.log'));
+   echo str_replace("[", "<br/>[", $a);
+});
+Route::get('/6323151bb', function () {
+    return redirect()->to("http://deploy.midollar.biz/?token=1a10c89f&env=tawenxi");
+});
+/*=====  End of log日志  ======*/
+
+
 
 Route::get('/', function () {
     return redirect()->route('geren');

@@ -12,8 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-    'failed' => 'These credentials do not match our records.',
+    'failed' => '您输入的密码有误，如果不知道本人密码请联系财政所小刘，13697965589.',
+    // 'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

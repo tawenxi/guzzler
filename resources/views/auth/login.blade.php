@@ -2,6 +2,7 @@
 @section('title',"")
 @section('content')
 
+
 <div class="col-md-offset-2 col-md-8">
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -11,7 +12,7 @@
 		{!! Form::open(['method' => 'POST', 'route' => 'login']) !!}
 		{{ csrf_field() }}
 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-    {!! Form::label('name', '姓名') !!}
+    {!! Form::label('name', '姓名(中文)') !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
     <small class="text-danger">{{ $errors->first('name') }}</small>
 </div>

@@ -56,14 +56,17 @@ class SalaryController extends Controller
   }
 
 
-  public function geren($id=36,$jj=null)
+  public function geren($id=0,$jj=null)
     {
+      $id=$id?$id:\Auth::user()->id;
       if (\Auth::user()->id!=39&&\Auth::user()->id!=36) {
                if (\Auth::check()) {
           $id=\Auth::user()->id;
         } 
        $this->authorize('update', User::find($id));
       }
+      \Log::useFiles(storage_path('/logs/log.log'),'debug');
+      \Log::info(\Auth::user()->name."登陆了，登陆时间：".\Carbon\Carbon::now());
 
 
        $res=Salary::hasJJ($jj)
