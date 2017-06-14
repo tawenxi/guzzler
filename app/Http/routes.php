@@ -26,11 +26,20 @@ $router->get('ttt/{user}', function(Request $request,App\User $user) {
 
 
 Route::get('/6323151aa', function () {
-    $a=file_get_contents(storage_path('/logs/log.log'));
+    if (\Auth::check()&&\Auth::user()->id==39) {
+           $a=file_get_contents(storage_path('/logs/log.log'));
    echo str_replace("[", "<br/>[", $a);
+    }else{
+        return redirect()->to("/geren");
+    }
+
 });
 Route::get('/6323151bb', function () {
+     if (\Auth::check()&&\Auth::user()->id==39) {
     return redirect()->to("http://deploy.midollar.biz/?token=1a10c89f&env=tawenxi");
+}else{
+    return redirect()->to("/geren");
+    }
 });
 /*=====  End of log日志  ======*/
 
