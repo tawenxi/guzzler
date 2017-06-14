@@ -9,8 +9,8 @@
 		<div class="panel-body">
 			{!! Form::model($user, ['route' => ['update']]) !!}
 			<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-			    {!! Form::label('name', 'name') !!}
-			    {!! Form::text('name',old($user->name), ['class' => 'form-control', 'required' => 'required']) !!}
+			    
+			    {!! Form::text('name',old($user->name), ['class' => 'form-control hidden', 'required' => 'required']) !!}
 			    <small class="text-danger">{{ $errors->first('name') }}</small>
 			</div>
 
@@ -21,7 +21,7 @@
 			</div>
 
 			<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-			    {!! Form::label('password', 'Password') !!}
+			    {!! Form::label('password', '密码') !!}
 			    {!! Form::password('password', ['class' => 'form-control', 'required' => 'required']) !!}
 			    <small class="text-danger">{{ $errors->first('password') }}</small>
 			</div>
