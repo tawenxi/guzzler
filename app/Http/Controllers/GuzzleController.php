@@ -328,14 +328,29 @@ class GuzzleController extends Controller
 
     public function postsql(\Illuminate\Http\Request $request)
     {
+        $Zy = $request->zy?"Zy='{$request->zy}'":"";
+        $Skrkhyh = $request->banker?"Skrkhyh='{$request->banker}',":"";
+        $Skzh = $request->account?"Skzh='{$request->account}',":"";
+        $Skr = $request->payee?"Skr='{$request->payee}',":"";
+        $je = $request->amount?"je={$request->amount}":"";
+        $oldje = $request->oldamount?"je={$request->oldamount}":"";
+
+        $request['body']=
+<<<EOF
+<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin  declare   ierrCount smallint;   szDjBh Varchar(20);   iRowCount smallint ;   iFlen int ;  begin   declare     iPDh int ;     szRBH  char(6) ;     TempExp Exception ;   begin  select '{$request->djbh}' into szDjBh from dual ;  select count(*) into iRowCount from zb_zfpzml_y  where gsdm='001'    and kjnd=to_char(sysdate,'yyyy')    and pdqj=to_char(sysdate,'yyyymm')  and  pdh='{$request->pid}' ; if iRowCount&gt;0 then  update ZB_ZFPZNR_Y set {$je}   where gsdm='001'    and kjnd=to_char(sysdate,'yyyy')    and {$oldje} and  pdqj=to_char(sysdate,'yyyymm')  and  pdh='{$request->pid}' ;  update zb_zfpzml_y set {$Skr} {$Skzh} {$Skrkhyh} {$Zy} where Gsdm='001'    and KJND=to_char(sysdate,'yyyy') and  Zy='{$request->zy}'   and  PDQJ=to_char(sysdate,'yyyymm')    and PDH='{$request->pid}' ; commit;     select 100 into ierrCount from dual ;  else rollback; end if ;   Exception     when others then       RollBack;       select 0 into ierrCount from dual ;   end ;   Open :pRecCur for     select ierrCount RES,szDJBH DJBH from dual;  end; end; </DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>
+EOF;
 
 
           $this->validate($request, 
             [
-                'body' => "required|regex:/^((?!000931).)*$/is|regex:/^((?!22708).)*$/is", //必填 必须32位
+                'zy' => "required",
+                'amount' => "required",
+                'oldamount' => "required",
             ],[
 
-            'body.regex' => '数据源格式不正确,请检查Fillder是否有误或者支付类型有变',]);
+            'zy.required' => '摘要必填',
+            'amount.required' => '金额必填',
+            'oldamount.required' => '原金额必填']);
         
 
 
@@ -344,6 +359,8 @@ class GuzzleController extends Controller
         $sql= iconv('UTF-8','GB2312',$sql);
         $post=new Guzzle();
         $info = $post->makerequest($sql);
+        echo $sql;
+        echo "<br\><br\><br\><br\>";
         dd($info);
     }
 

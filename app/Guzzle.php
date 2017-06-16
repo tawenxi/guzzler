@@ -17,14 +17,52 @@ class Guzzle extends Model
 	public $payee=[]; //需要替换的银行信息
 	public $data;  //用来转化utf->GBK
 	public $balancebody;//查询余额的dp
+	private $amountData;//[金额数据]
+	private $rizhiData;//[日志数据]
 
-	
-	/**
-	 * summary
-	 *
-	 * @return void
-	 * @author 
-	 */
+
+	private function setAmountData($amount)
+	{
+		$pattern='/\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,})?/';
+		preg_match($pattern, $amount,$res);
+		if ($res[0]===$amount) {
+			$this->amountData = $amount;
+		}else{
+			dd("[amount]数据异常");
+		}
+		
+	}
+	private function getAmountData()
+	{
+		if (empty($this->amountData)) {
+			dd("[amount]数据异常");
+		}else{
+			return $this->amountData;
+		}
+	}
+
+
+		private function setRizhiData($rizhi)
+	{
+		$pattern="/\[001,.+\]/";
+		preg_match($pattern, $rizhi,$res);
+		if ($res[0]===$rizhi) {
+			$this->rizhiData = $rizhi;
+		}else{
+			dd("[rizhi]数据异常");
+		}
+		
+	}
+	private function getRizhiData()
+	{
+		if (empty($this->rizhiData)) {
+			dd("[rizhi]数据异常");
+		}else{
+			return $this->rizhiData;
+		}
+	}
+
+
 	
 	public function checkreplace($data1,$data2)
 	{
@@ -192,14 +230,11 @@ class Guzzle extends Model
 		public function amountreplace($zbamount)
 	{
 		 //$this->insertbody=$this->jiema($this->insertbody);//替换之前进行解码
-
 		$pattern3='/\d{1,}(.[0-9]{1,})?,\s+\d{1,}(.[0-9]{1,})?,\s+\d{1,}(.[0-9]{1,})?,\s+\d{1,}(.[0-9]{1,})?/';
 		 $copydata=$this->insertbody;
-		 $this->insertbody=preg_replace($pattern3,$zbamount,$this->insertbody);
-
-		 $this->checkreplace($copydata,$this->insertbody);
-		
-		//$this->insertbody = iconv('UTF-8', 'GB2312', $this->insertbody);
+		 $this->setAmountData($zbamount);
+		 	$this->insertbody=preg_replace($pattern3,$this->getAmountData(),$this->insertbody);
+		 	$this->checkreplace($copydata,$this->insertbody);
 	}
 	public function accountreplace($payee)
 	{	
@@ -222,9 +257,9 @@ class Guzzle extends Model
 	}
 	public function timereplace($data)
 	{
-		$pattern="/\'201([0-9]{5})\'/";
-		$pattern1="/\'201([0-9]{3})\'/"; 
-		$pattern2="/\'201([0-9]{1})\'/"; 
+		$pattern="/\'\s*20[123]([0-9]{5})\s*\'/";
+		$pattern1="/\'\s*20[123]([0-9]{3})\s*\'/"; 
+		$pattern2="/\'\s*20[123]([0-9]{1})\s*\'/"; 
 
 		$data=preg_replace($pattern,"to_char(sysdate,'yyyymmdd')",$data);
 		$data=preg_replace($pattern1,"to_char(sysdate,'yyyymm')",$data);
@@ -413,7 +448,7 @@ class Guzzle extends Model
          $data=$this->jiema($data);
 
 
-		$timepattern="/\'201([0-9]{5})\'/"; 
+		$timepattern="/\'\s*20[123]([0-9]{5})\s*\'/"; 
 		$copydata=$data;
 		$data=preg_replace($timepattern,"to_char(sysdate,'yyyymmdd')",$data);
 		
@@ -427,7 +462,8 @@ class Guzzle extends Model
          $data2="[001,$Y,$Ym,$pid]";
 
         $copydata=$data;
-        $data=preg_replace($pattern,$data2,$data);
+        $this->setRizhiData($data2);
+        $data=preg_replace($pattern,$this->getRizhiData(),$data);
         $this->checkreplace($copydata,$data);
         //dd($data);
         $ifsuccess=$this->makerequest($data);
