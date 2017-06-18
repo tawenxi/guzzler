@@ -10,16 +10,7 @@ use Illuminate\Http\Request;
 | and give it the controller to call when that URI is requested.
 |
 */
-/*==============================
-=            测试路由模型            =
-==============================*/
 
-$router->get('ttt/{user}', function(Request $request,App\User $user) {
-   echo Request::ip();
-    dd($user->id);
-});
-
-/*=====  End of 测试路由模型  ======*/
 /*=============================
 =            log日志            =
 =============================*/
@@ -50,51 +41,24 @@ Route::get('/', function () {
 });
 Route::post('/store', 'GuzzleController@store')->name('store');
 Route::get('/guzzle', 'GuzzleController@index');
-Route::get('/find', 'GuzzleController@find');
+Route::get('/find', 'GuzzleController@find');//显示可用授权指标
 Route::get('/reflash', 'GuzzleController@reflash');
-Route::get('/account', 'AccountController@index');
-Route::get('/test', 'TestController@index');
+//Route::get('/account', 'AccountController@index');
 Route::get('/dpt', 'GuzzleController@dpt');
 Route::get('/hyy', 'GuzzleController@hyy');
-Route::get('/benji', 'GuzzleController@benji');
-
-
 Route::get('/edit/{id}', 'GuzzleController@edit'); 
 Route::get('/preview', 'GuzzleController@preview'); 	
 Route::any('/payout', 'GuzzleController@payoutlist')->name('payout'); 
 Route::get('/{id}/show', 'GuzzleController@show'); 
-
-Route::DELETE('/{id}/delete', 'GuzzleController@destroy')->name('delete'); 
-
+Route::DELETE('/{id}/delete', 'GuzzleController@destroy')->name('delete');
 Route::get('/{id}/edit', 'GuzzleController@editkemu')->name('editkemu');
 Route::post('/save', 'GuzzleController@savekemu')->name('save');
 Route::get('/getsql', 'GuzzleController@getsql')->name('getsql');
 Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
 
-    /*==============================
-    =            测试依赖注入            =
-    ==============================*/
-    
-    Route::get('/testioc', 'TestController@testioc');
-    //Route::get('/testioc', 'TestController@show');
-    
-    /*=====  End of 测试依赖注入  ======*/
-    /*============================
-    =            diff            =
-    ============================*/
- Route::get('/diff', 'TestController@diff');
-    
-    
-    /*=====  End of diff  ======*/
-    
-
-
     /*=============================
     =            excel            =
     =============================*/
-    Route::get('/excel', 'TestController@excel');
-    Route::get('/testdb', 'TestController@testdb');
-    Route::get('/addsalary', 'TestController@salary');
     Route::get('/salary/{date?}/{jj?}', 'SalaryController@index')->name('salary');
     Route::get('/addmember', 'TestController@member');
     Route::get('/bumen/{date?}/{jj?}', 'SalaryController@bumen')->name('bumen');
@@ -112,10 +76,30 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 // 注册路由...不开放注册
 // Route::get('auth/register', 'Auth\AuthController@getRegister');
 // Route::post('auth/register', 'Auth\AuthController@postRegister')->name('users.store');
-
-Route::get('profile','UserController@profile');
 Route::delete("logout", "UserController@logout")->name('logout');
-
-Route::get('profile','UserController@profile');
 Route::get('edit','UserController@edit')->name('edit');
 Route::post('update','UserController@update')->name('update');
+Route::get('profile','UserController@profile');
+
+
+
+
+//======================
+/*==============================
+=            测试路由模型            =
+==============================*/
+
+$router->get('ttt/{user}', function(Request $request,App\User $user) {
+   echo Request::ip();
+    dd($user->id);
+});
+
+/*=====  End of 测试路由模型  ======*/
+
+    /*============================
+    =            diff            =
+    ============================*/
+ Route::get('/diff', 'TestController@diff');
+    
+    
+    /*=====  End of diff  ======*/

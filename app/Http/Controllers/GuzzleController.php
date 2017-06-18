@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 //use Illuminate\Http\Request;
 use GuzzleHttp\Psr7\Request;
 use App\Guzzle;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
@@ -17,78 +16,57 @@ use App\Acc\Acc;
 
 class GuzzleController extends Controller
 {
-
-
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('admin');
         $this->middleware('sudo');
     }
     /**
-     * Display a listing of the resource.
+     * 更新并显示最新的授权指标数据.
      *
-     * @return \Illuminate\Http\Response
+     * 
      */
      public function dpt(\App\Guzzle $hello)  //带了更新功能
     {
         //$hello=new Guzzle();
         $info = $hello->updatedb();
-        $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")->orderBy("KYJHJE","desc")->get();
+        $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")
+                ->orderBy("KYJHJE","desc")
+                ->get();
         return view('guzzle.index',compact('guzzledbs'));
     }
+
+    /**
+     * 显示最新的授权指标数据(不更新).
+     *
+     * 
+     */
     public function hyy()
     {
-        $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")->orderBy("KYJHJE","desc")->get();
+        $guzzledbs = Guzzledb::orderBy('ZJXZMC',"Asc")
+                ->orderBy("KYJHJE","desc")
+                ->get();
         return view('guzzle.index',compact('guzzledbs'));
     }
     /**
-     * 预览
+     * 数据验证，预览
      *
-     * @return void
-     * @author 
+     * 
+     * 
      */
     
     public function preview(\App\UserListImport $import)
     {
-        
         header("Content-Type: text/html;charset=utf-8");
-         $searchobject=\App::make('acc');//初始化
-        $arr=$import->each(function($item) use ($searchobject){
-
-            $item['kemuname']=stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
+        $searchobject = \App::make('acc');//初始化
+        $arr = $import->each(function($item) use ($searchobject){
+        $item['kemuname'] = stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
         })->toArray();
 
-
-
-        // $arr = file(dirname(__FILE__)."//payee.txt");
-        // $searchobject=\App::make('acc');//初始化
-        // array_walk($arr, function(&$item1, $key) use ($searchobject) {
-        // $item1 = preg_split('/[\s,]+/', $item1);
-        // $item1['payee']=$item1['0'];
-        // $item1['payeeaccount']=$item1['1'];
-        // $item1['payeebanker']=$item1['2'];
-        // $item1['amount']=$item1['3'];
-        // $item1['zhaiyao']=$item1['4'];
-        // $item1['zbid']=$item1['5'];
-        // $item1['kemu']=$item1['6'];
-        // //进行科目判断
-        // $item1['kemuname']=stristr($item1['kemu'], "@")?$item1['kemu']:$searchobject->findac($item1['kemu']);
-        // array_splice($item1, 0, 6); 
-        // unset($item1[0]);
-        // //$item1 = array_values($item1);//重建索引
-        //     });
-
-
-     
-
-        //dd($arr);
-
-        //--------传入二维数组进行批输入------------
         foreach ($arr as $key => $data) 
         {
-            if (count($arr[$key]['kemuname'])==1&&is_array($arr[$key]['kemuname'])) {
-                $arr[$key]['kemuname']=(string)(reset($arr[$key]['kemuname']));
-                
+            if (count($arr[$key]['kemuname']) == 1&&is_array($arr[$key]['kemuname'])) {
+                $arr[$key]['kemuname']=(string)(reset($arr[$key]['kemuname']));          
             }
             $Validator=\Validator::make($arr[$key], [
                 "payeeaccount"=>"numeric",
@@ -103,31 +81,26 @@ class GuzzleController extends Controller
             ]);
             if ($Validator->fails()) {
             return \Redirect::to('/hyy')->withErrors($Validator);
-            dd("cuowu");
             }
-
-
-
-            
- 
-           
-
         }
-
-        
-
         $collection = collect($arr);
         return view('guzzle.preview', compact('collection'));   
     }
+
+    /**
+     * 进行数据验证并且制单操作
+     *
+     * 
+     * 
+     */
     public function index(\App\UserListImport $import)
     {	
-         header("Content-Type: text/html;charset=utf-8");
-         $searchobject=\App::make('acc');//初始化
-        $arr=$import->each(function($item) use ($searchobject){
-        $item['kemuname']=stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
+        header("Content-Type: text/html;charset=utf-8");
+        $searchobject=\App::make('acc');//初始化
+        $arr = $import->each(function($item) use ($searchobject){
+        $item['kemuname'] = stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
         })->toArray();
 
-        //--------传入二维数组进行批输入------------
         foreach ($arr as $key => $data) 
         {
             $Validator=\Validator::make($data, [
@@ -142,102 +115,83 @@ class GuzzleController extends Controller
                 "payeebanker"=>"银行账号"
             ]);
             if ($Validator->fails()) {
-            return \Redirect::to('/hyy')->withErrors($Validator);
-            dd("cuowu");
+                return \Redirect::to('/hyy')->withErrors($Validator);
+                dd("cuowu");
             }
-            
- 
-           
-
         }
-            
 
         foreach ($arr as $key => $value) 
         {
-            if (count($value)!=8) {
+            if (count($value) != 8) {
                 dd($value);
                 session()->flash('warning', '输入字段数量不为8');
                 return redirect()->action('GuzzleController@hyy');
             }
           
-            if (count($arr[$key]['kemuname'])==1&&is_array($arr[$key]['kemuname'])) {
-                $arr[$key]['kemuname']=(string)(reset($arr[$key]['kemuname']));
-                
-            }//这里使用了reset函数
-            //dd($value["kemuname"]);
-            
+            if (count($arr[$key]['kemuname']) == 1&&is_array($arr[$key]['kemuname'])) {
+                $arr[$key]['kemuname']=(string)(reset($arr[$key]['kemuname']));             
+            }
+            //这里使用了reset函数            
             if (is_array($arr[$key]["kemuname"])) {
-                
                 session()->flash('info', '请选择确认会计科目并包含@，或者修改关键字');
                 return redirect()->action('GuzzleController@hyy');
-
             }
-
         }
 
-
-        $successi=0;
+        $successi = 0;
 		foreach ($arr as $key => $value) 
 		{
-			$guzz=new Guzzle($value);//传入一个一位数组（账户信息）
+			$guzz = new Guzzle($value);//传入一个一位数组（账户信息）
             if (stristr($arr[$key]['kemu'], "#")) {
                 session()->flash('info',  "第".(1+$successi).'条数据做账成功但未授权支付');
-            }else{
-
-               // dd("拨款成功");//开关
-                
+            } else {
+               // dd("拨款成功");//开关             
                 $guzz->add_post();
             }
-			
-
             if (stristr($arr[$key]['kemu'], "***")) {
                 session()->flash('info',  "第".(1+$successi).'条数据完成重录，没做账保存');
-            }else{
-                $res=$guzz->savesql($value);
-            }
-
-            
+            } else {
+                $res = $guzz->savesql($value);
+            }           
             $successi++;
 		}
-
-        //=======================
         session()->flash('success',  $successi.'条数据拨款成功');
         return redirect()->action('GuzzleController@hyy');		
     }
-	
 
-    
-    public function find()
+	/**
+     * 查询可用指标
+     *
+     * 
+     * 
+     */
+    public function find(Guzzle $guzz)
     {
-                    //-------查询可用指标----------------
-        $guzz=new Guzzle();
-        $kjhdata=$guzz->find_post();
-        $kjhdata=(string)$kjhdata;
-        $kjhdata=$guzz->makekjharray($kjhdata);
+        $kjhdata = $guzz->find_post();
+        $kjhdata = (string)$kjhdata;
+        $kjhdata = $guzz->makekjharray($kjhdata);
         dump($kjhdata);            
     }
-    public function reflash()
-    {
-        $hello=new Guzzle();
-        $info = $hello->updatedb();
-        session()->flash('success', '更新数据库成功');
-        return redirect()->action('GuzzleController@dpt');
-    }
 
-    
+     /**
+     * 保存数据源数据
+     *
+     * 
+     * 
+     */
     public function store(\Illuminate\Http\Request $request)
     {
        // dd($request);
-        $zbid=$request->zbid;
-        $zbidmowei=substr($zbid, -4);
+        $zbid = $request->zbid;
+        $zbidmowei = substr($zbid, -4);
         $this->validate($request, 
             [
                 'body' => "required|regex:/<?xml.+to_char%28iPDh%2B1%29%2C%270%27%2C%20%20zfpzdjbh.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
             ],[
 
             'body.regex' => '数据源格式不正确,请检查Fillder是否有误或者支付类型有变',]);
-        $Guzzledb=Guzzledb::where('ZBID',$zbid)->firstOrfail();
-        $a=$Guzzledb->update(['body'=>trim($request->body)]);
+        $Guzzledb = Guzzledb::where('ZBID',$zbid)->firstOrfail();
+        $a = $Guzzledb->update(['body'=>trim($request->body)]);
         if ($a) {   
                     session()->flash('success', '更新成功');
                     return redirect()->action('GuzzleController@edit',$request->id);
@@ -245,25 +199,15 @@ class GuzzleController extends Controller
     }
 
     /**
-     * summary
+     * 查询授权支付历史记录
      *
-     * @return void
-     * @author 
+     * 
+     * 
      */
-    
-    public function benji()
-    {
-        $hello=new Guzzle();
-        $info = $hello->updatedb();
-        $guzzledbs=Guzzledb::orderBy("KYJHJE","desc")->get();        
-       return view('guzzle.index',compact('guzzledbs'));
-    }
-
-    
     public function payoutlist(\Illuminate\Http\Request $request)
     {   //$a='created_at';
-        $a=is_null($request->order)?"created_at":$request->order;
-        $my=is_null($request->my)?"50":$request->my;
+        $a = is_null($request->order)?"created_at":$request->order;
+        $my = is_null($request->my)?"50":$request->my;
        // dd($a);
        
         $date1 = \Input::has('date1')?\Input::get('date1'):date("Y-m-01",time());
@@ -272,24 +216,43 @@ class GuzzleController extends Controller
         return view('guzzle.payout',compact('payoutdatas','a','my'));
     }
 
-
+    /**
+     * 根据ZBID查询可用指标
+     *
+     * 
+     * 
+     */
     public function show($id)
     {
-       $payoutdatas=Payout::where('zbid',$id)->orderBy("created_at",'desc')->paginate(10);
+       $payoutdatas = Payout::where('zbid',$id)
+           ->orderBy("created_at",'desc')
+           ->paginate(10);
         return view('guzzle.show',compact('payoutdatas'));
     }
 
+    /**
+     * 编辑支付科目
+     *
+     * 
+     * 
+     */
     public function editkemu($id)
     {
-        $detail=Payout::find($id);
+        $detail = Payout::find($id);
         
         return view('guzzle.editkemu',compact('detail'));
         
     }
+
+    /**
+     * 保存编辑的支付科目
+     *
+     * 
+     * 
+     */
         public function savekemu(\Illuminate\Http\Request $request)
     {
-
-               $this->validate($request, 
+         $this->validate($request, 
             [
                 'kemuname' => "required|regex:/.+@.+/", //必填 必须32位
                 'amount' => "required|numeric", //必填 必须32位
@@ -297,35 +260,47 @@ class GuzzleController extends Controller
                 
             ]);
 
-        $detail=Payout::findOrfail($request->id);
-
+        $detail = Payout::findOrfail($request->id);
         $a=$detail->update(['kemuname'=>trim($request->kemuname)]);
-       
         if ($a) {   
-                    session()->flash('success', '更新成功');
-                    return redirect()->action('GuzzleController@editkemu',$request->id);
-                }
+            session()->flash('success', '更新成功');
+            return redirect()->action('GuzzleController@editkemu',$request->id);
+        }
     }
     
+    /**
+     * 编辑的数据源科目
+     *
+     * 
+     * 
+     */
     public function edit($id)
     {
-        $guzzledb=Guzzledb::findOrfail($id);
+        $guzzledb = Guzzledb::findOrfail($id);
         return view('guzzle.edit',compact('guzzledb'));
     }
 
-    
-
-
-   
+    /**
+     * 删除拨款记录
+     *
+     * 
+     * 
+     */
     public function destroy($id)
     {
-        $payout=Payout::findOrFail($id);
-                $payout->delete();
+        $payout = Payout::findOrFail($id);
+        $payout->delete();
         session()->flash('success', '成功删除拨款记录！');
         return back();
         
     }
 
+    /**
+     * 发送修改页面请求
+     *
+     * 
+     * 
+     */
     public function postsql(\Illuminate\Http\Request $request)
     {
         $Zy = $request->zy?"Zy='{$request->zy}'":"";
@@ -335,13 +310,13 @@ class GuzzleController extends Controller
         $je = $request->amount?"je={$request->amount}":"";
         $oldje = $request->oldamount?"je={$request->oldamount}":"";
 
-        $request['body']=
+        $request['body'] =
 <<<EOF
-<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin  declare   ierrCount smallint;   szDjBh Varchar(20);   iRowCount smallint ;   iFlen int ;  begin   declare     iPDh int ;     szRBH  char(6) ;     TempExp Exception ;   begin  select '{$request->djbh}' into szDjBh from dual ;  select count(*) into iRowCount from zb_zfpzml_y  where gsdm='001'    and kjnd=to_char(sysdate,'yyyy')    and pdqj=to_char(sysdate,'yyyymm')  and  pdh='{$request->pid}' ; if iRowCount&gt;0 then  update ZB_ZFPZNR_Y set {$je}   where gsdm='001'    and kjnd=to_char(sysdate,'yyyy')    and {$oldje} and  pdqj=to_char(sysdate,'yyyymm')  and  pdh='{$request->pid}' ;  update zb_zfpzml_y set {$Skr} {$Skzh} {$Skrkhyh} {$Zy} where Gsdm='001'    and KJND=to_char(sysdate,'yyyy') and  Zy='{$request->zy}'   and  PDQJ=to_char(sysdate,'yyyymm')    and PDH='{$request->pid}' ; commit;     select 100 into ierrCount from dual ;  else rollback; end if ;   Exception     when others then       RollBack;       select 0 into ierrCount from dual ;   end ;   Open :pRecCur for     select ierrCount RES,szDJBH DJBH from dual;  end; end; </DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>
+<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin  declare   ierrCount smallint;   szDjBh Varchar(20);   iRowCount smallint ;   iFlen int ;  begin   declare     iPDh int ;     szRBH  char(6) ;     TempExp Exception ;   begin  select '{$request->djbh}' into szDjBh from dual ;  select count(*) into iRowCount from zb_zfpzml_y  where gsdm='001'    and kjnd=to_char(sysdate,'yyyy')    and pdqj=to_char(sysdate,'yyyymm')  and  pdh='{$request->pid}' ; if iRowCount&gt;0 then  update ZB_ZFPZNR_Y set {$je}   where gsdm='001'    and kjnd=to_char(sysdate,'yyyy')    and {$oldje} and  pdqj=to_char(sysdate,'yyyymm')  and  pdh='{$request->pid}' and rownum=1;  update zb_zfpzml_y set {$Skr} {$Skzh} {$Skrkhyh} {$Zy} where Gsdm='001'    and KJND=to_char(sysdate,'yyyy') and  Zy='{$request->zy}'   and  PDQJ=to_char(sysdate,'yyyymm')    and PDH='{$request->pid}' and rownum=1; commit;     select 100 into ierrCount from dual ;  else rollback; end if ;   Exception     when others then       RollBack;       select 0 into ierrCount from dual ;   end ;   Open :pRecCur for     select ierrCount RES,szDJBH DJBH from dual;  end; end; </DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>
 EOF;
 
 
-          $this->validate($request, 
+        $this->validate($request, 
             [
                 'zy' => "required",
                 'amount' => "required",
@@ -351,19 +326,21 @@ EOF;
             'zy.required' => '摘要必填',
             'amount.required' => '金额必填',
             'oldamount.required' => '原金额必填']);
-        
-
-
-
-        $sql=$request->body;
-        $sql= iconv('UTF-8','GB2312',$sql);
-        $post=new Guzzle();
+        $sql = $request->body;
+        $sql = iconv('UTF-8','GB2312',$sql);
+        $post = new Guzzle();
         $info = $post->makerequest($sql);
         echo $sql;
         echo "<br\><br\><br\><br\>";
         dd($info);
     }
 
+    /**
+     * 渲染修改页面
+     *
+     * 
+     * 
+     */
     public function getsql()
     {
         return view('guzzle.getsql');

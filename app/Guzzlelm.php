@@ -12,7 +12,7 @@ class Guzzle extends Model
     //
 
 	public $body;
-	public $payee=[];
+	public $payee = [];
 	public $data;
 	
 	
@@ -39,9 +39,9 @@ class Guzzle extends Model
 	
 	public function __construct($payee=[])
 	{
-		$this->payee=$payee;
-		$this->body=file_get_contents(dirname(__FILE__)."//Http//Controllers//guzzledata.txt");//这个body需要修改成data
-		$this->body=urldecode($this->body);
+		$this->payee = $payee;
+		$this->body = file_get_contents(dirname(__FILE__)."//Http//Controllers//guzzledata.txt");//这个body需要修改成data
+		$this->body = urldecode($this->body);
 
 
 		header("Content-Type: text/html;charset=utf-8");
