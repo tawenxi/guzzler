@@ -27,3 +27,11 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
 
     ];
 });
+
+$factory->define(App\Model\Post::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->sentence,
+        'content' => $faker->paragraph,
+
+    ];
+});

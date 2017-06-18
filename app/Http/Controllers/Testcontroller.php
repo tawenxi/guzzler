@@ -10,10 +10,16 @@ use Lxy;
 use App\payout;
 use App\Salary;
 use App\Member;
+use App\Model\Post;
 
 class TestController extends Controller
 {
-  
+  public function edit($id)
+  {
+  	$post = Post::findOrFail($id);
+  	\Auth::loginUsingId(12);
+  	return view('Posts.edit', compact('post'));
+  }
 
    
 }

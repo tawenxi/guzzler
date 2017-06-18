@@ -103,3 +103,20 @@ $router->get('ttt/{user}', function(Request $request,App\User $user) {
     
     
     /*=====  End of diff  ======*/
+/*========================================
+=            Permission::with('roles')->get()            =
+========================================*/
+ Route::get('/tte', function(){
+    return $a=App\Model\Permission::with('roles')->get(); 
+ });
+
+ Route::get('/ttq', function(){
+    return $a=App\Model\Role::with('permissions')->get(); 
+ });
+/*=====  End of Permission::with('roles')->get()  ======*/
+ Route::get('/aa', function(){
+    $a=2;
+     dd(!!$a); //!!把一个变量转化成BOOLEAN
+ });
+
+ Route::get('/e/{id?}','TestController@edit');
