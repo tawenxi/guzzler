@@ -14,7 +14,7 @@
       @endif
       <nav>
         <ul class="nav navbar-nav navbar-right">
-          @if (\Auth::check()&&\Auth::user()->id==39||\Auth::check()&&\Auth::user()->id==36)
+          @can('showAllSalary')
              <li><a href="/salary">工资</a></li>
           <li><a href="/bumen">月部门</a></li>
           <li><a href="/byear/2017/">分部汇总</a></li>
@@ -29,7 +29,7 @@
             <li><a href="/dpt">大平台更新</a></li>
             @endif
 
-            @endif
+            @endcan
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {{ \Auth::check()?Auth::user()->name:"" }} <b class="caret"></b>

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Gate;
 
 class Sudomiddleware
 {
@@ -29,7 +30,10 @@ class Sudomiddleware
     public function handle($request, Closure $next)
     {
         //dd($this->user->id);
-        if ($this->user->id!=39) {
+        // if ($this->user->id!=39) {
+        //     return redirect()->route('geren');
+        // }
+        if (Gate::denies('showGuzzle')) {
             return redirect()->route('geren');
         }
         return $next($request);
