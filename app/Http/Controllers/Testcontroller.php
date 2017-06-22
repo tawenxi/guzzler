@@ -21,5 +21,20 @@ class TestController extends Controller
   	return view('Posts.edit', compact('post'));
   }
 
+
+
+  public  function blade()
+  {
+     $guzzledbs = \App\Guzzledb::orderBy('ZJXZMC',"Asc")
+                ->orderBy("KYJHJE","desc")
+                ->get();
+     \Excel::create('New file', function($excel) use($guzzledbs) {
+     $excel->sheet('New sheet', function($sheet) use($guzzledbs){
+     $sheet->loadView('guzzle.index',array('guzzledbs' => $guzzledbs));
+    })->export('xls');;
+    });
+
+  }
+
    
 }

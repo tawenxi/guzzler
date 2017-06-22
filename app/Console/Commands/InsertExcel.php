@@ -11,7 +11,7 @@ class InsertExcel extends Command
      *
      * @var string
      */
-    protected $signature = 'i:e {exc?}';
+    protected $signature = 'insert:salary {exc?}';
 
     /**
      * The console command description.

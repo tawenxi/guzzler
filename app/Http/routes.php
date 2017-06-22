@@ -46,8 +46,8 @@ Route::get('/reflash', 'GuzzleController@reflash');
 //Route::get('/account', 'AccountController@index');
 Route::get('/dpt', 'GuzzleController@dpt');
 Route::get('/hyy', 'GuzzleController@hyy');
-Route::get('/edit/{id}', 'GuzzleController@edit'); 
-Route::get('/preview', 'GuzzleController@preview'); 	
+Route::get('/edit/{id}', 'GuzzleController@edit')->name('guzzle.edit'); 
+Route::get('/preview/{option?}', 'GuzzleController@preview'); 	
 Route::any('/payout', 'GuzzleController@payoutlist')->name('payout'); 
 Route::get('/{id}/show', 'GuzzleController@show'); 
 Route::DELETE('/{id}/delete', 'GuzzleController@destroy')->name('delete');
@@ -55,6 +55,7 @@ Route::get('/{id}/edit', 'GuzzleController@editkemu')->name('editkemu');
 Route::post('/save', 'GuzzleController@savekemu')->name('save');
 Route::get('/getsql', 'GuzzleController@getsql')->name('getsql');
 Route::post('/postsql', 'GuzzleController@postsql')->name('postsql');
+Route::get('exportaccount', 'GuzzleController@export_account');
 
     /*=============================
     =            excel            =
@@ -85,6 +86,26 @@ Route::get('profile','UserController@profile');
 
 
 //======================
+
+/*==============================
+=            收入支出体系            =
+==============================*/
+Route::resource('income', 'IncomeController');
+Route::resource('cost', 'CostController');
+Route::any('/costs','CostController@indexs')->name('cost.indexs');
+
+
+/*=====  End of 收入支出体系  ======*/
+
+
+
+
+
+
+
+
+
+
 /*==============================
 =            测试路由模型            =
 ==============================*/
@@ -120,3 +141,5 @@ $router->get('ttt/{user}', function(Request $request,App\User $user) {
  });
 
  Route::get('/e/{id?}','TestController@edit');
+
+Route::get('/blade','TestController@blade');

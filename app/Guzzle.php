@@ -177,7 +177,7 @@ class Guzzle extends Model
 		$collection = collect($finddata);
 		$filtered = $collection->filter(function ($item) use($payee)
 			{	
-   				return $item['ZBID'] == $payee['zbid'];
+   				return $item['ZBID'] == trim($payee['zbid']);
 			});
 		$zb = $filtered->pop();
 		return $zb;
@@ -320,12 +320,12 @@ class Guzzle extends Model
 		$kjhdata = (string)$kjhdata;
         $kjhdata = substr($kjhdata,strpos($kjhdata, "<ROWDATA>"),(strpos($kjhdata, "</ROWDATA>")-strpos($kjhdata, "<ROWDATA>")));
         $kjhdata = substr($kjhdata,14,-3);
-        $kjhdata = explode(" /><ROW" , $kjhdata);
         $kjhdata = str_replace(" DZKDM",'DZKDM',$kjhdata);
+        $kjhdata = explode(" /><ROW" , $kjhdata);
         foreach ($kjhdata as $key => $value) 
         {
             $value = '{"'.str_replace("=",'":', $value).'}';
-            $kjhdata[$key] = str_replace(" ",',"', $value);
+            $kjhdata[$key] = str_replace("\" ",'","', $value);
             $kjhdata[$key] = json_decode($kjhdata[$key],true);  
         }
         return $kjhdata;

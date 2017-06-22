@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
         Commands\GuzzleRequest::class,
         Commands\InsertExcel::class,
         Commands\Signup::class,
+        Commands\InsertIncome::class,
+        Commands\InsertCost::class,
     ];
 
     /**

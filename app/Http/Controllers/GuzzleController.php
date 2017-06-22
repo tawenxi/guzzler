@@ -26,9 +26,9 @@ class GuzzleController extends Controller
      *
      * 
      */
-     public function dpt(\App\Guzzle $hello)  //带了更新功能
+     public function dpt()  //带了更新功能
     {
-        //$hello=new Guzzle();
+        $hello=new Guzzle();
         $info = $hello->updatedb();
         $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")
                 ->orderBy("KYJHJE","desc")
@@ -55,7 +55,7 @@ class GuzzleController extends Controller
      * 
      */
     
-    public function preview(\App\UserListImport $import)
+    public function preview(\App\UserListImport $import, $option=null)
     {
         header("Content-Type: text/html;charset=utf-8");
         $searchobject = \App::make('acc');//初始化
@@ -84,6 +84,15 @@ class GuzzleController extends Controller
             }
         }
         $collection = collect($arr);
+
+        if ($option) {
+                    \Excel::create('1月帐', function($excel) use($collection) {
+        $excel->sheet('New sheet', function($sheet) use($collection){
+        $sheet->loadView('guzzle.preview',array('collection' => $collection));
+        })->export('xls');
+        });
+        }
+
         return view('guzzle.preview', compact('collection'));   
     }
 
@@ -345,4 +354,18 @@ EOF;
     {
         return view('guzzle.getsql');
     }
+
+
+    public  function export_account()
+    {
+     $guzzledbs = \App\Guzzledb::orderBy('ZJXZMC',"Asc")
+                ->orderBy("KYJHJE","desc")
+                ->get();
+     \Excel::create('New file', function($excel) use($guzzledbs) {
+     $excel->sheet('New sheet', function($sheet) use($guzzledbs){
+     $sheet->loadView('guzzle.index',array('guzzledbs' => $guzzledbs));
+    })->export('xls');
+    });
+
+   }
 }

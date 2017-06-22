@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-<h1>枚江乡授权支付指标明细表</h1>
+<h1>枚江镇授权支付指标明细表</h1>
 @include('shared.errors')
 
 <article>
@@ -11,7 +11,12 @@
 
 		<thead>
 			<tr class='success'>
-				<th>指标ID</th><th>摘要</th><th>预算项目</th><th>可用金额</th><th>编辑</th>
+				<th>指标ID</th>
+				<th>摘要</th>
+				<th>预算项目</th>
+				<th>总金额</th>
+				<th>可用金额</th>
+				<th>编辑</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
@@ -36,12 +41,21 @@
 				</td>
 				<td>
 				
+					{{$guzzledb->YKJHZB}}
+				
+				</td>
+				
+				<td>
+				
 					{{$guzzledb->KYJHJE}}
 				
 				</td>
 				<td class='btn btn-link'>
 				
-					<a href="edit/{{ $guzzledb->id }}" > 编辑</a>
+			{!! Form::open(['method' => 'get', 'route' => ['guzzle.edit',$guzzledb->id], 'class' => 'form-horizontal']) !!}
+          {!! Form::submit('编辑', ['class' => 'btn btn-success pull-right']) !!}
+          
+          {!! Form::close() !!}
 				
 				</td>
 			</tr>	

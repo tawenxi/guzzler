@@ -35,3 +35,27 @@ $factory->define(App\Model\Post::class, function (Faker\Generator $faker) {
 
     ];
 });
+
+//-----------
+$factory->define(App\Model\Cost::class, function (Faker\Generator $faker) {
+    return [
+        'payee' => $faker->word,
+        'payeeaccount' => '123456',
+        'payeebanker' => '123456',
+        'amount' => '1',
+        'zhaiyao' => $faker->word,
+
+
+    ];
+});
+
+$factory->define(App\Model\Income::class, function (Faker\Generator $faker) {
+    return [
+        'date' => '2016',
+        'zhaiyao' => $faker->sentence,
+        'xingzhi' => $faker->word,
+        'amount' => '100',
+        'cost' => '1',
+
+    ];
+});

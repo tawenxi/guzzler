@@ -24,6 +24,8 @@
             <li><a href="/phb">封神榜</a></li>
 
             @if ( strstr($request->ip(),"192.168") )
+            
+
             <li><a href="/payout">支出</a></li>
             <li><a href="/hyy">外网查询</a></li>
             <li><a href="/dpt">大平台更新</a></li>
@@ -38,6 +40,11 @@
               <ul class="dropdown-menu">
                 
                 <li><a href="{{ route('edit') }}">修改密码</a></li>
+                @can('showGuzzle')
+                <li><a href="/income">收入</a></li>
+                <li><a href="/income/create">新建收入</a></li>
+                <li><a href="/costs">支出</a></li>
+                @endcan
                 <li class="divider"></li>
                 <li>
                   <a id="logout" href="#">
