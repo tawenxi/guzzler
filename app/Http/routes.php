@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Http\Request;
-\Auth::LoginUsingid(39);
 /*
 |--------------------------------------------------------------------------
 | Application Routes
