@@ -11,35 +11,48 @@
 
     <thead>
       <tr class='success'>
+        <th>id</th>
         <th>日期</th>
         <th>摘要</th>
         <th>性质</th>
         <th>总金额</th>
         <th>已用金额</th>
+        <th>剩余金额</th>
         <th>科目</th>
         <th>备注</th>
+        @can('delete')
         <th>编辑</th>
         <th>删除</th>
+        @endcan
       </tr>
     </thead>
     <tbody class='alert-info'>
         @foreach ($incomes as $income)
-      <tr class={{ ($income->amount==$income->costs->sum('amount'))?'alert-danger':""}}>
-        <td>
-        
-          <a href="cost/{{ $income->id }}">{{$income->date}} 
+      <tr class={{ 
 
-          </a>
-        
+
+        ($income->amount==$income->costs->sum('amount')||strstr($income->beizhu,'已付完'))?'alert-danger':""}}  >
+        <td>
+          {{ $income->id }}
         </td>
         <td>
         
+          
+
+
+          <font >{{$income->date}}</font> 
+
+         
+        
+        </td>
+        <td>
+        <a href="/cost/{{ $income->id }}">
           {{$income->zhaiyao}}
-        
+         </a>
         </td>
         <td>
         
-          {{$income->xingzhi}}
+          <font color={{  ($income->xingzhi=='扶贫整合资金')?'Green':'' }}> {{$income->xingzhi}}</font> 
         
         </td>
         <td>
@@ -53,6 +66,11 @@
           {{$income->costs->sum('amount')}}
         
         </td>
+                <td>
+        
+          {{$income->remain_amount}}
+        
+        </td>
            <td>
         
           {{substr($income->kemu, 1+strpos($income->kemu,"@"))}}
@@ -63,6 +81,7 @@
           {{$income->beizhu}}
         
         </td>
+        @can('delete')
         <td>
         
       {!! Form::open(['method' => 'get', 'route' => ['income.edit',$income->id], 'class' => 'form-horizontal']) !!}
@@ -79,6 +98,7 @@
           {!! Form::close() !!}
         
         </td>
+        @endcan
       </tr> 
       @endforeach
     </tbody>
@@ -90,6 +110,7 @@
   
   </h2>
 </article>
+{!! $incomes->render() !!}
 {{-- {!! Form::open() !!}
  {!! Form::text("name") !!}
 {!! Form::close() !!} --}}

@@ -27,4 +27,8 @@ class Income extends Model
     {
     	return substr($val, 0,10);
     }
+    public function GetRemainAmountAttribute($val)
+    {
+        return $this->attributes['amount']-$this->costs->sum('amount');
+    }
 }

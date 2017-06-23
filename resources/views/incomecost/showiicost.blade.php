@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-<h1>枚江乡授权支付支出明细表</h1>
+<h1>枚江乡直接支付支出明细表</h1>
 @include('shared.errors')
 
 <article>
@@ -10,10 +10,17 @@
     <caption><center>{{ date("Y-m-d H:i:s") }}</center></caption>
 
     <thead>
+        <tr>
+      总金额：{{ $costs->sum('amount') }}
+    </tr>
       <tr class='success'>
         <th>时间</th><th>摘要</th><th>收款人</th><th>金额</th><th>科目</th><th>Income ID</th>
-     <th>D</th></tr>
+     @can('delete')
+     <th>D</th>
+     @endcan
+     </tr>
     </thead>
+
     <tbody class='alert-info'>
         @foreach ($costs as $cost)
       <tr>
@@ -29,25 +36,31 @@
         <td>
           {{$cost->payee}}</td>
         <td>{{$cost->amount}}</td>
-        <td>{{  substr($cost->kemu, 36+strpos($cost->kemu, "@"))}}</td>
+        <td>{{  substr($cost->kemu, 36+strpos($cost->kemu, "@"))}}
 
-        <td>{{$cost->income->zhaiyao}}</td>
        
+        </td>
+ 
+        <td>{{$cost->income->zhaiyao}}</td>
+       @can('delete')
         <td><form action="{{ route('delete', $cost->id) }}" method="post">
         {{ csrf_field() }}
         {{ method_field('DELETE') }}
         <button type="submit" class="btn btn-sm btn-danger delete-btn">删除</button>
       </form></td>
+      @endcan
       </tr> 
-      @endforeach
-    </tbody>
- // {!! $costs->render() !!}
 
+      @endforeach
+
+    </tbody>
+  {!! $costs->render() !!}
   </table>
       <hr>
   
   </h2>
 </article>
+{!! $costs->render() !!}
 {{-- {!! Form::open() !!}
  {!! Form::text("name") !!->appends(['order' => $a,'my' => $my])}
 {!! Form::close() !!} --}}
