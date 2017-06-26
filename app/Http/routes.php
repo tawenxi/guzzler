@@ -182,4 +182,10 @@ Route::get('excelmodel', function() {
     //dd($title);
 });
 
+Route::get('skip', function() {
+    $excel = new \App\Model\Excel('cost');
+    $skip = $excel->getSkipNum();
+    dd($skip);
+});
+
 /*=====  End of 测试excel  ======*/

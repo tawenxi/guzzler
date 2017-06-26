@@ -38,12 +38,12 @@ class InsertCost extends Command
     public function handle()
     {
         $excel2 = new \App\Model\Excel($this->argument('excel'));
-
-
          $excel2->getExcel()->map(function($v){
         static $i;
         \DB::table($this->argument('excel').'s')->insert($v->toArray());
-        $this->info("插入第{$i}条数据成功"."--".$v['zhaiyao'].$v['amount']);
+        $i++;
+        $info = isset($v['zhaiyao'])?$v['zhaiyao']:$v['name'];
+        $this->info("插入第{$i}条数据成功"."--".$info.$v['amount']);
 
       });
 
