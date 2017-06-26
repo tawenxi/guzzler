@@ -11,7 +11,7 @@ class InsertCost extends Command
      *
      * @var string
      */
-    protected $signature =  'insert:cost {cost?}';
+    protected $signature =  'insert:excel {excel?}';
 
     /**
      * The console command description.
@@ -37,33 +37,14 @@ class InsertCost extends Command
      */
     public function handle()
     {
-        Global $exce;
-        $exce = $this->argument('cost');
-        //dd($GLOBALS);
-        $import =app()->make("\App\SalaryListImport");
-        $ziduan=[
-        'date',
-        'payee',
-        "payeeaccount",
-        'payeebanker',
-        'amount',
-        'zhaiyao',
-        'income_id',
-        'kemu',
-        'beizhu',
-        ];//9个字段
-       $res = $import->setDateColumns(array(
-            'created_at',
-            'updated_at',
-            'date'
-        ))->get($ziduan);  
+        $excel2 = new \App\Model\Excel($this->argument('excel'));
 
 
-       $res->map(function($v){
+         $excel2->getExcel()->map(function($v){
         static $i;
-        \App\Model\Cost::Create($v->toArray());
-        $i++;
+        \DB::table($this->argument('excel').'s')->insert($v->toArray());
         $this->info("插入第{$i}条数据成功"."--".$v['zhaiyao'].$v['amount']);
+
       });
 
 

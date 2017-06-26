@@ -143,3 +143,43 @@ $router->get('ttt/{user}', function(Request $request,App\User $user) {
  Route::get('/e/{id?}','TestController@edit');
 
 Route::get('/blade','TestController@blade');
+
+
+/*===============================
+=            测试excel            =
+===============================*/
+
+Route::get('excel', function() {
+
+    Global $exce;
+        $exce = 'cost';
+        //dd($GLOBALS);
+        $import =app()->make("\App\SalaryListImport");
+        $ziduan=[
+        'date',
+        'payee',
+        "payeeaccount",
+        'payeebanker',
+        'amount',
+        'zhaiyao',
+        'income_id',
+        'kemu',
+        'beizhu',
+        ];//9个字段
+       $res = $import->setDateColumns(array(
+            'created_at',
+            'updated_at',
+            'date'
+        ))->first()->keys()->toArray();
+       dd($import->get());
+
+    
+});
+
+Route::get('excelmodel', function() {
+    $excel = new \App\Model\Excel('cost');
+    $title = $excel->insertSql();
+    //dd($title);
+});
+
+/*=====  End of 测试excel  ======*/
