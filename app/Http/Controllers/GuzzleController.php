@@ -114,7 +114,7 @@ class GuzzleController extends Controller
         {
             $Validator=\Validator::make($data, [
                 "payeeaccount"=>"numeric",
-                "amount"=>"numeric|between:0.01,300000",
+                "amount"=>"numeric|between:0.01,3000000",
                 "shujuyuan"=>"size:15"
                 ],[
                 "numeric"=>":attribute 必须为纯数字",
