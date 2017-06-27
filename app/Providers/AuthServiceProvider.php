@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\User;
 use App\Policies\UserPolicy;
 use App\Model\Permission;
+use Illuminate\Support\Facades\Schema;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -40,6 +42,11 @@ class AuthServiceProvider extends ServiceProvider
 
     protected function getPermission()
     {
-        return Permission::with('roles')->get();
+        try {
+            $permissions = Permission::with('roles')->get();
+        } catch (QueryException $e) {
+            $permissions = [];
+        }
+        return $permissions;
     }
 }

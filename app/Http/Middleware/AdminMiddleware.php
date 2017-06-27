@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\User;
 use Gate;
 
-class Sudomiddleware
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -30,10 +31,10 @@ class Sudomiddleware
     public function handle($request, Closure $next)
     {
         //dd($this->user->id);
-        // if ($this->user->id!=39) {
+        // if ($this->user->id!=39&&$this->user->id!=36) {
         //     return redirect()->route('geren');
         // }
-        if (Gate::denies('showGuzzle')) {
+        if (Gate::denies('showAllSalary')) {
             return redirect()->route('geren');
         }
         return $next($request);
