@@ -91,6 +91,7 @@ Route::get('profile','UserController@profile');
 =            收入支出体系            =
 ==============================*/
 Route::resource('income', 'IncomeController');
+Route::get('incomes/{fp?}',"IncomeController@indexs");
 Route::resource('cost', 'CostController');
 Route::any('/costs','CostController@indexs')->name('cost.indexs');
 

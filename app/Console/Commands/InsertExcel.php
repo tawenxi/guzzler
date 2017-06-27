@@ -11,14 +11,14 @@ class InsertExcel extends Command
      *
      * @var string
      */
-    protected $signature = 'insert:salary {exc?}';
+    protected $signature =  'insert:excel {excel?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '注入工资';
+    protected $description = '注入Excel';
 
     /**
      * Create a new command instance.
@@ -37,46 +37,14 @@ class InsertExcel extends Command
      */
     public function handle()
     {
-        Global $exce;
-        $exce = $this->argument('exc');
-        //dd($GLOBALS);
-        $import =app()->make("\App\SalaryListImport");
-        $ziduan=['member_id',
-        'name',"account",'bumen',
-        'yishu_bz','tuixiu_gz',
-        'bufa_gz','nianzhong_jj',
-        'gaowen_jiangwen','jiangjin',
-        'jiangjin_beizhu',
-        'jjbz','beuzhu',
-        'gjj_dw','sb_dw',
-        'gjj_gr','sb_gr',
-        'zhiye_nj','daikou_gz',
-        'hongfang_zj','yiliao_bx',
-        'shiye_bx','shengyu_bx',
-        'gongshang_bx',
-        'yirijuan','tiaozheng_gjj',
-        'tiaozheng_sb','date',
-        'jb_gz1','jb_gz2',
-        'jinbutie','gongche_bz',
-        'xiangzhen_bz','sb_js',
-        'gjj_js','other_daikou',
-        'daikou_beizhu'];//34个字段
-       $res = $import->skipRows(1)->setDateColumns(array(
-            'created_at',
-            'updated_at',
-            'date'
-        ))->get($ziduan);    
-       $res->map(function($v){
+        $excel2 = new \App\Model\Excel($this->argument('excel'));
+         $excel2->getExcel()->map(function($v){
         static $i;
-        $v['name']=str_replace(" ", '', $v['name']);
-        \App\Salary::updateOrCreate([
-            'member_id'=>$v['member_id'],
-            'date'=>$v['date'],
-            'jjbz'=>$v['jjbz'],
-            'jiangjin_beizhu'=>$v['jiangjin_beizhu']
-            ],$v->toArray());
+        \DB::table($this->argument('excel').'s')->insert($v->toArray());
         $i++;
-        $this->info("插入第{$i}条数据成功"."--".$v['member_id'].$v['name']);
+        $info = isset($v['zhaiyao'])?$v['zhaiyao']:$v['name'];
+        $this->info("插入第{$i}条数据成功"."--".$info.$v['amount']);
+
       });
 
 

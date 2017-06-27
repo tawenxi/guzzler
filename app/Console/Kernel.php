@@ -14,11 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\Inspire::class,
-        Commands\GuzzleRequest::class,
         Commands\InsertExcel::class,
+        Commands\InsertSalary::class,
         Commands\Signup::class,
-        Commands\InsertIncome::class,
-        Commands\InsertCost::class,
     ];
 
     /**

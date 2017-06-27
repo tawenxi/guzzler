@@ -22,9 +22,9 @@ class IncomeController extends Controller
         $this->middleware('admin');
         
     }
-    public function index()
+    public function indexs($fp=0)
     {
-        $incomes = Income::paginate(30);
+        $incomes = Income::fp($fp)->orderBy('date')->paginate(30);
         return view('incomecost.showincome', compact('incomes'));
     }
 
@@ -52,7 +52,7 @@ class IncomeController extends Controller
             ]);
          Income::create($request->all());
         \Session::flash('success', "添加收入成功");
-        return redirect()->to('/income');
+        return redirect()->to('/incomes');
         
     }
 

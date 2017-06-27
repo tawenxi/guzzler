@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-<h1>枚江镇收入指标明细表</h1>
+<h1>枚江镇收入指标明细表(<a href="/incomes/1" "email me">1</a>)</h1>
 @include('shared.errors')
 
 <article>
@@ -101,6 +101,23 @@
         @endcan
       </tr> 
       @endforeach
+      <thead>
+      <tr class='success'>
+        <th>id</th>
+        <th>日期</th>
+        <th>摘要</th>
+        <th>性质</th>
+        <th>{{ $incomes->sum('amount') }}</th>
+        <th>{{ $incomes->sum('has_costed') }}</th>
+        <th>{{ $incomes->sum('remain_amount') }}</th>
+        <th>科目</th>
+        <th>拨付率{{ $incomes->sum('has_costed')/$incomes->sum('amount') }}</th>
+        @can('delete')
+        <th>编辑</th>
+        <th>删除</th>
+        @endcan
+      </tr>
+    </thead>
     </tbody>
   </table>
 

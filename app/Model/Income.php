@@ -31,4 +31,29 @@ class Income extends Model
     {
         return $this->attributes['amount']-$this->costs->sum('amount');
     }
+
+    public function GetHasCostedAttribute($val)
+    {
+        return $this->costs->sum('amount');
+    }
+
+    public function scopeFp($query,$fp)
+    {
+        switch ($fp) {
+            case '1':
+                return $query->where('xingzhi','扶贫整合资金');
+                break;
+            case '2016':
+                return $query->where('zhaiyao','like','2016%');
+                break;
+            case '2017':
+                return $query->where('zhaiyao','like','2017%');
+                break;
+
+            default:
+                return $query;
+                break;
+        }
+
+    }
 }
