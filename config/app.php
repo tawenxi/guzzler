@@ -149,9 +149,7 @@ return [
         App\Providers\AccServiceProvider::class,
         App\Providers\LxyServiceProvider::class,
         App\Providers\LljServiceProvider::class,
-        Laracasts\Flash\FlashServiceProvider::class,
         //Laracasts\Flash\FlashServiceProvider::class,
-
 
     ],
 

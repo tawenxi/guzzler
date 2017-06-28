@@ -189,7 +189,7 @@ Route::get('skip', function() {
     dd($skip);
 });
 Route::get('flash', function() {
-   flash('Welcome Aboard!','danger');
+   //flash('Welcome Aboard!','danger');
    echo "2";
 });
 
