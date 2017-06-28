@@ -64,4 +64,20 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    protected function handleUserWasAuthenticated(Request $request, $throttles)
+    {
+        if ($throttles) {
+            $this->clearLoginAttempts($request);
+        }
+
+        if (method_exists($this, 'authenticated')) {
+            return $this->authenticated($request, Auth::user());
+        }
+        \Session::flash("success", "欢迎回来");
+        \Session::flash("danger", "为保证您个人及单位信息安全，请不要截图发送工资信息给其他人
+。首次登陆后，请立即更改您的密码，以免信息泄露 ");
+
+        return redirect()->intended($this->redirectPath());
+    }
 }
