@@ -8,18 +8,19 @@
      @if (\Auth::check())
        
      
-      <a href="{{ (\Auth::user()->id==39)?'preview':'geren'}}" id="logo">枚江镇</a>
+      <a href="{{ (\Auth::user()->id==39)?'/preview':'/geren'}}" id="logo">枚江镇</a>
       @else
 <a href="" id="logo">枚江镇工资查询系统</a>
       @endif
       <nav>
         <ul class="nav navbar-nav navbar-right">
+        <li><a href="?export=1">导出excel</a></li>
           @can('showAllSalary')
              <li><a href="/salary">工资</a></li>
           <li><a href="/bumen">月部门</a></li>
           <li><a href="/byear/2017/">分部汇总</a></li>
           <li><a href="/myear/2017/">分月汇总</a></li>
-          <li><a href="/geren?id=39">个人</a></li>
+          <li><a href="/geren">个人</a></li>
 
             <li><a href="/phb">封神榜</a></li>
 

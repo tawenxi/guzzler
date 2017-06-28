@@ -11,15 +11,20 @@ use GuzzleHttp\Client;
 use App\Guzzledb;
 use App\Payout;
 use App\Acc\Acc;
+use App\Model\Excel;
 
 
 
 class GuzzleController extends Controller
 {
-    public function __construct(){
+    private $excel;
+
+    public function __construct(Excel $excel){
         $this->middleware('auth');
         $this->middleware('admin');
         $this->middleware('sudo');
+        $this->excel = $excel;
+
     }
     /**
      * 更新并显示最新的授权指标数据.
@@ -33,7 +38,7 @@ class GuzzleController extends Controller
         $guzzledbs=Guzzledb::orderBy('ZJXZMC',"Asc")
                 ->orderBy("KYJHJE","desc")
                 ->get();
-        return view('guzzle.index',compact('guzzledbs'));
+        return $this->excel->exportBlade('guzzle.index',compact('guzzledbs'));
     }
 
     /**
@@ -46,7 +51,7 @@ class GuzzleController extends Controller
         $guzzledbs = Guzzledb::orderBy('ZJXZMC',"Asc")
                 ->orderBy("KYJHJE","desc")
                 ->get();
-        return view('guzzle.index',compact('guzzledbs'));
+        return $this->excel->exportBlade('guzzle.index',compact('guzzledbs'));
     }
     /**
      * 数据验证，预览
@@ -55,7 +60,7 @@ class GuzzleController extends Controller
      * 
      */
     
-    public function preview(\App\UserListImport $import, $option=null)
+    public function preview(\App\UserListImport $import)
     {
         header("Content-Type: text/html;charset=utf-8");
         $searchobject = \App::make('acc');//初始化
@@ -84,16 +89,7 @@ class GuzzleController extends Controller
             }
         }
         $collection = collect($arr);
-
-        if ($option) {
-                    \Excel::create('1月帐', function($excel) use($collection) {
-        $excel->sheet('New sheet', function($sheet) use($collection){
-        $sheet->loadView('guzzle.preview',array('collection' => $collection));
-        })->export('xls');
-        });
-        }
-
-        return view('guzzle.preview', compact('collection'));   
+        return $this->excel->exportBlade('guzzle.preview', compact('collection'));
     }
 
     /**
@@ -222,7 +218,7 @@ class GuzzleController extends Controller
         $date1 = \Input::has('date1')?\Input::get('date1'):date("Y-m-01",time());
         $date2 = \Input::has('date2')?\Input::get('date2'):date("Y-m-d H:i:s",time()+86400);
         $payoutdatas=Payout::whereBetween('created_at', [$date1, $date2])->orderBy($a,'desc')->paginate($my);
-        return view('guzzle.payout',compact('payoutdatas','a','my'));
+        return $this->excel->exportBlade('guzzle.payout',compact('payoutdatas','a','my'));
     }
 
     /**
@@ -236,7 +232,7 @@ class GuzzleController extends Controller
        $payoutdatas = Payout::where('zbid',$id)
            ->orderBy("created_at",'desc')
            ->paginate(10);
-        return view('guzzle.show',compact('payoutdatas'));
+        return $this->excel->exportBlade('guzzle.show',compact('payoutdatas'));
     }
 
     /**

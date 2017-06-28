@@ -38,7 +38,7 @@ class InsertExcel extends Command
     public function handle()
     {
         $excel2 = new \App\Model\Excel($this->argument('excel'));
-         $excel2->getExcel()->map(function($v){
+         $excel2->setSkipNum()->getExcel()->map(function($v){
         static $i;
         \DB::table($this->argument('excel').'s')->insert($v->toArray());
         $i++;

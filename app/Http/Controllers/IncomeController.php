@@ -8,24 +8,27 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Income;
 use Session;
+use App\Model\Excel;
 
 class IncomeController extends Controller
 {
+    private $excel;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
+    public function __construct(Excel $excel)
     {
         $this->middleware('auth');
         $this->middleware('admin');
+        $this->excel = $excel;
         
     }
     public function indexs($fp=0)
     {
         $incomes = Income::fp($fp)->orderBy('date')->paginate(30);
-        return view('incomecost.showincome', compact('incomes'));
+        return $this->excel->exportBlade('incomecost.showincome', compact('incomes'));
     }
 
     /**

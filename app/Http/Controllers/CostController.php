@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Cost;
+use App\Model\Excel;
 
 class CostController extends Controller
 {
@@ -15,10 +16,11 @@ class CostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
+    public function __construct(Excel $excel)
     {
         $this->middleware('auth');
         $this->middleware('admin');
+        $this->excel = $excel;
         
     }
     public function indexs(\Illuminate\Http\Request $request)
@@ -31,7 +33,7 @@ class CostController extends Controller
         $costs = Cost::whereBetween('date', [$date1, $date2])->orderBy($a,'desc')->paginate($my);
         //dd($costs);
 
-        return view('incomecost.showcost', compact('costs'));
+        return $this->excel->exportBlade('incomecost.showcost', compact('costs'));
     }
     public function show($id)
     {
@@ -39,7 +41,7 @@ class CostController extends Controller
            ->orderBy("date",'desc')
            ->paginate(10);
            //dd($incomes);
-        return view('incomecost.showiicost',compact('costs'));
+        return $this->excel->exportBlade('incomecost.showiicost',compact('costs'));
     }
 
     /**

@@ -8,13 +8,16 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Salary;
 use App\User;
+use App\Model\Excel;
 
 class SalaryController extends Controller
 {
-  public function __construct()
+  private $excel;
+  public function __construct(Excel $excel)
   {
   $this->middleware('auth');
   $this->middleware('admin', ['except' => ['geren']] );
+  $this->excel = $excel;
   }
 
   public function index($date = '201705', $jj = null)
@@ -32,7 +35,7 @@ class SalaryController extends Controller
            ->where('date','<=',\Carbon\Carbon::parse($dt.'27'))
            ->where('date','>=',\Carbon\Carbon::parse($dt.'01'))
            ->get();
-       return view('salary.index',compact('resv','res','dates'))->render();
+       return $this->excel->exportBlade('salary.index',compact('resv','res','dates'))->render();
 	 }
 
    public function bumen($date = '201703', $jj = null)
@@ -51,7 +54,7 @@ class SalaryController extends Controller
            ->get();
   
        $dates=Salary::groupBy('date')->get()->pluck('date');
-       return view('salary.bumen',compact('res','dates','resv'))->render();
+       return $this->excel->exportBlade('salary.bumen',compact('res','dates','resv'))->render();
    }
 
 
@@ -78,7 +81,7 @@ class SalaryController extends Controller
        $dates = Salary::groupBy('date')
            ->get()
            ->pluck('date');
-       return view('salary.geren',compact('res','dates','resv'))->render();
+       return $this->excel->exportBlade('salary.geren',compact('res','dates','resv'))->render();
   }
 
   public function byear($year = 2017, $jj = null)//1只显示工资，2只显示奖金
@@ -102,7 +105,7 @@ class SalaryController extends Controller
        $dates = collect($dates);
        $dates = $dates->unique();
        $dates->values()->all();
-       return view('salary.byear',compact('res','dates','resv'))->render();
+       return $this->excel->exportBlade('salary.byear',compact('res','dates','resv'))->render();
   }
 
    public function myear($year = 2017, $jj = null)//1只显示工资，2只显示奖金
@@ -126,7 +129,7 @@ class SalaryController extends Controller
        $dates = collect($dates);
        $dates = $dates->unique();
        $dates->values()->all();
-       return view('salary.myear',compact('res','dates','resv'))->render();
+       return $this->excel->exportBlade('salary.myear',compact('res','dates','resv'))->render();
     }
 
      public function phb($year = 2017, $jj = null)//1只显示工资，2只显示奖金
@@ -173,7 +176,7 @@ class SalaryController extends Controller
             ->Hasjj($jj)
             ->get();
 
-      return view('salary.phb',compact('res','resv'))->render();
+      return $this->excel->exportBlade('salary.phb',compact('res','resv'))->render();
   }
   
 }

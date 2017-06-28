@@ -180,28 +180,29 @@
 
 
 			</tbody>
-		<th>汇总</th>
+			<tr>
+		<td>汇总</td>
 				
 				{{-- <th>账号</th> --}}
 
 
-				@if ($resv->sum('tuixiu_gz'))<th>{{ $resv->sum('tuixiu_gz') }}</th>@endif
- 				@if ($resv->sum('yishu_bz'))<th>	{{ $resv->sum('yishu_bz') }}</th>@endif
-				@if ($resv->sum('jb_gz1')+$resv->sum('jb_gz2'))<th>{{ $resv->sum('jb_gz1')+$resv->sum('jb_gz2') }}</th>@endif
-				@if ($resv->sum('jinbutie'))<th>{{ $resv->sum('jinbutie')}}</th>@endif
-				@if ($resv->sum('gongche_bz'))<th>{{ $resv->sum('gongche_bz')}}</th>@endif
-				@if ($resv->sum('xiangzhen_bz'))<th>{{ $resv->sum('xiangzhen_bz') }}</th>@endif	
-				@if ($resv->sum('nianzhong_jj'))<th>{{ $resv->sum('nianzhong_jj') }}</th>@endif
-				@if ($resv->sum('gaowen_jiangwen'))<th>{{ $resv->sum('gaowen_jiangwen') }}</th>@endif
-				@if ($resv->sum('jiangjin'))<th>{{ $resv->sum('jiangjin') }}</th>
+				@if ($resv->sum('tuixiu_gz'))<td>{{ $resv->sum('tuixiu_gz') }}</td>@endif
+ 				@if ($resv->sum('yishu_bz'))<td>	{{ $resv->sum('yishu_bz') }}</td>@endif
+				@if ($resv->sum('jb_gz1')+$resv->sum('jb_gz2'))<td>{{ $resv->sum('jb_gz1')+$resv->sum('jb_gz2') }}</td>@endif
+				@if ($resv->sum('jinbutie'))<td>{{ $resv->sum('jinbutie')}}</td>@endif
+				@if ($resv->sum('gongche_bz'))<td>{{ $resv->sum('gongche_bz')}}</td>@endif
+				@if ($resv->sum('xiangzhen_bz'))<td>{{ $resv->sum('xiangzhen_bz') }}</td>@endif	
+				@if ($resv->sum('nianzhong_jj'))<td>{{ $resv->sum('nianzhong_jj') }}</td>@endif
+				@if ($resv->sum('gaowen_jiangwen'))<td>{{ $resv->sum('gaowen_jiangwen') }}</td>@endif
+				@if ($resv->sum('jiangjin'))<td>{{ $resv->sum('jiangjin') }}</td>
 				@if (!(Route::currentRouteName()=='byear'||Route::currentRouteName()=='phb'))
-				<th>备注</th>
+				<td>备注</td>
 				@endif
 				@endif
-				@if ($resv->sum('bufa_gz'))<th>{{ $resv->sum('bufa_gz') }}</th>@endif
-				@if ($resv->sum('gjj_dw'))<th>{{ $resv->sum('gjj_dw') }}</th>@endif
-				@if ($resv->sum('sb_dw'))<th>{{ round($resv->sum('sb_dw'),2) }}</th>@endif
-				<th>{{$resv->sum('yishu_bz')+
+				@if ($resv->sum('bufa_gz'))<td>{{ $resv->sum('bufa_gz') }}</td>@endif
+				@if ($resv->sum('gjj_dw'))<td>{{ $resv->sum('gjj_dw') }}</td>@endif
+				@if ($resv->sum('sb_dw'))<td>{{ round($resv->sum('sb_dw'),2) }}</td>@endif
+				<td>{{$resv->sum('yishu_bz')+
 						$resv->sum('tuixiu_gz')+
 						$resv->sum('jb_gz1')+
 						$resv->sum('jb_gz2')+
@@ -213,21 +214,21 @@
 						$resv->sum('gaowen_jiangwen')+
 						$resv->sum('jiangjin')+
 						$resv->sum('gjj_dw')+
-						$resv->sum('sb_dw')}}</th>
-				@if ($resv->sum('gjj_gr'))<th>{{ $resv->sum('gjj_gr') }}</th>@endif
-				@if ($resv->sum('sb_gr'))<th>{{ $resv->sum('sb_gr') }}</th>@endif
-				@if ($resv->sum('zhiye_nj'))<th>{{ $resv->sum('zhiye_nj') }}</th>@endif
-				@if ($resv->sum('daikou_gz'))<th>{{ $resv->sum('daikou_gz') }}</th>@endif
-				@if ($resv->sum('fanghong_zj'))<th>{{ $resv->sum('fanghong_zj') }}</th>@endif
-				@if ($resv->sum('yiliao_bx'))<th>{{ $resv->sum('yiliao_bx') }}</th>@endif
-				@if ($resv->sum('shiye_bx'))<th>{{ $resv->sum('shiye_bx') }}</th>@endif
-				@if ($resv->sum('shengyu_bx'))<th>{{ $resv->sum('shengyu_bx') }}</th>@endif
-				@if ($resv->sum('gongshang_bx'))<th>{{ $resv->sum('gongshang_bx') }}</th>@endif
-				@if ($resv->sum('yirijuan'))<th>{{ $resv->sum('yirijuan') }}</th>@endif
-				@if ($resv->sum('other_daikou'))<th>{{ $resv->sum('other_daikou') }}</th><th>代扣备注</th>@endif
-				@if ($resv->sum('tiaozheng_gjj'))<th>{{ $resv->sum('tiaozheng_gjj') }}</th>@endif
-				@if ($resv->sum('tiaozheng_sb'))<th>{{ $resv->sum('tiaozheng_sb') }}</th>@endif
-				<th>
+						$resv->sum('sb_dw')}}</td>
+				@if ($resv->sum('gjj_gr'))<td>{{ $resv->sum('gjj_gr') }}</td>@endif
+				@if ($resv->sum('sb_gr'))<td>{{ $resv->sum('sb_gr') }}</td>@endif
+				@if ($resv->sum('zhiye_nj'))<td>{{ $resv->sum('zhiye_nj') }}</td>@endif
+				@if ($resv->sum('daikou_gz'))<td>{{ $resv->sum('daikou_gz') }}</td>@endif
+				@if ($resv->sum('fanghong_zj'))<td>{{ $resv->sum('fanghong_zj') }}</td>@endif
+				@if ($resv->sum('yiliao_bx'))<td>{{ $resv->sum('yiliao_bx') }}</td>@endif
+				@if ($resv->sum('shiye_bx'))<td>{{ $resv->sum('shiye_bx') }}</td>@endif
+				@if ($resv->sum('shengyu_bx'))<td>{{ $resv->sum('shengyu_bx') }}</td>@endif
+				@if ($resv->sum('gongshang_bx'))<td>{{ $resv->sum('gongshang_bx') }}</td>@endif
+				@if ($resv->sum('yirijuan'))<td>{{ $resv->sum('yirijuan') }}</td>@endif
+				@if ($resv->sum('otder_daikou'))<td>{{ $resv->sum('otder_daikou') }}</td><td>代扣备注</td>@endif
+				@if ($resv->sum('tiaozheng_gjj'))<td>{{ $resv->sum('tiaozheng_gjj') }}</td>@endif
+				@if ($resv->sum('tiaozheng_sb'))<td>{{ $resv->sum('tiaozheng_sb') }}</td>@endif
+				<td>
 					{{
 						round(
 					$resv->sum('gjj_gr')+
@@ -242,12 +243,12 @@
 					$resv->sum('shengyu_bx')+
 					$resv->sum('gongshang_bx')+
 					$resv->sum('yirijuan')+
-					$resv->sum('other_daikou')+
+					$resv->sum('otder_daikou')+
 					$resv->sum('tiaozheng_gjj')+
 					$resv->sum('tiaozheng_sb')
 						,2) 
 					}}
-				</th><th>
+				</td><td>
 	  	{{  		round(
 	  				$resv->sum('yishu_bz')+
 					$resv->sum('tuixiu_gz')+
@@ -280,6 +281,7 @@
 					$resv->sum('tiaozheng_sb')
 							)
 							,2) }}
-				</th>
+				</td>
+				</tr>
 </table>
 {{-- {!! $res->render() !!} --}}
