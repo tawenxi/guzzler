@@ -149,7 +149,8 @@ return [
         App\Providers\AccServiceProvider::class,
         App\Providers\LxyServiceProvider::class,
         App\Providers\LljServiceProvider::class,
-        Arcanedev\LogViewer\LogViewerServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        //Laracasts\Flash\FlashServiceProvider::class,
 
 
     ],

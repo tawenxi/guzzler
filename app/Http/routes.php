@@ -188,5 +188,9 @@ Route::get('skip', function() {
     $skip = $excel->getSkipNum();
     dd($skip);
 });
+Route::get('flash', function() {
+   flash('Welcome Aboard!','danger');
+   echo "2";
+});
 
 /*=====  End of 测试excel  ======*/

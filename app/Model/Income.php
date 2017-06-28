@@ -44,10 +44,10 @@ class Income extends Model
                 return $query->where('xingzhi','扶贫整合资金');
                 break;
             case '2016':
-                return $query->where('zhaiyao','like','2016%');
+                return $query->where('zhaiyao','like','2016%')->where('xingzhi','扶贫整合资金');
                 break;
             case '2017':
-                return $query->where('zhaiyao','like','2017%');
+                return $query->where('zhaiyao','like','2017%')->where('xingzhi','扶贫整合资金');
                 break;
 
             default:
