@@ -98,17 +98,18 @@ class InsertSq extends Command
         {
             $guzz = new Guzzle($value);//传入一个一位数组（账户信息）
             if (stristr($arr[$key]['kemu'], "#")) {
-                $this->info("info:第".(1+$successi).'条数据做账成功但未授权支付');
+                $this->info("info:第".(1+$successi).'条数据做账成功但未授权支付'.$value['zhaiyao']);
             } else {
                // dd("拨款成功");//开关             
                 $guzz->add_post();
             }
             if (stristr($arr[$key]['kemu'], "***")) {
-                $this->info("Info:第".(1+$successi).'条数据完成重录，没做账保存');
+                $this->info("Info:第".(1+$successi).'条数据完成重录，没做账保存'.$value['zhaiyao']);
             } else {
                 $res = $guzz->savesql($value);
             }           
             $successi++;
+            $this->info('success--第'.$successi.'条数据拨款成功'.$value['zhaiyao'].'--'.$value['amount']);
         }
         $this->info('success--'.$successi.'条数据拨款成功');
     }

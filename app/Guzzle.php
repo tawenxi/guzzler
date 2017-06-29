@@ -104,7 +104,7 @@ class Guzzle extends Model
 		=            判断Response中是否包含错误信息          =
 		=============================================*/
 		if(strlen($responsebody)<520){
-			echo "success<br/>";			
+			//echo "success<br/>";			
 		};
 		if (stristr($responsebody, "ERROR")) {
 			echo iconv('GB2312','UTF-8',$dq);
@@ -240,25 +240,7 @@ class Guzzle extends Model
 		return $data;
 	}
 
-   /**
- 
- 	TODO: 返回@可用授权指标数组
- 	- 传入@
- 	- 返回@可用授权指标数组
- 	 
-  */
-	public function getfinddata()
-	{
-		$zbobject = new self();
-        $kjhdata = $zbobject->find_post();
-        $kjhdata = (string)$kjhdata;
-        $kjhdata_benji = $zbobject->find_post("benji");
-        $kjhdata_benji = (string)$kjhdata_benji;
-        $kjhdata = $zbobject->makekjharray($kjhdata);
-        $kjhdata_benji = $zbobject->makekjharray($kjhdata_benji);
-        $kjhdata_all = array_merge($kjhdata,$kjhdata_benji);
-        return $kjhdata_all;
-	}
+
 
 	
 	public function __construct($payee = [])
@@ -270,7 +252,21 @@ class Guzzle extends Model
 		}
 	}
 
-   /**
+
+
+	public function setpayee($payee = [])//还没开始使用
+	{
+		$this->payee = $payee;
+	}
+
+	public function jiema($data)//传入加密内容 解码
+	{
+		$data = urldecode($data);
+		return $data;
+	}
+
+
+	   /**
  
  	TODO: 更新数据库的授权指标
  	- 传入@
@@ -286,29 +282,40 @@ class Guzzle extends Model
 			});
 	}
 
-	public function setpayee($payee = [])//还没开始使用
+	   /**
+ 
+ 	TODO: 返回@可用授权指标数组
+ 	- 传入@
+ 	- 返回@可用授权指标数组
+ 	 
+  */
+	public function getfinddata()
 	{
-		$this->payee = $payee;
+		$zbobject = new self();
+        $kjhdata_xingzheng = $zbobject->find_post('xingzheng');
+        $kjhdata_xingzheng = (string)$kjhdata_xingzheng;
+        $kjhdata_benji = $zbobject->find_post("benji");
+        $kjhdata_benji = (string)$kjhdata_benji;
+        $kjhdata_xingzheng = $zbobject->makekjharray($kjhdata_xingzheng);
+        $kjhdata_benji = $zbobject->makekjharray($kjhdata_benji);
+        $kjhdata_all = array_merge($kjhdata_xingzheng,$kjhdata_benji);
+        return $kjhdata_all;
 	}
 
-	public function jiema($data)//传入加密内容 解码
-	{
-		$data = urldecode($data);
-		return $data;
-	}
-
-		public function find_post($xingzheng_benji = "xingzheng")
+		public function find_post($xingzheng_benji)
 	{	
 		/*=============================================
 		=            Section comment block            =
 		=============================================*/
 		
-		$findquery = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006001%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170425%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%274%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
+		$findquery_xingzheng = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006001%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170425%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%274%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
 		//*********************************************************************
 		$findquery_benji = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006000%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170511%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%275%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
 		/*=====  End of Section comment block  ======*/
 		if ($xingzheng_benji == "benji") {
 			$findquery=$findquery_benji;	
+		}elseif ($xingzheng_benji == "xingzheng") {
+			$findquery=$findquery_xingzheng;
 		}
 		 $this->balancebody = $this->jiema($findquery);
 		 $this->balancebody = $this->timereplace($this->balancebody);
