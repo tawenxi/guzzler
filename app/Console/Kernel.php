@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\InsertExcel::class,
         Commands\InsertSalary::class,
         Commands\Signup::class,
+        Commands\InsertSq::class,
     ];
 
     /**

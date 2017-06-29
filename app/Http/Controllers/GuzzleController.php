@@ -18,6 +18,7 @@ use App\Model\Excel;
 class GuzzleController extends Controller
 {
     private $excel;
+    private $guzzleexcel;
 
     public function __construct(Excel $excel){
         $this->middleware('auth');
@@ -25,6 +26,7 @@ class GuzzleController extends Controller
         $this->middleware('sudo');
         $this->excel = $excel;
 
+        $this->guzzleexcel = \App::make(Excel::class,['excel']);
     }
     /**
      * 更新并显示最新的授权指标数据.
@@ -60,14 +62,13 @@ class GuzzleController extends Controller
      * 
      */
     
-    public function preview(\App\UserListImport $import)
+    public function preview()
     {
         header("Content-Type: text/html;charset=utf-8");
         $searchobject = \App::make('acc');//初始化
-        $arr = $import->each(function($item) use ($searchobject){
+        $arr = $this->guzzleexcel->setSkipNum()->getexcel()->each(function($item) use ($searchobject){
         $item['kemuname'] = stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
         })->toArray();
-
         foreach ($arr as $key => $data) 
         {
             if (count($arr[$key]['kemuname']) == 1&&is_array($arr[$key]['kemuname'])) {
@@ -76,7 +77,7 @@ class GuzzleController extends Controller
             $Validator=\Validator::make($arr[$key], [
                 "payeeaccount"=>"numeric",
                 "amount"=>"numeric|between:0.01,3000000",
-                "shujuyuan"=>"size:15"
+                "zbid"=>"size:15"
                 ],[
                 "numeric"=>":attribute 必须为纯数字",
                 "size"=>":attribute 必须为15位",
@@ -98,11 +99,11 @@ class GuzzleController extends Controller
      * 
      * 
      */
-    public function index(\App\UserListImport $import)
+    public function index()
     {	
         header("Content-Type: text/html;charset=utf-8");
         $searchobject=\App::make('acc');//初始化
-        $arr = $import->each(function($item) use ($searchobject){
+        $arr = $this->guzzleexcel->setSkipNum()->getexcel()->each(function($item) use ($searchobject){
         $item['kemuname'] = stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
         })->toArray();
 
@@ -111,7 +112,7 @@ class GuzzleController extends Controller
             $Validator=\Validator::make($data, [
                 "payeeaccount"=>"numeric",
                 "amount"=>"numeric|between:0.01,3000000",
-                "shujuyuan"=>"size:15"
+                "zbid"=>"size:15"
                 ],[
                 "numeric"=>":attribute 必须为纯数字",
                 "size"=>":attribute 必须为15位",

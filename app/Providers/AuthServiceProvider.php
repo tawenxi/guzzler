@@ -37,6 +37,11 @@ class AuthServiceProvider extends ServiceProvider
             });
         }
 
+        $gate->define('export', function($user){
+                return !(\Input::has('export'));
+            });
+
+
         
     }
 
