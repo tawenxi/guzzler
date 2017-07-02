@@ -27,7 +27,7 @@ class IncomeController extends Controller
     }
     public function indexs($fp=0)
     {
-        $incomes = Income::fp($fp)->orderBy('date')->paginate(30);
+        $incomes = Income::fp($fp)->orderBy('date')->paginate(300);
         return $this->excel->exportBlade('incomecost.showincome', compact('incomes'));
     }
 
@@ -93,7 +93,7 @@ class IncomeController extends Controller
     {
         Income::where('id',$id)->Update($request->only('date','zhaiyao','xingzhi','amount','cost','kemu','beizhu'));
         Session::flash("success", "更新收入成功");
-        return redirect()->to('/income');
+        return redirect()->to('/incomes');
     }
 
     /**

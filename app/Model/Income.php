@@ -43,6 +43,9 @@ class Income extends Model
             case '1':
                 return $query->where('xingzhi','扶贫整合资金');
                 break;
+            case '2':
+                return $query->where('xingzhi','');
+                break;
             case '2016':
                 return $query->where('zhaiyao','like','2016%')->where('xingzhi','扶贫整合资金');
                 break;

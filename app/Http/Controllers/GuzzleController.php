@@ -192,7 +192,7 @@ class GuzzleController extends Controller
         $zbidmowei = substr($zbid, -4);
         $this->validate($request, 
             [
-                'body' => "required|regex:/<?xml.+to_char%28iPDh%2B1%29%2C%270%27%2C%20%20zfpzdjbh.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
+                'body' => "required|min:4000|max:7000|regex:/<?xml.+to_char%28iPDh%2B1%29%2C%270%27%2C%20%20zfpzdjbh.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
             ],[
 
             'body.regex' => '数据源格式不正确,请检查Fillder是否有误或者支付类型有变',]);

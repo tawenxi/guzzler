@@ -73,7 +73,8 @@
         </td>
            <td>
         
-          {{substr($income->kemu, 1+strpos($income->kemu,"@"))}}
+         {{--  {{substr($income->kemu, 1+strpos($income->kemu,"@"))}} --}}
+          {{$income->kemu }}
         
         </td>
                <td>

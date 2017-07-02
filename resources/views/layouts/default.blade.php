@@ -5,6 +5,9 @@
     <link rel="stylesheet" href={{ asset('css/app.css') }}>
   </head>
   <body>
+@if (!\Auth::check())
+  @include('layouts._header')
+@endif
 @can('export')
     @include('layouts._header')
 @endcan
@@ -16,6 +19,9 @@
 @can('export')
         @include('layouts._footer')
 @endcan
+@if (!\Auth::check())
+  @include('layouts._footer')
+@endif
       </div>
     </div>
       <script src="/js/app.js"></script>
