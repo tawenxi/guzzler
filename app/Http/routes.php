@@ -111,7 +111,7 @@ Route::any('/costs','CostController@indexs')->name('cost.indexs');
 =            测试路由模型            =
 ==============================*/
 
-$router->get('ttt/{user}', function(Request $request,App\User $user) {
+$router->get('ttt/{user}', function(Request $request,App\Model\User $user) {
    echo Request::ip();
     dd($user->id);
 });
@@ -155,7 +155,7 @@ Route::get('excel', function() {
     Global $exce;
         $exce = 'cost';
         //dd($GLOBALS);
-        $import =app()->make("\App\SalaryListImport");
+        $import =app()->make("\App\Model\SalaryListImport");
         $ziduan=[
         'date',
         'payee',

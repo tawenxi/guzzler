@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +30,7 @@ class Salary extends Model
 
     public function member()
     {
-	   return $this->belongsTo('App\Member','member_id','id');
+	   return $this->belongsTo('App\Model\Member','member_id','id');
 	}
 
     public function setNameAttribute($name)

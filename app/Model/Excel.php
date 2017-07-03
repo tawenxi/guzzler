@@ -18,7 +18,7 @@ class Excel extends Model
 			Global $exce;
 			$exce = $excelFile;
 			$this->excelFile = $excelFile;
-			$this->import =app()->make("\App\SalaryListImport");
+			$this->import =app()->make("\App\Model\SalaryListImport");
 			$this->setDate();
 			$this->title = $this->getTitle();
 		}

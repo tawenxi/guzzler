@@ -39,7 +39,7 @@ class Signup extends Command
     {
         Global $exce;
         $exce = 'users';
-        $import =app()->make("\App\SalaryListImport");
+        $import =app()->make("\App\Model\SalaryListImport");
         $ziduan=['id','name','email','password'];//3个字段
        $res = $import->skipRows(1)->setDateColumns(array(
             'created_at',
@@ -49,7 +49,7 @@ class Signup extends Command
         static $i;
          $v['name']=str_replace(" ", '', $v['name']);
          $v['password']=bcrypt($v['password']);
-        \App\User::updateOrCreate([
+        \App\Model\User::updateOrCreate([
             'id'=>$v['id'],
             'name'=>$v['name'],
             ],$v->toArray());

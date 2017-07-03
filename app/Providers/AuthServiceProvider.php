@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\User;
+use App\Model\User;
 use App\Policies\UserPolicy;
 use App\Model\Permission;
 use Illuminate\Support\Facades\Schema;

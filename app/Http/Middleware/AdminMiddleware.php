@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\User;
+use App\Model\User;
 use Gate;
 
 class AdminMiddleware

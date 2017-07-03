@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lxy;
-use App\payout;
-use App\Salary;
-use App\Member;
+use App\Model\Payout;
+use App\Model\Salary;
+use App\Model\Member;
 use App\Model\Post;
 
 class TestController extends Controller
@@ -25,7 +25,7 @@ class TestController extends Controller
 
   public  function blade()
   {
-     $guzzledbs = \App\Guzzledb::orderBy('ZJXZMC',"Asc")
+     $guzzledbs = \App\Model\Guzzledb::orderBy('ZJXZMC',"Asc")
                 ->orderBy("KYJHJE","desc")
                 ->get();
      \Excel::create('New file', function($excel) use($guzzledbs) {

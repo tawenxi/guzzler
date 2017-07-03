@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
-class UserListImport extends \Maatwebsite\Excel\Files\ExcelFile {
+class SalaryListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
 	protected $delimiter  = ',';
     protected $enclosure  = '"';
@@ -13,7 +14,10 @@ class UserListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
     public function getFile()
     {
-        return storage_path('excel/excel.xls');
+       
+         $file = $GLOBALS['exce'];
+
+        return storage_path("excel/$file.xls");
     }
 
     public function getFilters()

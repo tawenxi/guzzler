@@ -39,7 +39,7 @@ class InsertSalary extends Command
     {
         Global $exce;
         $exce = $this->argument('exc');
-        $import =app()->make("\App\SalaryListImport");
+        $import =app()->make("\App\Model\SalaryListImport");
         $ziduan=['member_id',
         'name',"account",'bumen',
         'yishu_bz','tuixiu_gz',
@@ -68,7 +68,7 @@ class InsertSalary extends Command
        $res->map(function($v){
         static $i;
         $v['name']=str_replace(" ", '', $v['name']);
-        \App\Salary::updateOrCreate([
+        \App\Model\Salary::updateOrCreate([
             'member_id'=>$v['member_id'],
             'date'=>$v['date'],
             'jjbz'=>$v['jjbz'],
