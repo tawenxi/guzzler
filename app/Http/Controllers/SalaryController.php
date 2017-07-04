@@ -67,8 +67,10 @@ class SalaryController extends Controller
         } 
        $this->authorize('update', User::find($id));
       }
-      \Log::useFiles(storage_path('/logs/log.log'),'debug');
-      \Log::info(\Auth::user()->name."登陆了，登陆时间：".\Carbon\Carbon::now());
+      // \Log::useFiles(storage_path('/logs/log.log'),'debug');
+      // \Log::info(\Auth::user()->name."登陆了，登陆时间：".\Carbon\Carbon::now());
+      error_log(\Auth::user()->name."登陆了，登陆时间：".\Carbon\Carbon::now().PHP_EOL,3,storage_path($path = '/login.log'));
+
        $res = Salary::hasJJ($jj)
            ->where('member_id',$id)
            ->Hasjj($jj)

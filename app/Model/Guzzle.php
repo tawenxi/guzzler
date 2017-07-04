@@ -10,6 +10,8 @@ use App\Model\Guzzledb;
 use App\Acc\Acc;
 use App\Model\Payout;
 use App\Model\Getzb;
+use Exception;
+
 class Guzzle extends Model
 {
 	public $insertbody; //发送post的dq部分
@@ -44,14 +46,15 @@ class Guzzle extends Model
 		if ($res[0] === $amount) {
 			$this->amountData = $amount;
 		}else{
-			dd("[amount]数据异常");
+			throw new Exception("[amount]数据异常".__LINE__, 1);
+			
 		}
 		
 	}
 	private function getAmountData()
 	{
 		if (empty($this->amountData)) {
-			dd("[amount]数据异常");
+			throw new Exception("[amount]数据异常".__LINE__, 1);
 		}else{
 			return $this->amountData;
 		}
@@ -70,14 +73,14 @@ class Guzzle extends Model
 		if ($res[0] === $rizhi) {
 			$this->rizhiData = $rizhi;
 		}else{
-			dd("[rizhi]数据异常");
+			throw new Exception("[rizhi]数据异常".__LINE__, 1);
 		}
 		
 	}
 	private function getRizhiData()
 	{
 		if (empty($this->rizhiData)) {
-			dd("[rizhi]数据异常");
+			throw new Exception("[amount]数据异常".__LINE__, 1);
 		}else{
 			return $this->rizhiData;
 		}
@@ -86,7 +89,7 @@ class Guzzle extends Model
 	public function checkreplace($data1,$data2)
 	{
 	    if ($data1==$data2) {
-	    	dd("替换失败");
+	    	throw new Exception("替换失败".__LINE__, 1);
 	    }
 	}
 
@@ -120,7 +123,7 @@ class Guzzle extends Model
 		};
 		if (stristr($responsebody, "ERROR")) {
 			echo iconv('GB2312','UTF-8',$dq);
-			dd("sql语句错误----$responsebody");
+			throw new Exception("sql语句错误----$responsebody".__LINE__, 1);
 		}
 		/*=====  End of  判断Response中是否包含错误信息 ======*/
 		return $responsebody;
@@ -165,13 +168,13 @@ class Guzzle extends Model
 			\App\Model\Sql::create(['pid'=>$pid,'type'=>'addshouquan','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$this->insertbody)]);
 			/*=====  End of 进行增加的sql日志  ======*/
 			if (!(is_numeric($pid)&&is_numeric($djbh)&&$pid>20000&&$pid<100000&&$djbh>700&&$djbh<1000000)) {
-				dd("取回的编码错误");
+				throw new Exception("取回的编码错误".__LINE__, 1);
 			}
 			$this->add_rizhi($pid,$djbh);
 		/*=====  End of  进行日志增加   ======*/		
 		$this->deletefj($pid,$djbh);
 		} else {
-			dd("取回编码失败,没再进行日志插入和删除FJ");
+			throw new Exception("取回编码失败,没再进行日志插入和删除FJ".__LINE__, 1);
 		}
 		return $response2;
 	}
@@ -319,7 +322,8 @@ class Guzzle extends Model
         $this->checkreplace($copydata,$data);
         $ifsuccess=$this->makerequest($data);
         if (!stristr($ifsuccess,"NEWNO" )) {
-        	dd("$ifsuccess");
+        	//dd($ifsuccess);
+			throw new Exception("插入日志失败，可能是因为pid错误".__LINE__, 1);
         }
         \App\Model\Sql::create(['pid'=>$pid,'type'=>'addrizhi','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$data)]);
         return true; 
@@ -344,7 +348,8 @@ class Guzzle extends Model
 	     $this->checkreplace($copydata,$data);
 	    $ifsuccess = $this->makerequest($data);
         if (!stristr($ifsuccess,"ZB_ZFPZFJ" )) {
-        	dd("$ifsuccess");
+        	//dd("$ifsuccess");
+			throw new Exception("删除附件失败，可能是因为pid错误".__LINE__, 1);
         }
         \App\Model\Sql::create(['pid'=>$pid,'type'=>'deletefj','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$data)]);
         return true;

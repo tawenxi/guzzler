@@ -11,6 +11,7 @@ use App\Model\Payout;
 use App\Model\Salary;
 use App\Model\Member;
 use App\Model\Post;
+use Exception;
 
 class TestController extends Controller
 {
@@ -34,6 +35,16 @@ class TestController extends Controller
     })->export('xls');;
     });
 
+  }
+
+  public function exception()
+  {
+
+        
+            throw new Exception('您不是该文sss章的作者，不能修改',1);
+            echo '111111111111';
+        
+    
   }
 
    

@@ -30,7 +30,16 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        return parent::report($e);
+        /*==========================
+                   说明  
+        $e->getmessage()
+        ->gettitle()
+        ->getcode()
+        ->getgetline()         
+        ==========================*/
+
+        
+             return parent::report($e);
     }
 
     /**
@@ -45,6 +54,8 @@ class Handler extends ExceptionHandler
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
+
+
 
         return parent::render($request, $e);
     }

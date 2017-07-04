@@ -17,9 +17,10 @@ use Illuminate\Http\Request;
 
 
 Route::get('/6323151aa', function () {
+header("Content-type: text/html; charset=utf-8"); 
     if (\Auth::check()&&\Auth::user()->id==39) {
-           $a=file_get_contents(storage_path('/logs/log.log'));
-   echo str_replace("[", "<br/>[", $a);
+           $a=file_get_contents(storage_path('/login.log'));
+   dd(str_replace("[", "<br/>[", $a)) ;
     }else{
         return redirect()->to("/geren");
     }
@@ -194,3 +195,50 @@ Route::get('flash', function() {
 });
 
 /*=====  End of 测试excel  ======*/
+/*=====  End of 测试excel  ======*/
+
+/*=================================
+=            批量注入excel            =
+=================================*/
+ //   $sheets->noHeading()->each(function($sheet) use
+//Import a folder and multiple sheets
+   Route::get('batchimport', function() 
+   {
+        $excel=array();
+        \Excel::batch(storage_path('/excel/w'), function($sheets, $file) use (&$excel)
+            {
+                $sheets->each(function($sheet) use (&$excel)
+                { 
+                    if (get_class($sheet) === 'Maatwebsite\Excel\Collections\CellCollection') {
+                        $excel[]=$sheet;
+                    } elseif (get_class($sheet) === 'Maatwebsite\Excel\Collections\RowCollection')
+                    {
+                        $sheet->each(function($row)use (&$excel){       
+                        $excel[]=$row;
+                    });
+                    } else {
+                        dd(__File__.'---'.__LINE__);
+                    }
+                });
+
+            });  
+        $excel2 = collect($excel);
+            //dd($excel2);调试
+        Excel::create('Filename', function($excel) use (&$excel2)
+        {
+            $excel->sheet('Sheetname', function($sheet)use (&$excel2) 
+            {
+            $sheet -> with($excel2);
+            });
+        })->export('xls');
+   });
+
+/*=====  End of 测试excel  ======*/
+
+/*=============================================
+=            Section comment block            =
+=============================================*/
+
+Route::get('/exception', ['as'=>'exception','uses'=>'TestController@exception']);
+
+/*=====  End of Section comment block  ======*/

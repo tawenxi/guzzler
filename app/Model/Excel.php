@@ -5,6 +5,13 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Command;
 
+/*==================================================================
+  $arr = $this->setSkipNum()->getexcel()            =
+================================================================*/
+
+
+
+
 class Excel extends Model
 {
 	private $excelFile;
@@ -26,7 +33,10 @@ class Excel extends Model
 	}
 	public function getTitle()
 	{
-		return $this->import->first()->keys()->toArray();
+		return $this->import->first()->keys()->filter(
+			function($item){
+				return $item !=null;
+			})->toArray();
 	}
 
 	private function setDate()
@@ -39,7 +49,7 @@ class Excel extends Model
 
 	public function getExcel()
 	{
-		$skip = empty($this->skipNum)?100000:$this->skipNum;
+		$skip = empty($this->skipNum)?0:$this->skipNum;
 		return $this->import->skipRows($skip)->takeRows(2000)->get($this->title);
 	}
 
@@ -105,7 +115,6 @@ class Excel extends Model
 	{
 
 		$this->viewData = $viewData;
-			//dd($this->viewData);
 		return $this;
 	}
 

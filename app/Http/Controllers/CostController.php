@@ -25,13 +25,11 @@ class CostController extends Controller
     }
     public function indexs(\Illuminate\Http\Request $request)
     {
-        //dd($request);
         $a = is_null($request->order)?"date":$request->order;
         $my = is_null($request->my)?"50":$request->my;
         $date1 = \Input::has('date1')?\Input::get('date1'):date("Y-m-01",time());
         $date2 = \Input::has('date2')?\Input::get('date2'):date("Y-m-d H:i:s",time()+86400);
         $costs = Cost::whereBetween('date', [$date1, $date2])->orderBy($a,'desc')->paginate($my);
-        //dd($costs);
 
         return $this->excel->exportBlade('incomecost.showcost', compact('costs'));
     }

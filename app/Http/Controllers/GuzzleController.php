@@ -122,14 +122,12 @@ class GuzzleController extends Controller
             ]);
             if ($Validator->fails()) {
                 return \Redirect::to('/hyy')->withErrors($Validator);
-                dd("cuowu");
             }
         }
 
         foreach ($arr as $key => $value) 
         {
             if (count($value) != 8) {
-                dd($value);
                 session()->flash('warning', '输入字段数量不为8');
                 return redirect()->action('GuzzleController@hyy');
             }
@@ -219,7 +217,7 @@ class GuzzleController extends Controller
         $date1 = \Input::has('date1')?\Input::get('date1'):date("Y-m-01",time());
         $date2 = \Input::has('date2')?\Input::get('date2'):date("Y-m-d H:i:s",time()+86400);
         $payoutdatas=Payout::whereBetween('created_at', [$date1, $date2])->orderBy($a,'desc')->paginate($my);
-        return $this->excel->exportBlade('guzzle.payout',compact('payoutdatas','a','my'));
+        return $this->excel->exportBlade('guzzle.payout',compact('payoutdatas','a','my','date1','date2'));
     }
 
     /**

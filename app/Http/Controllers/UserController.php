@@ -52,7 +52,6 @@ class UserController extends Controller
         
         $request->session()->flash('success', "修改资料成功");
         return redirect()->route('geren');
-       // dd($request);
         
     }
 }

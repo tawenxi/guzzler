@@ -60,7 +60,7 @@
 			</tr>	
 			@endforeach
 		</tbody>
-	{!! $payoutdatas->appends(['order' => $a,'my' => $my])->render() !!}
+	{!! $payoutdatas->appends(['order' => $a,'my' => $my,'date1'=>$date1,'date2'=>$date2])->render() !!}
 
 	</table>
 			<hr>
