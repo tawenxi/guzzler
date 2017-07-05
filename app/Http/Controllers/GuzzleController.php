@@ -185,7 +185,6 @@ class GuzzleController extends Controller
      */
     public function store(\Illuminate\Http\Request $request)
     {
-       // dd($request);
         $zbid = $request->zbid;
         $zbidmowei = substr($zbid, -4);
         $this->validate($request, 
@@ -212,7 +211,6 @@ class GuzzleController extends Controller
     {   //$a='created_at';
         $a = is_null($request->order)?"created_at":$request->order;
         $my = is_null($request->my)?"50":$request->my;
-       // dd($a);
        
         $date1 = \Input::has('date1')?\Input::get('date1'):date("Y-m-01",time());
         $date2 = \Input::has('date2')?\Input::get('date2'):date("Y-m-d H:i:s",time()+86400);
