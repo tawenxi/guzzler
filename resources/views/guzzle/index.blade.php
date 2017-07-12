@@ -61,6 +61,14 @@
 			</tr>	
 			@endforeach
 		</tbody>
+					<tr class='success'>
+				<th>指标ID</th>
+				<th>摘要</th>
+				<th>预算项目</th>
+				<th>{{($guzzledbs->sum('YKJHZB'))/10000}}</th>
+				<th>{{$guzzledbs->sum('KYJHJE')/10000}}</th>
+				<th>编辑</th>
+			</tr>
 	</table>
 
 

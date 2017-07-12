@@ -46,6 +46,11 @@ class Income extends Model
             case '2':
                 return $query->where('xingzhi','');
                 break;
+
+            case '8':
+                return $query->where('date',\Carbon\Carbon::parse('2017/04/01')->toDateTimeString());
+                break;
+
             case '2016':
                 return $query->where('zhaiyao','like','2016%')->where('xingzhi','扶贫整合资金');
                 break;

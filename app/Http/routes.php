@@ -242,3 +242,6 @@ Route::get('flash', function() {
 Route::get('/exception', ['as'=>'exception','uses'=>'TestController@exception']);
 
 /*=====  End of Section comment block  ======*/
+
+
+Route::get('/yj', 'YaojiangController@index');
