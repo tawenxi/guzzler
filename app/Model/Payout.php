@@ -11,4 +11,8 @@ class Payout extends Model
 	return $this->belongsTo('App\Model\Guzzledb','zbid','ZBID');
     }
 
+    public function setDateAttribute($val){
+    	return $this->attributes['created_at']->toDateString();
+    }
+
 }

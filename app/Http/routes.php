@@ -244,4 +244,17 @@ Route::get('/exception', ['as'=>'exception','uses'=>'TestController@exception'])
 /*=====  End of Section comment block  ======*/
 
 
-Route::get('/yj', 'YaojiangController@index');
+Route::get('/yj', 'YaojiangController@account');
+
+
+/*==============================
+=            查询会计科目            =
+==============================*/
+
+Route::get('/searchacc','SearchController@account');
+Route::post('/api/account','SearchController@store');
+Route::post('/api/addaccount','SearchController@addstore');
+Route::post('/api/payout','SearchController@payout');
+Route::post('/api/payout_with_date','SearchController@payout_with_date');
+Route::get('/modifyacc','SearchController@modifyacc');
+/*=====  End of 查询会计科目  ======*/

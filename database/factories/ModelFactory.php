@@ -59,3 +59,11 @@ $factory->define(App\Model\Income::class, function (Faker\Generator $faker) {
 
     ];
 });
+
+
+$factory->define(App\Model\Account::class, function (Faker\Generator $faker) {
+    return [
+        'account_number' => '1',
+        'account_name' => 'name',
+    ];
+});

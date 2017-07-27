@@ -78,7 +78,7 @@
             </div>
             <div class="form-group">
               <label for="body"><font color="black">数据源：</font></label>
-              <textarea type="textarea" name="body" class="form-control" >{{ $guzzledb->body }}</textarea>
+              <textarea type="textarea" name="body" class="form-control" rows="20" >{{ $guzzledb->body }}</textarea>
             </div>
 
             <button type="submit" class="btn btn-block btn-success">更新</button>

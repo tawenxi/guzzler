@@ -26,7 +26,7 @@
 
             @if ( strstr($request->ip(),"192.168") )
             
-
+            <li><a href="/searchacc">查询</a></li>
             <li><a href="/payout">支出</a></li>
             <li><a href="/hyy">外网查询</a></li>
             <li><a href="/dpt">大平台更新</a></li>

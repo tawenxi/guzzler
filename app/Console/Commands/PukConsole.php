@@ -65,9 +65,9 @@ class PukConsole extends Command
             });
             $jiang = $res->filter(function($item)
                 {
-                    return $item >= 8;
+                    return $item >= 5;
                 });
-            if ($res->get(2)==7 || $jiang!=collect($value = null)) 
+            if ($res->get(2)==4 || $jiang!=collect($value = null)) 
             {
                 $i++;
                 $string='';
