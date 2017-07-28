@@ -264,8 +264,8 @@ Route::get('/modifyacc','SearchController@modifyacc');
 =            zhibiaoController            =
 =========================================*/
 
-Route::get('/zhibiao', 'zhibiaoController@index');
-Route::get('/zbdetail', 'zhibiaoController@zb_detail');
-Route::get('/showzbdetail/{zbid}', 'zhibiaoController@show');
+Route::get('/zhibiao', 'ZhibiaoController@index');
+Route::get('/zbdetail', 'ZhibiaoController@zb_detail');
+Route::get('/showzbdetail/{zbid}', 'ZhibiaoController@show');
 /*=====  End of zhibiaoController  ======*/
 
