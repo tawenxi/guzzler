@@ -11,9 +11,11 @@ use App\Acc\Acc;
 use App\Model\Payout;
 use App\Model\Getzb;
 use Exception;
+use App\Model\Zhibiao;
 
 class Guzzle extends Model
 {
+	use Zhibiao;
 	public $insertbody; //发送post的dq部分
 	public $payee = []; //需要替换的银行信息
 	public $data;  //用来转化utf->GBK

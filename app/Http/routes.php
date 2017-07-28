@@ -258,3 +258,14 @@ Route::post('/api/payout','SearchController@payout');
 Route::post('/api/payout_with_date','SearchController@payout_with_date');
 Route::get('/modifyacc','SearchController@modifyacc');
 /*=====  End of 查询会计科目  ======*/
+
+
+/*=========================================
+=            zhibiaoController            =
+=========================================*/
+
+Route::get('/zhibiao', 'zhibiaoController@index');
+Route::get('/zbdetail', 'zhibiaoController@zb_detail');
+Route::get('/showzbdetail/{zbid}', 'zhibiaoController@show');
+/*=====  End of zhibiaoController  ======*/
+
