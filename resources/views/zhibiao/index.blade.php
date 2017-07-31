@@ -65,8 +65,8 @@
 				<th>指标ID</th>
 				<th>摘要</th>
 				<th>预算项目</th>
-				<th>{{($results->sum('YKJHZB'))/10000}}</th>
-				<th>{{$results->sum('KYJHJE')/10000}}</th>
+				<th>{{($results->sum('JE'))/10000}}</th>
+				<th>{{$results->sum('detail')/10000}}</th>
 				<th>编辑</th>
 			</tr>
 	</table>

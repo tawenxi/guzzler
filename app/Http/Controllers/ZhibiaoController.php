@@ -19,6 +19,7 @@ class ZhibiaoController extends Controller
      */
     public function index(Request $request, Guzzle $guzzle)
     {
+        dd($request->ip());
         if (!strstr($request->ip(),"192.168")) {
         $zb_data = $guzzle->get_ZB();
         $collection = collect($zb_data);
@@ -27,8 +28,8 @@ class ZhibiaoController extends Controller
             return $info;
             });
        };
-        $results = ZB::all();
-       // dd($results);
+        $results = ZB::get();
+        //dd($results->sum('ZBYE'));
         return view('zhibiao.index',compact('results'))->render();
     }
 

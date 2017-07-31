@@ -7,12 +7,19 @@ use App\Model\ZbDetail;
 
 class Zb extends Model
 {
-	public $timestamps=false;
+    public $timestamps=false;
 
-	public function zbdetails()
+    public function zbdetails()
     {
     	return $this->hasMany(ZbDetail::class,'ZBID','ZBID');
     }
+
+    public function GetDetailAttribute()
+    {
+      return $this->zbdetails->sum('JE');
+    }
+
+
 
     protected $fillable = [
     'id'
