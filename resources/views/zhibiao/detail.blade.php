@@ -12,6 +12,7 @@
 		<thead>
 			<tr class='success'>
 				<th>支出ID</th>
+				<th>日期</th>
 				<th>摘要</th>
 				<th>预算单位</th>
 				<th>总金额</th>
@@ -25,6 +26,13 @@
 				<td>
 				
 					{{$result->BGDJID}} 
+
+					
+				
+				</td>
+				<td>
+				
+					{{$result->LR_RQ}} 
 
 					
 				

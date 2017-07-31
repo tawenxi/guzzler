@@ -55,7 +55,7 @@ class ZhibiaoController extends Controller
     public function zb_detail(Guzzle $guzzle)
     {
         
-        $results = ZbDetail::orderBy('BGDJID','desc')->get();
+        $results = ZbDetail::orderBy('BGDJID','LR_RQ')->get();
         return view('zhibiao.detail',compact('results'))->render();
        
     }
