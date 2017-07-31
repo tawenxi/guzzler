@@ -26,15 +26,8 @@ class ZhibiaoController extends Controller
         $info = Zb::updateOrCreate(['ZBID' => $item['ZBID']], $item);
             return $info;
             });
-       };
-        $results = ZB::get();
-        //dd($results->sum('ZBYE'));
-        return view('zhibiao.index',compact('results'))->render();
-    }
 
-
-    public function zb_detail(Guzzle $guzzle)
-    {
+        if (\Input::has('update')) {
         $ZBIDS = ZB::get(['ZBID']);
         foreach ($ZBIDS as $key => $value) {
             $zb_data = $guzzle->get_detail($value->ZBID);
@@ -47,14 +40,23 @@ class ZhibiaoController extends Controller
                 ZbDetail::updateOrCreate(['BGDJID' => $v['BGDJID']], $v);
                 return $v;
                });
-
             }
-
-
             
-        }
-        
+            }
+       
+            }
+        };
+        $results = ZB::get();
+        //dd($results->sum('ZBYE'));
+        return view('zhibiao.index',compact('results'))->render();
+    }
 
+
+    public function zb_detail(Guzzle $guzzle)
+    {
+        
+        $results = ZbDetail::orderBy('BGDJID','desc')->get();
+        return view('zhibiao.detail',compact('results'))->render();
        
     }
 

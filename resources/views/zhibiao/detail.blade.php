@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-<h1>枚江镇指标支出明细表</h1>
+<h1>枚江镇指标支出所有明细表</h1>
 @include('shared.errors')
 
 <article>
@@ -11,70 +11,56 @@
 
 		<thead>
 			<tr class='success'>
-				<th>日期</th>
+				<th>支出ID</th>
 				<th>摘要</th>
-				<th>金额</th>
-				<th>单位</th>
-				<th>项目名称</th>
-				<th>支出类别</th>
-				<th>XZ</th>
-				
+				<th>预算单位</th>
+				<th>总金额</th>
+				<th>支出类型</th>
+			
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
 				@foreach ($results as $result)
-			<tr class={{ empty($result->body)?'alert-danger':""}}>
-			<td>
-				
-					{{$result->LR_RQ}}
-				
-				</td>
-			<td>
-				<a href="showzbdetail/{{ $result->ZBID }}">
-					{{$result->ZY}}
-				</a>
-				</td>
+			<tr>
 				<td>
 				
-					{{$result->JE}} 
+					{{$result->BGDJID}} 
 
 					
 				
 				</td>
+				<td>
 				
+					{{$result->ZY}}
 				
+				</td>
 				<td>
 				
 					{{$result->YSDWMC}}
 				
 				</td>
+				<td>
+				
+					{{$result->JE}}
+				
+				</td>
 				
 				<td>
 				
-					{{$result->XMMC}}
+					{{$result->ZFFSMC}}
 				
 				</td>
-				<td >
 				
-			{{$result->ZCLXMC}}
-				
-				</td>
-						<td >
-				
-			{{$result->ZJXZDM}}
-				
-				</td>
 			</tr>	
 			@endforeach
 		</tbody>
 					<tr class='success'>
-				<th>日期</th>
+				<th>指标ID</th>
 				<th>摘要</th>
-				<th>金额</th>
-				<th>单位</th>
-				<th>项目名称</th>
-				<th>支出类别</th>
-				<th>XZ</th>
+				<th>预算项目</th>
+				<th>{{($results->sum('JE'))/10000}}</th>
+				<th>{{$results->sum('detail')/10000}}</th>
+				<th>支出数</th>
 			</tr>
 	</table>
 
