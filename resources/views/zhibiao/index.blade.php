@@ -16,12 +16,12 @@
 				<th>预算项目</th>
 				<th>总金额</th>
 				<th>可用金额</th>
-				<th>编辑</th>
+				<th>支出数</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
 				@foreach ($results as $result)
-			<tr class={{ empty($result->body)?'alert-danger':""}}>
+			<tr class={{ abs($result->JE-$result->zbdetails->sum('JE'))<1?'alert-danger':""}}>
 				<td>
 				
 					<a href="showzbdetail/{{ $result->ZBID }}">{{$result->ZBID}} 
@@ -50,13 +50,10 @@
 					{{round($result->JE-$result->zbdetails->sum('JE'),2)}}
 				
 				</td>
-				<td class='btn btn-link'>
+				<td >
 				
-			{!! Form::open(['method' => 'get', 'route' => ['guzzle.edit',$result->id], 'class' => 'form-horizontal']) !!}
-          {!! Form::submit('编辑', ['class' => 'btn btn-success pull-right']) !!}
-          
-          {!! Form::close() !!}
-				
+			
+				{{ $result->zbdetails->count() }}
 				</td>
 			</tr>	
 			@endforeach
@@ -67,7 +64,7 @@
 				<th>预算项目</th>
 				<th>{{($results->sum('JE'))/10000}}</th>
 				<th>{{$results->sum('detail')/10000}}</th>
-				<th>编辑</th>
+				<th>支出数</th>
 			</tr>
 	</table>
 

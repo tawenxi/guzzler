@@ -19,8 +19,7 @@ class ZhibiaoController extends Controller
      */
     public function index(Request $request, Guzzle $guzzle)
     {
-        dd($request->ip());
-        if (!strstr($request->ip(),"192.168")) {
+        if (strstr($request->ip(),"192.168") AND !(\Input::has('show'))) {
         $zb_data = $guzzle->get_ZB();
         $collection = collect($zb_data);
         $collection = $collection->map(function ($item){    
