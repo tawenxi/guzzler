@@ -12,22 +12,27 @@ use App\Model\Payout;
 use App\Model\Getzb;
 use Exception;
 use App\Model\Zhibiao;
+use App\Model\Http;
+use App\Model\Data;
 
 class Guzzle extends Model
 {
-	use Zhibiao;
+	use Zhibiao;use Data;
 	public $insertbody; //发送post的dq部分
 	public $payee = []; //需要替换的银行信息
 	public $data;  //用来转化utf->GBK
 	public $balancebody;//查询余额的dp
 	private $amountData;//[金额数据]
 	private $rizhiData;//[日志数据]
+	private $http;//[日志数据]
 
 
-	public function __construct(Getzb $Getzb, $payee = [])
+
+	public function __construct(Getzb $Getzb, Http $http, $payee = [])
 	{
 		$this->payee = $payee;
 		$this->Getzb = $Getzb;
+		$this->http = $http;
         if (!empty($payee)) {
 			$zb = Guzzledb::where('ZBID',$payee["zbid"])->firstOrFail();
 			$this->insertbody = trim($zb->body);
@@ -95,41 +100,6 @@ class Guzzle extends Model
 	    }
 	}
 
-/**
- 
- 	TODO:
- 	- 发送sql语句
-    @接收sql语句
-    @返回sql response
- 	 
-  */
-	public function makerequest($dq)//根据body属性发送请求
-	{
-		$client = new Client();
-		$response = $client->request('POST', 'http://10.108.8.1:7007/Proxy', 
-		[
-			'form_params' => 
-				[
-					'cVer' => '9.8.0',
-					'dp'=>$dq,
-				],		
-		]);
-		$code = $response->getStatusCode(); // 200
-		$responsebody = $response->getBody();
-		$responsebody = iconv('GB2312','UTF-8', $responsebody);
-		/*=============================================
-		=            判断Response中是否包含错误信息          =
-		=============================================*/
-		if(strlen($responsebody)<520){
-			//echo "success<br/>";			
-		};
-		if (stristr($responsebody, "ERROR")) {
-			echo iconv('GB2312','UTF-8',$dq);
-			throw new Exception("sql语句错误----$responsebody".__LINE__, 1);
-		}
-		/*=====  End of  判断Response中是否包含错误信息 ======*/
-		return $responsebody;
-	}
 
    /**
  
@@ -152,7 +122,7 @@ class Guzzle extends Model
 		$this->accountreplace($this->payee);
 		$this->amountreplace($zbamount);
 		$this->insertbody=$this->timereplace($this->insertbody);
-		$response2 = $this->makerequest($this->insertbody);
+		$response2 = $this->http->makerequest($this->insertbody);
 		/*=============================================
 		=            进行日志增加            =
 		=============================================*/
@@ -322,7 +292,7 @@ class Guzzle extends Model
         $this->setRizhiData($data2);
         $data = preg_replace($pattern,$this->getRizhiData(),$data);
         $this->checkreplace($copydata,$data);
-        $ifsuccess=$this->makerequest($data);
+        $ifsuccess=$this->http->makerequest($data);
         if (!stristr($ifsuccess,"NEWNO" )) {
         	//dd($ifsuccess);
 			throw new Exception("插入日志失败，可能是因为pid错误".__LINE__, 1);
@@ -348,7 +318,7 @@ class Guzzle extends Model
 	    $copydata = $data;
 	    $data = str_replace("21886", $pid, $data);
 	     $this->checkreplace($copydata,$data);
-	    $ifsuccess = $this->makerequest($data);
+	    $ifsuccess = $this->http->makerequest($data);
         if (!stristr($ifsuccess,"ZB_ZFPZFJ" )) {
         	//dd("$ifsuccess");
 			throw new Exception("删除附件失败，可能是因为pid错误".__LINE__, 1);
@@ -374,12 +344,5 @@ class Guzzle extends Model
 		=            findquery           =
 		=============================================*/
 		
-	public $findquery_xingzheng = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006001%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170425%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%274%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
-		//*********************************************************************
-	public $findquery_benji = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">begin%20%20zbsp_ZFPZJYJH%28%20%20%20szkjnd=%26gt;%272017%27%2C%20%20%20szGsdm=%26gt;%27001%27%2C%20%20%20szdzkdm=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szzffsdm=%26gt;%2702%27%2C%20%20%20szdwdm=%26gt;%27901006000%27%2C%20%20%20szYWLX=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZJXZDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20szZBLYDM=%26gt;%27%C8%AB%B2%BF%27%2C%20%20%20SJQXFX=%26gt;%270100000000%27%2C%20%20%20QYQX=%26gt;0%2C%20%20%20CZYID=%26gt;899%20%2C%20%20JHDBGZKZ=%26gt;%270%27%2C%20%20ZBDBGZKZ=%26gt;%271%27%2C%20%20szTJ=%26gt;%27_%27%2C%20%20szKJRQ=%26gt;%2720170511%27%2C%20%20%20szRQKZ=%26gt;%270%27%2C%20%20%20szYF=%26gt;%275%27%2C%20%20%20szXJBZ=%26gt;%270%27%2C%20%20%20szXJKZ=%26gt;%270%27%2C%20%20%20szYKJHZT=%26gt;%270%27%2C%20%20%20szFXJKZ=%26gt;%270%27%2C%20%20%20szDJKZYS=%26gt;%270001111111011100%27%2C%20%20%20szSelect=%26gt;%27ZJXZDM%2CZBLYDM%2CYSKMDM%2CJFLXDM%2CZCLXDM%2CYSGLLXDM%2CDZKDM%2CXMDM%2CZFFSDM%2CYSDWDM%27%2C%20%20%20szGrp=%26gt;%27B%2EZJXZDM%2CB%2EZBLYDM%2CB%2EYSKMDM%2CB%2EJFLXDM%2CB%2EZCLXDM%2CB%2EYSGLLXDM%2CB%2EDZKDM%2CB%2EXMDM%2CB%2EZFFSDM%2CB%2EYSDWDM%27%2C%20%20%20CXJEKZ=%26gt;%270%27%2C%20%20%20pRecCur=%26gt;:pRecCur%20%29;end%20;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
-		/*=====  End of findquery  ======*/
-
-	private $RZ_data = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">%20begin%20%20%20declare%20maxNo%20int;%20%20%20begin%20%20%20%20%20%20Select%20nvl%28Max%28no%29%2C0%29%2B1%20into%20maxNo%20from%20ZB_czrz%20%20%20where%20station%20like%20%27PC%2D20161129CAOZ%25%27%20;%20%20%20%20insert%20into%20ZB_czrz%28station%2C%20no%2C%20name%2C%20%26quot;DATE%26quot;%2C%20zwrq%2C%20qssj%2C%20zzsj%2C%20cznr%2Ccznrkz%29%20%20%20%20values%20%28%27PC%2D20161129CAOZ_10%2E111%2E102%2E41%27%2CmaxNo%2C%27%B8%B5%B0%AE%C7%ED%27%2C%20TO_CHAR%28SYSDATE%2C%27YYYYMMDD%27%29%2C%2720170516%27%20%20%20%20%2CTO_CHAR%28SYSDATE%2C%27HH24:MI:SS%27%29%2CTO_CHAR%28SYSDATE%2C%27HH24:MI:SS%27%29%2C%27[%CA%DA%C8%A8%D6%A7%B8%B6%C6%BE%D6%A4][%D0%C2%D4%F6][001%2C2017%2C201705%2C21886]%27%2C%27%27%29%20;%20%20%20%20%20commit;%20%20%20%20%20%20open%20:pRecCur%20for%20select%20maxNo%20NewNo%20from%20dual;%20%20%20%20end;%20end;</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
-
-	private $FJ_data = '<?xml version="1.0" encoding="GB2312"?><R9PACKET version="1"><SESSIONID></SESSIONID><R9FUNCTION><NAME>AS_DataRequest</NAME><PARAMS><PARAM><NAME>ProviderName</NAME><DATA format="text">DataSetProviderData</DATA></PARAM><PARAM><NAME>Data</NAME><DATA format="text">Begin%20%20%20delete%20from%20ZB_ZFPZFJ%20where%20%20%20%20%20%20GSDM=%27001%27%20%20and%20KJND=%272017%27%20%20and%20PDQJ=%27201704%27%20%20and%20ZFLB=%270%27%20%20and%20PDH=21886%20;%20%20commit%20;%20%20%20open%20:pRecCur%20for%20select%200%20ierrCount%20from%20dual;%20Exception%20when%20others%20then%20RollBack%20;%20end;%20</DATA></PARAM></PARAMS></R9FUNCTION></R9PACKET>';
+	
 }

@@ -13,6 +13,7 @@ use App\Model\Payout;
 use App\Acc\Acc;
 use App\Model\Excel;
 use App\Model\Getzb;
+use App\Model\Http;
 
 
 
@@ -145,7 +146,7 @@ class GuzzleController extends Controller
         $successi = 0;
 		foreach ($arr as $key => $value) 
 		{
-			$guzz = \App::make(Guzzle::class,[app()->make(Getzb::class),$value]);//传入一个一位数组（账户信息）
+			$guzz = \App::make(Guzzle::class,[app()->make(Getzb::class),app()->make(Http::class),$value]);//传入一个一位数组（账户信息）
             if (stristr($arr[$key]['kemu'], "#")) {
                 session()->flash('info',  "第".(1+$successi).'条数据做账成功但未授权支付');
             } else {

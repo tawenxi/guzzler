@@ -9,9 +9,19 @@ use App\Http\Controllers\Controller;
 use App\Model\Guzzle;
 use App\Model\Zb;
 use App\Model\ZbDetail;
+use App\Model\Excel;
 
 class ZhibiaoController extends Controller
 {
+    public function __construct(Excel $excel)
+    {
+    $this->middleware('auth');
+    $this->middleware('admin');
+    $this->middleware('sudo');
+    $this->excel = $excel;
+
+    $this->guzzleexcel = \App::make(Excel::class,['excel']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +58,7 @@ class ZhibiaoController extends Controller
         };
         $results = ZB::get();
         //dd($results->sum('ZBYE'));
-        return view('zhibiao.index',compact('results'))->render();
+        return $this->excel->exportBlade('zhibiao.index',compact('results'))->render();
     }
 
 
@@ -56,7 +66,7 @@ class ZhibiaoController extends Controller
     {
         
         $results = ZbDetail::orderBy('BGDJID','LR_RQ')->get();
-        return view('zhibiao.detail',compact('results'))->render();
+        return $this->excel->exportBlade('zhibiao.detail',compact('results'))->render();
        
     }
 
@@ -90,7 +100,7 @@ class ZhibiaoController extends Controller
     public function show($zbid)
     {
         $results = ZbDetail::where('ZBID',$zbid)->get();
-        return view('zhibiao.showzbdetail',compact('results'))->render();
+        return $this->excel->exportBlade('zhibiao.showzbdetail',compact('results'))->render();
     }
 
     /**
