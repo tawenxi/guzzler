@@ -4,10 +4,23 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Model\Zb;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class ZbDetail extends Model
 {
+    use SearchableTrait;
     public $timestamps=false;
+
+    protected $searchable = [
+    'columns' => [
+        'zb_details.ZY' => 10,
+        'zb_details.JE' => 10,
+        'zb_details.LR_RQ' => 5,
+        'zb_details.YSDWMC' => 5,
+        'zb_details.YSKMMC' => 5,
+        'zb_details.ZFFSMC' => 5,
+        ]
+    ];
 
     public function zb()
     {

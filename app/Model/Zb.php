@@ -4,9 +4,37 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Model\ZbDetail;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Zb extends Model
 {
+    use SearchableTrait;
+        /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        /**
+         * Columns and their priority in search results.
+         * Columns with higher values are more important.
+         * Columns with equal values have equal importance.
+         *
+         * @var array
+         */
+        'columns' => [
+            'zbs.ZY' => 10,
+            'zbs.JE' => 10,
+            'zbs.LR_RQ' => 2,
+            'zbs.YSDWMC' => 5,
+            'zb_details.ZY' => 2,
+            'zb_details.JE' => 1,
+        ],
+        'joins' => [
+            'zb_details' => ['zbs.ZBID','zb_details.ZBID'],
+        ],
+    ];
+
     public $timestamps=false;
 
     public function zbdetails()

@@ -12,6 +12,7 @@
 		<thead>
 			<tr class='success'>
 				<th>指标ID</th>
+				<th>日期</th>
 				<th>摘要</th>
 				<th>预算项目</th>
 				<th>总金额</th>
@@ -27,6 +28,11 @@
 					<a href="showzbdetail/{{ $result->ZBID }}">{{$result->ZBID}} 
 
 					</a>
+				
+				</td>
+					<td>
+				
+					{{$result->LR_RQ}}
 				
 				</td>
 				<td>
