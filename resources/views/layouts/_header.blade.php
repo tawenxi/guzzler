@@ -42,6 +42,8 @@
                 
                 <li><a href="{{ route('edit') }}">修改密码</a></li>
                 @can('showAllSalary')
+                <li><a href="/zhibiao">[收入]</a></li>
+                <li><a href="/zbdetail">[支出]</a></li>
                 <li><a href="/incomes">收入</a></li>
                 <li><a href="/income/create">新建收入</a></li>
                 <li><a href="/costs">支出</a></li>

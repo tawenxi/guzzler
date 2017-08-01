@@ -56,7 +56,7 @@
 				</td>
 				<td >
 				
-			{{$result->ZCLXMC}}
+			{{$result->ZFFSMC}}
 				
 				</td>
 						<td >

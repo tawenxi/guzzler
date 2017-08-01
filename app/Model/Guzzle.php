@@ -9,15 +9,17 @@ use GuzzleHttp\Client;
 use App\Model\Guzzledb;
 use App\Acc\Acc;
 use App\Model\Payout;
-use App\Model\Getzb;
+use App\Model\Getsqzb;
 use Exception;
-use App\Model\Zhibiao;
+use App\Model\Tt\Zhibiao;
 use App\Model\Http;
-use App\Model\Data;
+use App\Model\Tt\Data;
+use App\Model\Tt\Replace;
+use App\Model\Test;
 
 class Guzzle extends Model
 {
-	use Zhibiao;use Data;
+	use Zhibiao;use Data;use Replace;
 	public $insertbody; //发送post的dq部分
 	public $payee = []; //需要替换的银行信息
 	public $data;  //用来转化utf->GBK
@@ -28,10 +30,10 @@ class Guzzle extends Model
 
 
 
-	public function __construct(Getzb $Getzb, Http $http, $payee = [])
+	public function __construct(Getsqzb $Getsqzb, Http $http, $payee = [])
 	{
 		$this->payee = $payee;
-		$this->Getzb = $Getzb;
+		$this->Getsqzb = $Getsqzb;
 		$this->http = $http;
         if (!empty($payee)) {
 			$zb = Guzzledb::where('ZBID',$payee["zbid"])->firstOrFail();
@@ -93,12 +95,7 @@ class Guzzle extends Model
 		}
 	}
 
-	public function checkreplace($data1,$data2)
-	{
-	    if ($data1==$data2) {
-	    	throw new Exception("替换失败".__LINE__, 1);
-	    }
-	}
+
 
 
    /**
@@ -110,19 +107,27 @@ class Guzzle extends Model
   */
 	public function add_post()
 	{	
+		Test::log(__METHOD__.'根据一行数据获取对象的指标信息');
 		$zb = $this->get_zbdata($this->payee);//获取最新数据
 		if ($zb["KYJHJE"]<$this->payee['amount']) {
+		Test::log("!!!金额不足");
+
 			echo $zb["KYJHJE"];
 			echo "<";
 			echo $this->payee['amount'];
 			redirect()->action("GuzzleController@dpt");
 			die();	
 		}
+		Test::log(__METHOD__.'验证金额足够');
 		$zbamount = $zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$this->payee['amount'];
+		Test::log(__METHOD__.'生成金额数据');
+
 		$this->accountreplace($this->payee);
 		$this->amountreplace($zbamount);
 		$this->insertbody=$this->timereplace($this->insertbody);
+		Test::log(__METHOD__.'替换时间金额账户信息');
 		$response2 = $this->http->makerequest($this->insertbody);
+		Test::log(__METHOD__.'发送POST请求');
 		/*=============================================
 		=            进行日志增加            =
 		=============================================*/
@@ -134,20 +139,28 @@ class Guzzle extends Model
 			preg_match('/DJBH="\d+"/', $response3,$djbh);
 			preg_match('/\d+/', $djbh[0],$djbh);
 			$djbh=(string)$djbh[0];
+			Test::log(__METHOD__.'获取RESPONSE中的PID和DJBH');
 			/*==================================
 			=            记录增加的sql日志            =
 			==================================*/
 			\App\Model\Sql::create(['pid'=>$pid,'type'=>'addshouquan','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$this->insertbody)]);
+			Test::log(__METHOD__.'插入数据库');
 			/*=====  End of 进行增加的sql日志  ======*/
+
 			if (!(is_numeric($pid)&&is_numeric($djbh)&&$pid>20000&&$pid<100000&&$djbh>700&&$djbh<1000000)) {
+				Test::log(__METHOD__.'!!!取回的编码错误');
 				throw new Exception("取回的编码错误".__LINE__, 1);
 			}
+		Test::log(__METHOD__.'验证PID和DJBH合法性成功');
+
 			$this->add_rizhi($pid,$djbh);
+
 		/*=====  End of  进行日志增加   ======*/		
 		$this->deletefj($pid,$djbh);
 		} else {
 			throw new Exception("取回编码失败,没再进行日志插入和删除FJ".__LINE__, 1);
 		}
+		Test::log(__METHOD__.'插入日志成功');
 		return $response2;
 	}
 
@@ -160,12 +173,14 @@ class Guzzle extends Model
   */
 	public function get_zbdata($payee)
 	{		
-		$finddata = $this->getzb();           
+		Test::log(__METHOD__.'获取所有的授权指');
+		$finddata = $this->Getsqzb->getsqdata();
 		$collection = collect($finddata);
 		$filtered = $collection->filter(function ($item) use($payee)
 			{	
    				return $item['ZBID'] == trim($payee['zbid']);
 			});
+		Test::log(__METHOD__.'过滤指标');
 		$zb = $filtered->pop();
 		return $zb;
 	}
@@ -216,16 +231,7 @@ class Guzzle extends Model
  	- 返回@data
  	 
   */
-	public function timereplace($data)
-	{
-		$pattern ="/\'\s*20[123]([0-9]{5})\s*\'/";
-		$pattern1 ="/\'\s*20[123]([0-9]{3})\s*\'/"; 
-		$pattern2 ="/\'\s*20[123]([0-9]{1})\s*\'/"; 
-		$data = preg_replace($pattern,"to_char(sysdate,'yyyymmdd')",$data);
-		$data = preg_replace($pattern1,"to_char(sysdate,'yyyymm')",$data);
-		$data = preg_replace($pattern2,"to_char(sysdate,'yyyy')",$data);
-		return $data;
-	}
+	
 
 
 	public function setpayee($payee = [])//还没开始使用
@@ -233,11 +239,7 @@ class Guzzle extends Model
 		$this->payee = $payee;
 	}
 
-	public function jiema($data)//传入加密内容 解码
-	{
-		$data = urldecode($data);
-		return $data;
-	}
+
 
 
 	   /**
@@ -248,7 +250,7 @@ class Guzzle extends Model
    */
 	public function updatedb()
 	{
-		$finddata = $this->getzb();
+		$finddata = $this->Getsqzb->getsqdata();
 		$collection = collect($finddata);
 		$collection = $collection->map(function ($item){	
 		$info = Guzzledb::updateOrCreate(['ZBID' => $item['ZBID']], $item);
@@ -256,17 +258,7 @@ class Guzzle extends Model
 			});
 	}
 
-	   /**
- 
- 	TODO: 返回@可用授权指标数组
- 	- 传入@
- 	- 返回@可用授权指标数组
- 	 
-  */
-	public function getzb()
-	{
-		return $this->Getzb->getfinddata($this);
-	}
+
 
 
 
@@ -280,10 +272,13 @@ class Guzzle extends Model
 	public function add_rizhi($pid, $djbh)
 	{
         $data = $this->jiema($this->RZ_data);
+		Test::log(__METHOD__.'解码日志sql');
+
 		$timepattern = "/\'\s*20[123]([0-9]{5})\s*\'/"; 
 		$copydata = $data;
 		$data = preg_replace($timepattern,"to_char(sysdate,'yyyymmdd')",$data);
 		$this->checkreplace($copydata,$data);
+		Test::log(__METHOD__.'替换日期');
         $pattern = "/\[001,.+\]/";
         $Y = (string)(date('Y'));
         $Ym = (string)(date('Ym'));
@@ -292,12 +287,16 @@ class Guzzle extends Model
         $this->setRizhiData($data2);
         $data = preg_replace($pattern,$this->getRizhiData(),$data);
         $this->checkreplace($copydata,$data);
+        Test::log(__METHOD__.'替换日志信息[]');
         $ifsuccess=$this->http->makerequest($data);
         if (!stristr($ifsuccess,"NEWNO" )) {
         	//dd($ifsuccess);
+        Test::log(__METHOD__.'!!!插入日志失败');
 			throw new Exception("插入日志失败，可能是因为pid错误".__LINE__, 1);
         }
+        Test::log(__METHOD__.'插入日志成功');
         \App\Model\Sql::create(['pid'=>$pid,'type'=>'addrizhi','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$data)]);
+        Test::log(__METHOD__.'插入日志sql');
         return true; 
 	}
 
@@ -318,9 +317,11 @@ class Guzzle extends Model
 	    $copydata = $data;
 	    $data = str_replace("21886", $pid, $data);
 	     $this->checkreplace($copydata,$data);
+	     Test::log(__METHOD__.'解码、更换时间和pid');
 	    $ifsuccess = $this->http->makerequest($data);
         if (!stristr($ifsuccess,"ZB_ZFPZFJ" )) {
         	//dd("$ifsuccess");
+        	Test::log(__METHOD__.'!!!插入日志失败');
 			throw new Exception("删除附件失败，可能是因为pid错误".__LINE__, 1);
         }
         \App\Model\Sql::create(['pid'=>$pid,'type'=>'deletefj','djbh'=>$djbh,'sql'=>iconv('GB2312','UTF-8',$data)]);

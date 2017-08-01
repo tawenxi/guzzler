@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Tt;
+
+use App\Model\MakeZbArray;
 
 trait Zhibiao
 {
@@ -9,7 +11,7 @@ trait Zhibiao
     {
         $ZB_data = $this->find_zb_post($this->zhibiao_sql);
         $ZB_data = (string)$ZB_data;
-        $response = $this->makeZBarray($ZB_data);
+        $response = MakeZbArray::MakeZbArray($ZB_data);
         return $response;
     }
 
@@ -17,12 +19,12 @@ trait Zhibiao
     {
         $ZB_data = $this->find_zb_post($this->detail_sql,$zbid);
         $ZB_data = (string)$ZB_data;
-        $response = $this->makeZBarray($ZB_data);
+        $response = MakeZbArray::MakeZbArray($ZB_data);
         if (!$response[0])
             { 
                 $ZB_data = $this->find_zb_post($this->detail_sql2,$zbid);
             $ZB_data = (string)$ZB_data;
-            $response = $this->makeZBarray($ZB_data);
+            $response = MakeZbArray::MakeZbArray($ZB_data);
             }
         return $response;
     }
@@ -41,26 +43,5 @@ trait Zhibiao
         return $this->http->makerequest($this->balancebody);
     }
 
-    public function makeZBarray($sqldata) //将<ROWDATA></ROWDATA>之间的数据转化为数组
-    {
-        $sqldata = (string)$sqldata;
-        $sqldata = substr($sqldata,strpos($sqldata, "<ROWDATA>"),(strpos($sqldata, "</ROWDATA>")-strpos($sqldata, "<ROWDATA>")));
-
-        $sqldata = substr($sqldata,14,-3);
-        
-        $fenge = substr($sqldata,0,stripos($sqldata, '='));
-        $sqldata = str_replace(" ".$fenge,$fenge,$sqldata);
-
-        $sqldata = explode(" /><ROW" , $sqldata);    
-        foreach ($sqldata as $key => $value) 
-        {
-            $value = '{"'.str_replace("=",'":', $value).'}';
-            $sqldata[$key] = str_replace("\" ",'","', $value);
-            $sqldata[$key] = json_decode($sqldata[$key],true);  
-        }
-
-        return $sqldata;
-
-    }
-
+    
 }
