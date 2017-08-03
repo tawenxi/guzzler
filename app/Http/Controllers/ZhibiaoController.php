@@ -56,7 +56,7 @@ class ZhibiaoController extends Controller
        
             }
         };
-        $results = ZB::search(\Input::get('search'), null, true)->orderBy('LR_RQ','desc')->get()->unique();
+        $results = ZB::search(\Input::get('search'), 0.01, true)->orderBy('LR_RQ','desc')->get()->unique();
         // $results = ZB::search(\Input::get('search'), null, true)->with('zbdetails')->orderBy('LR_RQ','desc')->get()->unique();
         //dd($results->sum('ZBYE'));
         //dd($results->toarray());
@@ -67,7 +67,7 @@ class ZhibiaoController extends Controller
     public function zb_detail(Guzzle $guzzle)
     {
         
-        $results = ZbDetail::search(\Input::get('search'), null, true)->orderBy('BGDJID','LR_RQ')->get()->unique();
+        $results = ZbDetail::search(\Input::get('search'), 0.01, true)->orderBy('BGDJID','LR_RQ')->get()->unique();
         return $this->excel->exportBlade('zhibiao.detail',compact('results'))->render();
        
     }

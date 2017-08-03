@@ -269,3 +269,10 @@ Route::get('/zbdetail', 'ZhibiaoController@zb_detail');
 Route::get('/showzbdetail/{zbid}', 'ZhibiaoController@show');
 /*=====  End of zhibiaoController  ======*/
 
+/*==============================
+=            Ardent            =
+==============================*/
+Route::get('/ardent', 'ArdentController@index');
+
+
+/*=====  End of Ardent  ======*/

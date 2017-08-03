@@ -54,22 +54,32 @@ class InsertSq extends Command
     public function handle()
     {
         $searchobject=\App::make('acc');//初始化
-        $arr = $this->guzzleexcel->setSkipNum()->getexcel()->each(function($item) use ($searchobject){
-        $item['kemuname'] = stristr($item['kemu'], "@")?$item['kemu']:$searchobject->findac($item['kemu']);
-        })->toArray();
+        $arr = $this->guzzleexcel
+                    ->setSkipNum()
+                    ->getexcel()
+                    ->each
+            (
+                        function($item) use ($searchobject)
+                {
+                    $item['kemuname'] = stristr($item['kemu'], "@")?
+                    $item['kemu']:
+                    $searchobject->findac($item['kemu']);
+                }
+            )->toArray();
         Test::log('获取excel数据并增加科目');
         foreach ($arr as $key => $data) 
         {
             $Validator=\Validator::make($data, [
                 "payeeaccount"=>"numeric",
-                "amount"=>"numeric|between:0.01,3000000",
-                "zbid"=>"size:15"
-                ],[
-                "numeric"=>":attribute 必须为纯数字",
-                "size"=>":attribute 必须为15位",
-                ],['zbid'=>"ZBID",
-                
-                "payeebanker"=>"Banker Number"
+                "amount"      =>"numeric|between:0.01,3000000",
+                "zbid"        =>"size:15"
+                ],
+                [
+                "numeric"     =>":attribute 必须为纯数字",
+                "size"        =>":attribute 必须为15位",
+                ],
+                ['zbid'       =>"ZBID",  
+                "payeebanker" =>"Banker Number"
             ]);
             Test::log('验证excel数据');
             if ($Validator->fails()) {
@@ -77,7 +87,6 @@ class InsertSq extends Command
                 foreach($Validator->errors()->all() as $error){
                     $this->info($error);
                 }
-
                 dd('检核数据出错');
             }
         }

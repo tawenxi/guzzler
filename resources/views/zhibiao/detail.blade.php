@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-<h1>枚江镇指标支出所有明细表</h1>
+<h1>枚江镇指标支出所有明细表({{ $results->count().'条' }})</h1>
 @include('shared.errors')
 
 <article>
@@ -66,9 +66,10 @@
 				<th>指标ID</th>
 				<th>摘要</th>
 				<th>预算项目</th>
+				<th></th>
 				<th>{{($results->sum('JE'))/10000}}</th>
-				<th>{{$results->sum('detail')/10000}}</th>
-				<th>支出数</th>
+				
+				<th>支出类型</th>
 			</tr>
 	</table>
 

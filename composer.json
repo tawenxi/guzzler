@@ -11,7 +11,9 @@
 		"guzzlehttp/guzzle": "~6.0",
         "maatwebsite/excel": "^2.1",
         "laracasts/flash": "^3.0",
-        "nicolaslopezj/searchable": "^1.9"
+        "nicolaslopezj/searchable": "^1.9",
+        "laravelbook/ardent": "^3.4",
+        "barryvdh/laravel-debugbar": "^2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

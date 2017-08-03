@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('content')
-<h1>枚江镇指标明细表</h1>
+<h1>枚江镇指标明细表({{ $results->count().'条' }})</h1>
 @include('shared.errors')
 
 <article>
@@ -66,6 +66,7 @@
 		</tbody>
 					<tr class='success'>
 				<th>指标ID</th>
+				<th>日期</th>
 				<th>摘要</th>
 				<th>预算项目</th>
 				<th>{{($results->sum('JE'))/10000}}</th>

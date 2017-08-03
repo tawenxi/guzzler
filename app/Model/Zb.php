@@ -27,12 +27,12 @@ class Zb extends Model
             'zbs.JE' => 10,
             'zbs.LR_RQ' => 2,
             'zbs.YSDWMC' => 5,
-            'zb_details.ZY' => 2,
-            'zb_details.JE' => 1,
+            // 'zb_details.ZY' => 2,
+            // 'zb_details.JE' => 1,
         ],
-        'joins' => [
-            'zb_details' => ['zbs.ZBID','zb_details.ZBID'],
-        ],
+        // 'joins' => [
+        //     'zb_details' => ['zbs.ZBID','zb_details.ZBID'],
+        // ],
     ];
 
     public $timestamps=false;
