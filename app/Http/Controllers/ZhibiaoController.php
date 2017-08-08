@@ -56,7 +56,11 @@ class ZhibiaoController extends Controller
        
             }
         };
-        $results = ZB::search(\Input::get('search'), 0.01, true)->orderBy('LR_RQ','desc')->get()->unique();
+        // $results = ZB::search(\Input::get('search'), 0.01, true)->orderBy('ZJXZDM','asc')->get()->unique();
+
+            $results = ZB::search(\Input::get('search'), 0.01, true)->orderBy('LR_RQ','desc')->get()->unique();
+
+
         // $results = ZB::search(\Input::get('search'), null, true)->with('zbdetails')->orderBy('LR_RQ','desc')->get()->unique();
         //dd($results->sum('ZBYE'));
         //dd($results->toarray());

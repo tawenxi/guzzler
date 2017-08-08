@@ -139,6 +139,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Lubusin\Decomposer\DecomposerServiceProvider::class,
+        Sven\ArtisanView\ArtisanViewServiceProvider::class,
 
         /*
          * Application Service Providers...

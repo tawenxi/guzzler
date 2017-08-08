@@ -27,6 +27,7 @@ class Zb extends Model
             'zbs.JE' => 10,
             'zbs.LR_RQ' => 2,
             'zbs.YSDWMC' => 5,
+            'zbs.SHR' => 10,
             // 'zb_details.ZY' => 2,
             // 'zb_details.JE' => 1,
         ],

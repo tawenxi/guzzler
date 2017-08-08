@@ -14,10 +14,12 @@
 				<th>指标ID</th>
 				<th>日期</th>
 				<th>摘要</th>
+			{{-- 	<th>指标来源</th> --}}
 				<th>预算项目</th>
 				<th>总金额</th>
 				<th>可用金额</th>
 				<th>支出数</th>
+				<th>单位</th>
 			</tr>
 		</thead>
 		<tbody class='alert-info'>
@@ -40,9 +42,14 @@
 					{{$result->ZY}}
 				
 				</td>
+	{{-- 			<td>
+				
+					{{substr($result->ZBLYMC,12)}}
+				
+				</td> --}}
 				<td>
 				
-					{{$result->ZJXZMC}}
+					{{substr($result->ZJXZMC,0,12)}}
 				
 				</td>
 				<td>
@@ -61,6 +68,11 @@
 			
 				{{ $result->zbdetails->count() }}
 				</td>
+					<td >
+				
+			
+				{{ $result->YSDWMC }}
+				</td>
 			</tr>	
 			@endforeach
 		</tbody>
@@ -68,10 +80,12 @@
 				<th>指标ID</th>
 				<th>日期</th>
 				<th>摘要</th>
+	{{-- 			<th>指标来源</th> --}}
 				<th>预算项目</th>
 				<th>{{($results->sum('JE'))/10000}}</th>
-				<th>{{$results->sum('detail')/10000}}</th>
+				<th>{{($results->sum('JE'))/10000-$results->sum('detail')/10000}}</th>
 				<th>支出数</th>
+				<th>单位</th>
 			</tr>
 	</table>
 

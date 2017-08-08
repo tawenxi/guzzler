@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 | and give it the controller to call when that URI is requested.
 |
 */
-
+Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
 /*=============================
 =            log日志            =
 =============================*/
@@ -276,3 +276,4 @@ Route::get('/ardent', 'ArdentController@index');
 
 
 /*=====  End of Ardent  ======*/
+
