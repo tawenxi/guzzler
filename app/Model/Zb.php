@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use App\Model\ZbDetail;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use App\Model\Account;
 
 class Zb extends Model
 {
@@ -14,6 +15,12 @@ class Zb extends Model
      *
      * @var array
      */
+
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class,'account_number','account_number');
+    }
     protected $searchable = [
         /**
          * Columns and their priority in search results.

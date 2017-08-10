@@ -11,6 +11,7 @@
 
 		<thead>
 			<tr class='success'>
+			<th>科目</th>
 				<th>指标ID</th>
 				<th>日期</th>
 				<th>摘要</th>
@@ -25,7 +26,16 @@
 		<tbody class='alert-info'>
 				@foreach ($results as $result)
 			<tr class={{ abs($result->JE-$result->zbdetails->sum('JE'))<1?'alert-danger':""}}>
-				<td>
+
+
+				<td class="small">
+				
+					@if (!is_null($result->account))
+					{{$result->account->name}} 
+					@endif
+				
+				</td>
+				<td class="small">
 				
 					<a href="showzbdetail/{{ $result->ZBID }}">{{$result->ZBID}} 
 
@@ -37,7 +47,7 @@
 					{{$result->LR_RQ}}
 				
 				</td>
-				<td>
+				<td class="small">
 				
 					{{$result->ZY}}
 				
@@ -68,7 +78,7 @@
 			
 				{{ $result->zbdetails->count() }}
 				</td>
-					<td >
+					<td class="small">
 				
 			
 				{{ $result->YSDWMC }}
@@ -77,13 +87,14 @@
 			@endforeach
 		</tbody>
 					<tr class='success'>
+				<th>科目</th>
 				<th>指标ID</th>
 				<th>日期</th>
 				<th>摘要</th>
 	{{-- 			<th>指标来源</th> --}}
 				<th>预算项目</th>
-				<th>{{($results->sum('JE'))/10000}}</th>
-				<th>{{($results->sum('JE'))/10000-$results->sum('detail')/10000}}</th>
+				<th>{{round($results->sum('JE')/10000,2)}}</th>
+				<th>{{round(($results->sum('JE'))/10000-$results->sum('detail')/10000,2)}}</th>
 				<th>支出数</th>
 				<th>单位</th>
 			</tr>

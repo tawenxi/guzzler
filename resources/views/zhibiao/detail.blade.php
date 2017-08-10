@@ -25,7 +25,9 @@
 			<tr>
 				<td>
 				
-					{{$result->BGDJID}} 
+					@if (!is_null($result->account))
+					{{$result->account->name}} 
+					@endif
 
 					
 				

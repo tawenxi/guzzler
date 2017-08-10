@@ -5,11 +5,16 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use App\Model\Zb;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use App\Model\Account;
 
 class ZbDetail extends Model
 {
     use SearchableTrait;
     public $timestamps=false;
+    public function account()
+    {
+        return $this->belongsTo(Account::class,'account_number','account_number');
+    }
 
     protected $searchable = [
     'columns' => [

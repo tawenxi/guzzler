@@ -138,9 +138,9 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        // Barryvdh\Debugbar\ServiceProvider::class,
-        // Lubusin\Decomposer\DecomposerServiceProvider::class,
-        // Sven\ArtisanView\ArtisanViewServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Lubusin\Decomposer\DecomposerServiceProvider::class,
+        Sven\ArtisanView\ArtisanViewServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -205,7 +205,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Lxy'      => App\Facade\LxyFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        // 'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
