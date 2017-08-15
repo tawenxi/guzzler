@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
         Commands\Signup::class,
         Commands\InsertSq::class,
         Commands\PukConsole::class,
+        Commands\AccountConsole::class,
+
     ];
 
     /**

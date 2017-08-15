@@ -17,16 +17,24 @@ trait Zhibiao
 
     public function get_detail($zbid)
     {
-        $ZB_data = $this->find_zb_post($this->detail_sql,$zbid);
-        $ZB_data = (string)$ZB_data;
-        $response = MakeZbArray::MakeZbArray($ZB_data);
-        if (!$response[0])
-            { 
-                $ZB_data = $this->find_zb_post($this->detail_sql2,$zbid);
+        $filter_sql=[$this->detail_sql,
+                    $this->detail_sql2,
+                    $this->detail_sql3];  
+        $response = [];
+        foreach ($filter_sql as $key => $item) 
+        {
+            $ZB_data = $this->find_zb_post($item,$zbid);
             $ZB_data = (string)$ZB_data;
-            $response = MakeZbArray::MakeZbArray($ZB_data);
-            }
-        return $response;
+            $response = array_merge(MakeZbArray::MakeZbArray($ZB_data),$response);
+            //dump($response);
+        }
+        $result = collect($response)->reject
+            (   function($item)
+                {
+                    return $item === null;
+                }
+            );
+        return $result;
     }
 
 
@@ -37,6 +45,8 @@ trait Zhibiao
          $this->balancebody = str_replace("001.2017.0.2470", $zbid, $this->balancebody);
 
          $this->balancebody = str_replace("001.2017.0.3035", $zbid, $this->balancebody);
+
+        $this->balancebody = str_replace("001.2017.0.5789", $zbid, $this->balancebody);//过滤 sql3
 
          $this->balancebody = str_replace("'20170728'", "to_char(sysdate,'yyyymmdd')", $this->balancebody);
          //dd($this->balancebody);

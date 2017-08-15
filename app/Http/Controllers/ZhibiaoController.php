@@ -29,31 +29,31 @@ class ZhibiaoController extends Controller
      */
     public function index(Request $request, Guzzle $guzzle)
     {
-        if (strstr($request->ip(),"192.168") AND !(\Input::has('show'))) {
-        $zb_data = $guzzle->get_ZB();
-        $collection = collect($zb_data);
-        $collection = $collection->map(function ($item){    
-        $info = Zb::updateOrCreate(['ZBID' => $item['ZBID']], $item);
-            return $info;
+        if (strstr($request->ip(),"192.168") AND !(\Input::has('show'))) 
+        {
+            $zb_data = $guzzle->get_ZB();
+            $collection = collect($zb_data);
+            $collection = $collection->map(function ($item)
+            {    
+            $info = Zb::updateOrCreate(['ZBID' => $item['ZBID']], $item);
+                return $info;
             });
 
-        if (\Input::has('update')) {
-        $ZBIDS = ZB::get(['ZBID']);
-        foreach ($ZBIDS as $key => $value) {
-            $zb_data = $guzzle->get_detail($value->ZBID);
-            if ($zb_data[0]) 
+            if (\Input::has('update')) 
             {
-               $collection = collect($zb_data);
-
-               $a=$collection->map(function($v)use($value){
-                $v['ZBID'] = $value->ZBID;
-                ZbDetail::updateOrCreate(['BGDJID' => $v['BGDJID']], $v);
-                return $v;
-               });
-            }
-            
-            }
-       
+            $ZBIDS = ZB::get(['ZBID']);
+                foreach ($ZBIDS as $key => $value) 
+                {        
+                    $zb_data = $guzzle->get_detail($value->ZBID);
+                    if (!empty($zb_data)) 
+                    {
+                       $zb_data->map(function($v)use($value){
+                       $v['ZBID'] = $value->ZBID;
+                       ZbDetail::updateOrCreate(['BGDJID' => $v['BGDJID']], $v);
+                       return $v;
+                       });
+                    }                
+                }     
             }
         };
         // $results = ZB::search(\Input::get('search'), 0.01, true)->orderBy('ZJXZDM','asc')->get()->unique();
@@ -141,5 +141,12 @@ class ZhibiaoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function inco()
+    {
+        $results = ZbDetail::search(\Input::get('search'), 0.01, true)->orderBy('BGDJID','LR_RQ')->get()->unique();
+
+        return $this->excel->exportBlade('zhibiao.inco',compact('results'))->render();
     }
 }

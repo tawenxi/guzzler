@@ -304,7 +304,7 @@ class GuzzleController extends Controller
      * 
      * 
      */
-    public function postsql(\Illuminate\Http\Request $request)
+    public function postsql(\Illuminate\Http\Request $request, \App\Model\Http $http)
     {
         $Zy = $request->zy?"Zy='{$request->zy}'":"";
         $Skrkhyh = $request->banker?"Skrkhyh='{$request->banker}',":"";
@@ -331,8 +331,7 @@ EOF;
             'oldamount.required' => '原金额必填']);
         $sql = $request->body;
         $sql = iconv('UTF-8','GB2312',$sql);
-        $post = new Guzzle();
-        $info = $post->makerequest($sql);
+        $info = $http->makerequest($sql);
         echo $sql;
         echo "<br\><br\><br\><br\>";
         dd($info);

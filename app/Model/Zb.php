@@ -54,7 +54,15 @@ class Zb extends Model
     {
       return $this->zbdetails->sum('JE');
     }
+    
+    public function scopeHasaccount($query,$account)
+    {
 
+        if (!$account) {
+                return $query->where('account_number',null);           
+            }
+        return $query;
+    }
 
 
     protected $fillable = [

@@ -54,7 +54,7 @@ class Guzzle extends Model
 		preg_match($pattern, $amount,$res);
 		if ($res[0] === $amount) {
 			$this->amountData = $amount;
-		}else{
+		} else {
 			throw new Exception("[amount]数据异常".__LINE__, 1);
 			
 		}
@@ -212,11 +212,11 @@ class Guzzle extends Model
 	{	
 		$this->insertbody = $this->jiema($this->insertbody);
 		$this->insertbody = iconv('GB2312', 'UTF-8', $this->insertbody);
-		$this->insertbody = str_replace('吉安遂川县财政局',$payee['payee'],$this->insertbody);
+		$this->insertbody = str_replace('叶涛',$payee['payee'],$this->insertbody);
 		$this->insertbody = str_replace('遂川县财政局枚江乡财政所','遂川县枚江镇财政所',$this->insertbody);
 		$this->insertbody = str_replace('遂川县枚江镇财政所2','遂川县枚江镇财政所',$this->insertbody);
-		$this->insertbody = str_replace('190207313396',$payee["payeeaccount"],$this->insertbody);
-		$this->insertbody = str_replace('中行遂川支行',$payee['payeebanker'],$this->insertbody);
+		$this->insertbody = str_replace('178190121002547948',$payee["payeeaccount"],$this->insertbody);
+		$this->insertbody = str_replace('遂川农商银行',$payee['payeebanker'],$this->insertbody);
 		$this->insertbody = str_replace('2016年计生事业费',$payee['zhaiyao'],$this->insertbody);
 		$this->insertbody = str_replace('zhaiyao',$payee['zhaiyao'],$this->insertbody);
 		$this->insertbody = str_replace('99900114','',$this->insertbody);

@@ -94,7 +94,7 @@
 	{{-- 			<th>指标来源</th> --}}
 				<th>预算项目</th>
 				<th>{{round($results->sum('JE')/10000,2)}}</th>
-				<th>{{round(($results->sum('JE'))/10000-$results->sum('detail')/10000,2)}}</th>
+				<th>{{round(($results->sum('JE'))/10000,2)-round($results->sum('detail')/10000,2)}}</th>
 				<th>支出数</th>
 				<th>单位</th>
 			</tr>

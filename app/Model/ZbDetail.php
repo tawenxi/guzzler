@@ -16,6 +16,15 @@ class ZbDetail extends Model
         return $this->belongsTo(Account::class,'account_number','account_number');
     }
 
+    public function scopeHasaccount($query,$account)
+    {
+
+        if (!$account) {
+                return $query->where('account_number',null);           
+            }
+        return $query;
+    }
+
     protected $searchable = [
     'columns' => [
         'zb_details.ZY' => 10,

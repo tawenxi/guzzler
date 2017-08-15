@@ -37,9 +37,9 @@ class Http
         /*=============================================
         =            判断Response中是否包含错误信息          =
         =============================================*/
-        if (stristr($responsebody, "ERROR")) {
+        if (stristr($responsebody, "ERROR")||stristr($responsebody, "错误")) {
             echo iconv('GB2312','UTF-8',$dq);
-            throw new Exception("sql语句错误----$responsebody".__LINE__, 1);
+            throw new \Exception("sql语句错误----$responsebody".__LINE__, 1);
         }
         /*=====  End of  判断Response中是否包含错误信息 ======*/
         return $responsebody;

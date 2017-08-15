@@ -14,25 +14,85 @@
       @endif
       <nav>
         <ul class="nav navbar-nav navbar-right">
-        <li><a href="?export=1">导出excel</a></li>
-          @can('showAllSalary')
-             <li><a href="/salary">工资</a></li>
-          <li><a href="/bumen">月部门</a></li>
-          <li><a href="/byear/2017/">分部汇总</a></li>
-          <li><a href="/myear/2017/">分月汇总</a></li>
-          <li><a href="/geren">个人</a></li>
+        <li><a href="{{ url().'/'.\Request::getRequestUri().(stristr(Request::getRequestUri(), '?')?'&':'?').'export=1' }}">导出excel</a></li>
+         <li><a href="/searchacc">查询</a></li> 
 
-            <li><a href="/phb">封神榜</a></li>
-
-            @if ( strstr($request->ip(),"192.168") )
+          @can('showAllSalary')     
+          @if ( strstr($request->ip(),"192.168") )
             
-            <li><a href="/searchacc">查询</a></li>
-            <li><a href="/payout">支出</a></li>
-            <li><a href="/hyy">外网查询</a></li>
-            <li><a href="/dpt">大平台更新</a></li>
-            @endif
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                 大平台 <b class="caret"></b>
+                </a>
+                
+                <ul class="dropdown-menu">      
 
-            @endcan
+                  <li><a href="/payout">授权登记</a></li>
+                  <li><a href="/hyy">外网查询</a></li>
+                  <li><a href="/dpt">平台更新</a></li>   
+                    <li class="divider"></li>
+                </ul>
+              </li>
+          @endif
+          @endcan
+
+          @can('showAllSalary')     
+          @if ( strstr($request->ip(),"192.168") )
+            
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                 指标查询 <b class="caret"></b>
+                </a>
+                
+                <ul class="dropdown-menu">      
+
+                <li><a href="/zhibiao">[收入(update)]</a></li>
+                <li><a href="/zbdetail">[支出]</a></li>
+                <li><a href="/incomes">收入</a></li>
+                
+                <li><a href="/costs">支出</a></li>
+                <li><a href="/income/create">新建收入</a></li> 
+                    <li class="divider"></li>
+                </ul>
+              </li>
+          @endif
+          @endcan
+
+                 
+
+          
+
+ 
+
+          @can('showAllSalary')
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                 工资 <b class="caret"></b>
+                </a>
+                
+                <ul class="dropdown-menu">      
+                    <li><a href="">月工资表</a></li>
+                    <li><a href="/bumen">月部门</a></li>
+                    <li><a href="/byear/2017/">分部汇总</a></li>
+                    <li><a href="/myear/2017/">分月汇总</a></li>
+                    <li><a href="/geren">个人</a></li>
+                    <li><a href="/phb">封神榜</a></li>     
+                    <li class="divider"></li>
+                </ul>
+              </li>
+          @endcan              
+
+
+
+
+
+
+
+
+
+
+
+
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {{ \Auth::check()?Auth::user()->name:"" }} <b class="caret"></b>
@@ -41,13 +101,7 @@
               <ul class="dropdown-menu">
                 
                 <li><a href="{{ route('edit') }}">修改密码</a></li>
-                @can('showAllSalary')
-                <li><a href="/zhibiao">[收入]</a></li>
-                <li><a href="/zbdetail">[支出]</a></li>
-                <li><a href="/incomes">收入</a></li>
-                <li><a href="/income/create">新建收入</a></li>
-                <li><a href="/costs">支出</a></li>
-                @endcan
+
                 <li class="divider"></li>
                 <li>
                   <a id="logout" href="#">
