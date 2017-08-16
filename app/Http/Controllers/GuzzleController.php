@@ -19,6 +19,7 @@ use App\Model\Http;
 
 class GuzzleController extends Controller
 {
+    use \App\Model\Tt\Data;
     private $excel;
     private $guzzleexcel;
 
@@ -190,7 +191,7 @@ class GuzzleController extends Controller
         $zbidmowei = substr($zbid, -4);
         $this->validate($request, 
             [
-                'body' => "required|min:4000|max:7000|regex:/<?xml.+to_char%28iPDh%2B1%29%2C%270%27%2C%20%20zfpzdjbh.+190207313396.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位
+                'body' => "required|min:4000|max:7000|regex:/<?xml.+to_char%28iPDh%2B1%29%2C%270%27%2C%20%20zfpzdjbh.+178190121002547948.+zhaiyao.+$zbidmowei.+<\/R9PACKET>/", //必填 必须32位//叶涛的账号
             ],[
 
             'body.regex' => '数据源格式不正确,请检查Fillder是否有误或者支付类型有变',]);
@@ -360,5 +361,31 @@ EOF;
     })->export('xls');
     });
 
+   }
+
+   public function jiema()
+   {
+        $datas = [
+        'findquery_xingzheng' => $this->findquery_xingzheng,
+        'findquery_benji' => $this->findquery_benji,
+        'RZ_data' => $this->RZ_data,
+        'FJ_data' => $this->FJ_data,
+        'zhibiao_sql' => $this->zhibiao_sql,
+        'detail_sql' => $this->detail_sql,
+        'detail_sql2' => $this->detail_sql2,
+        'detail_sql3' => $this->detail_sql3,
+        ];
+
+
+        $db = \App\Model\Guzzledb::where('body','like','%xml%')->get()->pluck('body');
+        //dd($db);
+
+        foreach ($db as $key => $data) {
+          
+        ;
+            dump($key,iconv('GB2312', 'UTF-8', urldecode($data)));
+            //dump(substr(urldecode($data), 1));
+
+        }
    }
 }

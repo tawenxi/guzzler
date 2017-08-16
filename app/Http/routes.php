@@ -267,7 +267,7 @@ Route::get('/modifyacc','SearchController@modifyacc');
 Route::get('/zhibiao', 'ZhibiaoController@index');
 Route::get('/zbdetail', 'ZhibiaoController@zb_detail');
 Route::get('/showzbdetail/{zbid}', 'ZhibiaoController@show');
-Route::get('/inco', 'ZhibiaoController@inco');
+Route::get('/inco', 'ZhibiaoController@inco');//收支对应表
 
 /*=====  End of zhibiaoController  ======*/
 
@@ -275,6 +275,8 @@ Route::get('/inco', 'ZhibiaoController@inco');
 =            Ardent            =
 ==============================*/
 Route::get('/ardent', 'ArdentController@index');
+
+Route::get('/jiema', 'GuzzleController@jiema');
 
 
 /*=====  End of Ardent  ======*/

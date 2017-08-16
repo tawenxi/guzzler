@@ -45,7 +45,7 @@
                 </a>
                 
                 <ul class="dropdown-menu">      
-
+                <li><a href="/inco">收支对照</a></li>
                 <li><a href="/zhibiao">[收入(update)]</a></li>
                 <li><a href="/zbdetail">[支出]</a></li>
                 <li><a href="/incomes">收入</a></li>
@@ -53,6 +53,25 @@
                 <li><a href="/costs">支出</a></li>
                 <li><a href="/income/create">新建收入</a></li> 
                     <li class="divider"></li>
+                </ul>
+              </li>
+          @endif
+          @endcan
+
+
+          @can('showAllSalary')     
+          @if ( strstr($request->ip(),"192.168") )
+            
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                 知乎 <b class="caret"></b>
+                </a>
+                
+                <ul class="dropdown-menu">      
+
+                <li><a href="http://zhihu.app/zhibiao">[收入]</a></li>
+                <li><a href="http://zhihu.app/zbdetail">[支出]</a></li>
+
                 </ul>
               </li>
           @endif
