@@ -18,7 +18,7 @@
          <li><a href="/searchacc">查询</a></li> 
 
           @can('showAllSalary')     
-          @if ( strstr($request->ip(),"192.168") )
+         
             
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -33,11 +33,11 @@
                     <li class="divider"></li>
                 </ul>
               </li>
-          @endif
+       
           @endcan
 
           @can('showAllSalary')     
-          @if ( strstr($request->ip(),"192.168") )
+         
             
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -55,12 +55,12 @@
                     <li class="divider"></li>
                 </ul>
               </li>
-          @endif
+        
           @endcan
 
 
           @can('showAllSalary')     
-          @if ( strstr($request->ip(),"192.168") )
+       
             
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -74,7 +74,7 @@
 
                 </ul>
               </li>
-          @endif
+        
           @endcan
 
                  
