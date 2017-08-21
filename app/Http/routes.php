@@ -179,13 +179,13 @@ Route::get('excel', function() {
 });
 
 Route::get('excelmodel', function() {
-    $excel = new \App\Model\Excel('cost');
+    $excel = new \App\Model\Respostory\Excel('cost');
     $title = $excel->insertSql();
     //dd($title);
 });
 
 Route::get('skip', function() {
-    $excel = new \App\Model\Excel('cost');
+    $excel = new \App\Model\Respostory\Excel('cost');
     $skip = $excel->getSkipNum();
     dd($skip);
 });

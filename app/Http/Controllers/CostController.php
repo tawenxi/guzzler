@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Cost;
-use App\Model\Excel;
+use App\Model\Respostory\Excel;
 
 class CostController extends Controller
 {

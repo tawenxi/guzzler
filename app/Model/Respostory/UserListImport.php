@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Respostory;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MemberListImport extends \Maatwebsite\Excel\Files\ExcelFile {
+class UserListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
 	protected $delimiter  = ',';
     protected $enclosure  = '"';
@@ -13,7 +13,7 @@ class MemberListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
     public function getFile()
     {
-        return storage_path('excel/member.xls');
+        return storage_path('excel/excel.xls');
     }
 
     public function getFilters()

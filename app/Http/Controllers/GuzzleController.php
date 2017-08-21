@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 //use Illuminate\Http\Request;
 use GuzzleHttp\Psr7\Request;
-use App\Model\Guzzle;
+use App\Model\Respostory\Guzzle;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use App\Model\Guzzledb;
 use App\Model\Payout;
 use App\Acc\Acc;
-use App\Model\Excel;
-use App\Model\Getsqzb;
-use App\Model\Http;
+use App\Model\Respostory\Excel;
+use App\Model\Respostory\Getsqzb;
+use App\Model\Respostory\Http;
 
 
 
@@ -305,7 +305,7 @@ class GuzzleController extends Controller
      * 
      * 
      */
-    public function postsql(\Illuminate\Http\Request $request, \App\Model\Http $http)
+    public function postsql(\Illuminate\Http\Request $request, \App\Model\Respostory\Http $http)
     {
         $Zy = $request->zy?"Zy='{$request->zy}'":"";
         $Skrkhyh = $request->banker?"Skrkhyh='{$request->banker}',":"";

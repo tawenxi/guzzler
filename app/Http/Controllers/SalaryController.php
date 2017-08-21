@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Salary;
 use App\Model\User;
-use App\Model\Excel;
+use App\Model\Respostory\Excel;
 
 class SalaryController extends Controller
 {

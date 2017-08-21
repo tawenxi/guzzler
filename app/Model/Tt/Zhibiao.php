@@ -2,7 +2,7 @@
 
 namespace App\Model\Tt;
 
-use App\Model\MakeZbArray;
+use App\Model\Respostory\MakeZbArray;
 
 trait Zhibiao
 {

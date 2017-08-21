@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Tt\Data;
-use App\Model\GetDetail;
+use App\Model\Respostory\GetSqlResult;
 
 
 class SqlController extends Controller
@@ -18,7 +18,7 @@ class SqlController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GetDetail $getdetail)
+    public function index(GetSqlResult $getdetail)
     {
         
 

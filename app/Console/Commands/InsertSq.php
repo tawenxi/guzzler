@@ -4,16 +4,16 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use GuzzleHttp\Psr7\Request;
-use App\Model\Guzzle;
+use App\Model\Respostory\Guzzle;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use App\Model\Guzzledb;
 use App\Model\Payout;
 use App\Acc\Acc;
-use App\Model\Excel;
-use App\Model\Getsqzb;
-use App\Model\Http;
+use App\Model\Respostory\Excel;
+use App\Model\Respostory\Getsqzb;
+use App\Model\Respostory\Http;
 use App\Model\Test;
 
 class InsertSq extends Command

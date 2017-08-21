@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Model\Guzzle;
+use App\Model\Respostory\Guzzle;
 use App\Model\Zb;
 use App\Model\Zfpz;
-use App\Model\Excel;
+use App\Model\Respostory\Excel;
 use App\Model\GetPerson;
 use App\Model\Getzf;
 use App\Model\Getsf;
-use App\Model\GetDetail;
+use App\Model\Respostory\GetSqlResult;
 use App\Model\Tt\Data;
 
 
@@ -27,7 +27,7 @@ class ZhibiaoController extends Controller
     private $getperson;
 
 
-    public function __construct(Excel $excel,  GetDetail $getdetail)
+    public function __construct(Excel $excel,  GetSqlResult $getdetail)
     {
     $this->middleware('auth');
     $this->middleware('admin');
@@ -71,7 +71,7 @@ class ZhibiaoController extends Controller
 
     public function zb_detail(Guzzle $guzzle)
     {
-        $results = Zfpz::search(\Input::get('search'), 0.01, true)->orderBy('PDH','LR_RQ')->get()->unique();
+        $results = Zfpz::search(\Input::get('search'), 0.01, true)->orderBy('PDRQ','desc')->get()->unique();
         return $this->excel->exportBlade('zhibiao.detail',compact('results'))->render();
     }
 
@@ -165,7 +165,7 @@ class ZhibiaoController extends Controller
 
     public function inco()
     {
-        $results = Zfpz::search(\Input::get('search'), 0.01, true)->orderBy('PDH','LR_RQ')->get()->unique();
+        $results = Zfpz::search(\Input::get('search'), 0.01, true)->orderBy('PDRQ','desc')->get()->unique();
 
         return $this->excel->exportBlade('zhibiao.inco',compact('results'))->render();
     }

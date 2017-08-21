@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Respostory;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\MakeZbArray;
-use App\Model\Http;
+use App\Model\Respostory\MakeZbArray;
+use App\Model\Respostory\Http;
 use App\Model\Tt\Data;
 use App\Model\Tt\Replace;
 
-class GetDetail extends Model
+class GetSqlResult extends Model
 {
     use Data;use Replace;
 

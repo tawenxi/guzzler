@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Income;
 use Session;
-use App\Model\Excel;
+use App\Model\Respostory\Excel;
 
 class IncomeController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Respostory;
 
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,10 +9,10 @@ use GuzzleHttp\Client;
 use App\Model\Guzzledb;
 use App\Acc\Acc;
 use App\Model\Payout;
-use App\Model\Getsqzb;
+use App\Model\Respostory\Getsqzb;
 use Exception;
 use App\Model\Tt\Zhibiao;
-use App\Model\Http;
+use App\Model\Respostory\Http;
 use App\Model\Tt\Data;
 use App\Model\Tt\Replace;
 use App\Model\Test;
