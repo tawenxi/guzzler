@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\ZbDetail;
+use App\Model\Zfpz;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use App\Model\Account;
 
@@ -45,14 +45,14 @@ class Zb extends Model
 
     public $timestamps=false;
 
-    public function zbdetails()
+    public function zfpzs()
     {
-    	return $this->hasMany(ZbDetail::class,'ZBID','ZBID');
+    	return $this->hasMany(Zfpz::class,'ZBID','ZBID');
     }
 
     public function GetDetailAttribute()
     {
-      return $this->zbdetails->sum('JE');
+      return $this->zfpzs->sum('JE');
     }
     
     public function scopeHasaccount($query,$account)

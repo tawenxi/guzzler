@@ -7,7 +7,7 @@ trait Replace
     public function checkreplace($data1,$data2)
     {
         if ($data1==$data2) {
-            throw new Exception("替换失败".__LINE__, 1);
+            throw new \Exception("替换失败".__LINE__, 1);
         }
     }
 

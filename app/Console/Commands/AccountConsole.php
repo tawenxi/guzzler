@@ -46,11 +46,12 @@ class AccountConsole extends Command
             ->get()
             ->unique();
         } else{
-            $results = \App\Model\ZbDetail::search($this->argument('date'), 0.01, true)
+            $results = \App\Model\Zfpz::search($this->argument('date'), 0.01, true)
             ->Hasaccount($hasAccount)
-            ->orderBy('BGDJID','LR_RQ')
+            ->orderBy('PDH')
             ->get()
             ->unique();
+            //dd($results);
         }
 
         foreach ($results as $key => $result) 
@@ -81,31 +82,17 @@ class AccountConsole extends Command
                 $this->error('跳过这个业务');
                 continue;
             }
-
-
-            
-
-
             do 
             {
                 $topics_id = $this->ask('请选择科目id');
             } while (!in_array($topics_id, $topics->pluck('id')->toArray()))  ;
 
-            $account = \App\Model\Account::where('id',$topics_id)->first();
-                $account_number = $account->account_number;
-                //dd($key);
-           
-            
+            $account_number = \App\Model\Account::
+                                where('id',$topics_id)
+                                ->value('account_number');
             $result->account_number = $account_number;
-            $result->save();     
-            
+            $result->save();        
             $this->info('保存成功');
-
-          
-
-
-
-
         }
 
     }

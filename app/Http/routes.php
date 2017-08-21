@@ -277,6 +277,11 @@ Route::get('/inco', 'ZhibiaoController@inco');//收支对应表
 Route::get('/ardent', 'ArdentController@index');
 
 Route::get('/jiema', 'GuzzleController@jiema');
+Route::get('/test', 'TestController@test');
+Route::get('/showzf/{id}', 'ZhibiaoController@showzf');
+Route::get('/getdetails', 'ZhibiaoController@getdetails');
+Route::get('/mysql', 'SqlController@index');
+
 
 
 /*=====  End of Ardent  ======*/

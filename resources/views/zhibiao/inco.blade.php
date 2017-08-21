@@ -25,7 +25,7 @@
 			<tr>
 
 				<td>
-					{{ $result->LR_RQ }}
+					{{ $result->PDRQ }}
 				</td>
 				<td class="small">
 				

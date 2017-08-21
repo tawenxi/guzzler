@@ -33,7 +33,7 @@ class Http
         ]);
         $code = $response->getStatusCode(); // 200
         $responsebody = $response->getBody();
-        $responsebody = iconv('GB2312','UTF-8', $responsebody);
+        $responsebody = iconv('GBK','UTF-8', $responsebody);
         /*=============================================
         =            判断Response中是否包含错误信息          =
         =============================================*/

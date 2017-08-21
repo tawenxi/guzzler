@@ -14,6 +14,8 @@
 				<th>支出ID</th>
 				<th>日期</th>
 				<th>摘要</th>
+				<th>收款人</th>
+
 				<th>预算单位</th>
 				<th>总金额</th>
 				<th>支出类型</th>
@@ -34,14 +36,19 @@
 				</td>
 				<td>
 				
-					{{$result->LR_RQ}} 
+					{{$result->PDRQ}} 
 
 					
 				
 				</td>
-				<td>
+				<td class="small">
 				
 					{{$result->ZY}}
+				
+				</td>
+				<td class="small">
+				
+					{{$result->SKR}}
 				
 				</td>
 				<td>

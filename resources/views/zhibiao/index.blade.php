@@ -25,7 +25,7 @@
 		</thead>
 		<tbody class='alert-info'>
 				@foreach ($results as $result)
-			<tr class={{ abs($result->JE-$result->zbdetails->sum('JE'))<1?'alert-danger':""}}>
+			<tr class={{ abs($result->JE-$result->zfpzs->sum('JE'))<1?'alert-danger':""}}>
 
 
 				<td class="small">
@@ -70,13 +70,13 @@
 				
 				<td>
 				
-					{{round($result->JE-$result->zbdetails->sum('JE'),2)}}
+					{{round($result->JE-$result->zfpzs->sum('JE'),2)}}
 				
 				</td>
 				<td >
 				
 			
-				{{ $result->zbdetails->count() }}
+				{{ $result->zfpzs->count() }}
 				</td>
 					<td class="small">
 				
@@ -94,7 +94,7 @@
 	{{-- 			<th>指标来源</th> --}}
 				<th>预算项目</th>
 				<th>{{round($results->sum('JE')/10000,2)}}</th>
-				<th>{{round(($results->sum('JE'))/10000,2)-round($results->sum('detail')/10000,2)}}</th>
+				<th>{{round(round(($results->sum('JE'))/10000,2)-round($results->sum('detail')/10000,2),2)}}</th>
 				<th>支出数</th>
 				<th>单位</th>
 			</tr>

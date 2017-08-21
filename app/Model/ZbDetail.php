@@ -70,5 +70,8 @@ class ZbDetail extends Model
             ,"ZFFSMC"
             ,"LR_RQ"
             ,"LRR"
-            ,"ZBID"];
+            ,"ZBID"
+            ,'SKR'
+            ,'SKRKHYH'
+            ,'SKZH'];
 }
