@@ -36,7 +36,7 @@
 				</td>
 				<td>
 				
-					{{$result->PDRQ}} 
+					{{$result->QS_RQ}} 
 
 					
 				

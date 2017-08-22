@@ -29,7 +29,7 @@ class Zfpz extends Model
     'columns' => [
         'zfpzs.ZY' => 10,
         'zfpzs.JE' => 10,
-        'zfpzs.PDRQ' => 50,
+        'zfpzs.QS_RQ' => 50,
         'zfpzs.YSDWMC' => 50,
         'zfpzs.XMMC' => 10,
         'zfpzs.YSKMMC' => 5,
@@ -52,6 +52,7 @@ class Zfpz extends Model
             "YSDWDM",
             "ZY",
             "SKR",
+            'QS_RQ',
             "SKZH",
             "SKRKHYH",
             "FKR",

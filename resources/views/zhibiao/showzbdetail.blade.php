@@ -26,7 +26,7 @@
 			<tr class={{ empty($result->body)?'alert-danger':""}}>
 			<td>
 				
-					{{$result->LR_RQ}}
+					{{$result->QS_RQ}}
 				
 				</td>
 			<td>
