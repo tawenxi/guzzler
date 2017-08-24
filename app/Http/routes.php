@@ -281,6 +281,8 @@ Route::get('/test', 'TestController@test');
 Route::get('/showzf/{id}', 'ZhibiaoController@showzf');
 Route::get('/getdetails', 'ZhibiaoController@getdetails');
 Route::get('/mysql', 'SqlController@index');
+Route::get('/checkout', 'ZhibiaoController@checkout');
+
 
 
 

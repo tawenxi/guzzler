@@ -70,11 +70,28 @@ class ZhibiaoController extends Controller
     }
 
 
-    public function zb_detail(Guzzle $guzzle)
+    public function zb_detail()
     {
         $results = Zfpz::search(\Input::get('search'), 0.01, true)->orderBy('PDRQ','desc')->get()->unique();
         return $this->excel->exportBlade('zhibiao.detail',compact('results'))->render();
     }
+
+    public function checkout()
+    {
+        $results1 = Zfpz::get()
+                   ->groupBy('zy_skr')
+                   ->filter(function($item){
+                      return $item->count()>1;
+                   });
+        $results = collect();
+        foreach ($results1 as $key => $result) {
+            $results = $results->merge($result);
+        }
+        return $this->excel->exportBlade('zhibiao.detail',compact('results'))->render();
+        
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

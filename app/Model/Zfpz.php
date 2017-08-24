@@ -11,6 +11,10 @@ class Zfpz extends Model
 {
     use SearchableTrait;
     public $timestamps=false;
+    public function getZySkrAttribute()
+    {
+        return $this->attributes['ZY'].' '.$this->attributes['SKR'].' '.$this->attributes['JE'];
+    }
     public function account()
     {
         return $this->belongsTo(Account::class,'account_number','account_number');

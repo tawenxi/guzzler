@@ -371,17 +371,15 @@ EOF;
         'RZ_data' => $this->RZ_data,
         'FJ_data' => $this->FJ_data,
         'zhibiao_sql' => $this->zhibiao_sql,
-        'detail_sql' => $this->detail_sql,
+        
 
-        'get_person' => $this->get_person,
+
         'zfpz' => $this->zfpz,
         //'get_person_zj' => $this->get_person_zj,
 
         ];
 
 
-        $db = \App\Model\Guzzledb::where('body','like','%xml%')->get()->pluck('body');
-        //dd($db);
 
         foreach ($datas as $key => $data) {
           

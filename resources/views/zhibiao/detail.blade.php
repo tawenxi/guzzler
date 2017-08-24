@@ -72,10 +72,12 @@
 			@endforeach
 		</tbody>
 					<tr class='success'>
-				<th>指标ID</th>
+				<th>支出ID</th>
+				<th>日期</th>
 				<th>摘要</th>
-				<th>预算项目</th>
-				<th></th>
+				<th>收款人</th>
+
+				<th>预算单位</th>
 				<th>{{($results->sum('JE'))/10000}}</th>
 				
 				<th>支出类型</th>

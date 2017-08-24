@@ -15,11 +15,11 @@
       <nav>
         <ul class="nav navbar-nav navbar-right">
         <li><a href="{{ url().'/'.\Request::getRequestUri().(stristr(Request::getRequestUri(), '?')?'&':'?').'export=1' }}">导出excel</a></li>
-         <li><a href="/searchacc">查询</a></li> 
+        
 
           @can('showAllSalary')     
          
-            
+             <li><a href="/searchacc">查询</a></li> 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                  大平台 <b class="caret"></b>

@@ -211,11 +211,7 @@ class Guzzle extends Model
 	public function accountreplace($payee)
 	{	
 		$this->insertbody = $this->jiema($this->insertbody);
-		$this->insertbody = iconv('GB2312', 'UTF-8', $this->insertbody);
-		
-		$this->insertbody = str_replace('遂川县财政局枚江乡财政所','遂川县枚江镇财政所',$this->insertbody);
-		$this->insertbody = str_replace('遂川县枚江镇财政所2','遂川县枚江镇财政所',$this->insertbody);
-		
+		$this->insertbody = iconv('GB2312', 'UTF-8', $this->insertbody);	
 		
 		$this->insertbody = str_replace('2016年计生事业费',$payee['zhaiyao'],$this->insertbody);
 		$this->insertbody = str_replace('zhaiyao',$payee['zhaiyao'],$this->insertbody);
@@ -224,6 +220,7 @@ class Guzzle extends Model
 		$this->insertbody = str_replace('178190121002547948',$payee["payeeaccount"],$this->insertbody);
 		$this->insertbody = str_replace('遂川农商银行',$payee['payeebanker'],$this->insertbody);
 		$this->insertbody = str_replace('99991392','',$this->insertbody);
+
 		//名字更改的时候更换这个-------------------------------
 
 		
@@ -238,7 +235,12 @@ class Guzzle extends Model
 		
 //----------------------------------------------------------
 		$this->insertbody = str_replace('\'005\'','\'\'',$this->insertbody);
+		//-----------------------------
+		$this->insertbody = str_replace('遂川县财政局枚江乡财政所','遂川县枚江镇财政所',$this->insertbody);
+		$this->insertbody = str_replace('遂川县枚江镇财政所2','遂川县枚江镇财政所',$this->insertbody);
+		//-----------------------
 		$this->insertbody = iconv('UTF-8', 'GB2312', $this->insertbody);
+
 
 	}
 
