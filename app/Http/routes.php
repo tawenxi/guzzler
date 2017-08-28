@@ -38,7 +38,7 @@ Route::get('/6323151bb', function () {
 
 
 Route::get('/', function () {
-    return redirect()->route('geren');
+    abort('404', $message = '对不起，暂停服务');
 });
 Route::post('/store', 'GuzzleController@store')->name('store');
 Route::get('/guzzle', 'GuzzleController@index');

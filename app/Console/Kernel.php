@@ -20,6 +20,8 @@ class Kernel extends ConsoleKernel
         Commands\InsertSq::class,
         Commands\PukConsole::class,
         Commands\AccountConsole::class,
+        Commands\TableConsole::class,
+
 
     ];
 

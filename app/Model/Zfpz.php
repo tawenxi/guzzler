@@ -24,7 +24,7 @@ class Zfpz extends Model
     {
 
         if (!$account) {
-                return $query->where('account_number',null);           
+                return $query->where('account_number','');           
             }
         return $query;
     }
