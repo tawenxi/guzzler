@@ -25,7 +25,7 @@
 		<tbody class='alert-info'>
 				@foreach ($results as $result)
 			<tr>
-				<td>
+				<td class="small">
 				
 					@if (!is_null($result->account))
 					{{$result->account->name}} 
@@ -41,7 +41,7 @@
 					
 				
 				</td>
-				<td class="small">
+				<td class="">
 				
 					{{$result->ZY}}
 				
