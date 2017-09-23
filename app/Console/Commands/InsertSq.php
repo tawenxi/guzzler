@@ -109,6 +109,11 @@ class InsertSq extends Command
         $successi = 0;
         foreach ($arr as $key => $value) 
         {
+            if ($value['amount'] > 0) {
+                $value['amount'] = round($value['amount'],2);
+            } else { 
+                 dd('warning', '金额无效'); 
+            }
             $guzz = \App::make(Guzzle::class,[app()->make(Getsqzb::class),app()->make(Http::class),$value]);//传入一个一位数组（账户信息）
             if (stristr($arr[$key]['kemu'], "#")) {
                 $this->info("info:第".(1+$successi).'条数据做账成功但未授权支付'.$value['zhaiyao']);

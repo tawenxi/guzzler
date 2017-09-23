@@ -23,6 +23,7 @@ class GetSqlResult extends Model
         $data = $this->find_post($sql, $replaces);
         $data = (string)$data;
         $data = MakeZbArray::MakeZbArray($data);
+        //dd($data);
 
         return $data;
     }

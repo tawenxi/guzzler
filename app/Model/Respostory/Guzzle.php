@@ -116,7 +116,7 @@ class Guzzle extends Model
 			echo "<";
 			echo $this->payee['amount'];
 			redirect()->action("GuzzleController@dpt");
-			die();	
+			die();	dd();
 		}
 		Test::log(__METHOD__.'验证金额足够');
 		$zbamount = $zb["YKJHZB"].",".$zb["YYJHJE"].",".$zb["KYJHJE"].",".$this->payee['amount'];
