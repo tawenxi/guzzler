@@ -70,7 +70,7 @@
 				
 				<td>
 				
-					{{round($result->JE-$result->zfpzs->sum('JE'),2)}}
+					{{bcdiv($result->JE-$result->zfpzs->sum('JE'),1,2)}}
 				
 				</td>
 				<td >

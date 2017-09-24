@@ -65,6 +65,37 @@ class Zb extends Model
     }
 
 
+
+        public function setZbyeAttribute($amount)
+    {
+
+         $this->attributes['ZBYE'] = $amount*100;
+    }
+
+
+    public function getZbyeAttribute($amount)
+    {
+        return bcdiv($this->attributes['ZBYE'], 100,2);
+    }
+
+
+
+        public function setJeAttribute($amount)
+    {
+
+         $this->attributes['JE'] = $amount*100;
+    }
+
+
+    public function getJeAttribute($amount)
+    {
+        return bcdiv($this->attributes['JE'], 100,2);
+    }
+
+
+
+
+
     protected $fillable = [
     'id'
 

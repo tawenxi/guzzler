@@ -42,6 +42,19 @@ class ZbDetail extends Model
         return $this->belongsTo(Zb::class,'ZBID','ZBID');
     }
 
+
+    public function setJeAttribute($amount)
+    {
+
+         $this->attributes['JE'] = $amount*100;
+    }
+
+
+    public function getJeAttribute($amount)
+    {
+        return bcdiv($this->attributes['JE'], 100,2);
+    }
+
     protected $fillable = [
     		"BJDJ"
             ,"BGDJID"
