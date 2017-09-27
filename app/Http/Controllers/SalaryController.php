@@ -9,12 +9,15 @@ use App\Http\Controllers\Controller;
 use App\Model\Salary;
 use App\Model\User;
 use App\Model\Respostory\Excel;
+use App\Model\Respostory\SalarySum;
 
 class SalaryController extends Controller
 {
   private $excel;
-  public function __construct(Excel $excel)
+  private $salarySum;
+  public function __construct(Excel $excel, SalarySum $salarySum)
   {
+  $this->salarySum = $salarySum;
   $this->middleware('auth');
   $this->middleware('admin', ['except' => ['geren']] );
   $this->excel = $excel;
@@ -35,7 +38,9 @@ class SalaryController extends Controller
            ->where('date','<=',\Carbon\Carbon::parse($dt.'27'))
            ->where('date','>=',\Carbon\Carbon::parse($dt.'01'))
            ->get();
-       return $this->excel->exportBlade('salary.index',compact('resv','res','dates'))->render();
+       $real_title = $this->salarySum->getObject($resv)->getTitle();
+
+       return $this->excel->exportBlade('salary.index',compact('resv','res','dates','real_title'))->render();
 	 }
 
    public function bumen($date = '201703', $jj = null)
@@ -52,9 +57,9 @@ class SalaryController extends Controller
            ->where('date','<=',\Carbon\Carbon::parse($dt.'27'))
            ->where('date','>=',\Carbon\Carbon::parse($dt.'01'))
            ->get();
-  
+       $real_title = $this->salarySum->getObject($resv)->getTitle();
        $dates=Salary::groupBy('date')->get()->pluck('date');
-       return $this->excel->exportBlade('salary.bumen',compact('res','dates','resv'))->render();
+       return $this->excel->exportBlade('salary.bumen',compact('res','dates','resv','real_title'))->render();
    }
 
 
@@ -83,7 +88,9 @@ class SalaryController extends Controller
        $dates = Salary::groupBy('date')
            ->get()
            ->pluck('date');
-       return $this->excel->exportBlade('salary.geren',compact('res','dates','resv'))->render();
+       $real_title = $this->salarySum->getObject($resv)->getTitle();
+
+       return $this->excel->exportBlade('salary.geren',compact('res','dates','resv','real_title'))->render();
   }
 
   public function byear($year = 2017, $jj = null)//1只显示工资，2只显示奖金
@@ -107,7 +114,8 @@ class SalaryController extends Controller
        $dates = collect($dates);
        $dates = $dates->unique();
        $dates->values()->all();
-       return $this->excel->exportBlade('salary.byear',compact('res','dates','resv'))->render();
+       $real_title = $this->salarySum->getObject($resv)->getTitle();
+       return $this->excel->exportBlade('salary.byear',compact('res','dates','resv','real_title'))->render();
   }
 
    public function myear($year = 2017, $jj = null)//1只显示工资，2只显示奖金
@@ -131,7 +139,8 @@ class SalaryController extends Controller
        $dates = collect($dates);
        $dates = $dates->unique();
        $dates->values()->all();
-       return $this->excel->exportBlade('salary.myear',compact('res','dates','resv'))->render();
+       $real_title = $this->salarySum->getObject($resv)->getTitle();
+       return $this->excel->exportBlade('salary.myear',compact('res','dates','resv','real_title'))->render();
     }
 
      public function phb($year = 2017, $jj = null)//1只显示工资，2只显示奖金
@@ -178,7 +187,8 @@ class SalaryController extends Controller
             ->Hasjj($jj)
             ->get();
 
-      return $this->excel->exportBlade('salary.phb',compact('res','resv'))->render();
+      $real_title = $this->salarySum->getObject($resv)->getTitle();
+      return $this->excel->exportBlade('salary.phb',compact('res','resv','real_title'))->render();
   }
   
 }

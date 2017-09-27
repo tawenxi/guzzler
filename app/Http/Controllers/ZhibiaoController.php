@@ -56,7 +56,7 @@ class ZhibiaoController extends Controller
             {
            
                 $zfpzdatas = $this->getdetail->getdata($this->zfpz,[
-                                ["'20170101'","'20170101'"],
+                                ["'20170101'","'20170801'"],
                                 ["'20170821'","to_char(sysdate,'yyyymmdd')"],
                                 ]);
                 //dd(...$zfpzdatas);
