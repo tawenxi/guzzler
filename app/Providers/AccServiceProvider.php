@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Acc\Acc;
+use Illuminate\Support\ServiceProvider;
 
 class AccServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ class AccServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->bind('acc',function() {
+        $this->app->bind('acc', function () {
             return new Acc();
         });
     }

@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Model\Account;
 use App\Model\Payout;
+use App\Model\Account;
+use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
@@ -18,12 +15,11 @@ class SearchController extends Controller
      */
     public function index()
     {
-        
     }
 
     public function account()
     {
-        return view('search.account')->render();;
+        return view('search.account')->render();
     }
 
     /**
@@ -39,43 +35,44 @@ class SearchController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $key = $request->account_name;
-        $result=Account::where('account_name','like',"%$key%")->get();
+        $result = Account::where('account_name', 'like', "%$key%")->get();
+
         return \Response::json([
             'status'=>'success',
             'task'=>$result,
             ]);
     }
-
 
     public function addstore(Request $request)
     {
-        
-        $result=Account::create(
+        $result = Account::create(
             ['account_name'=>$request->account_name,
-             'account_number'=>$request->account_number]);
+             'account_number'=>$request->account_number, ]);
+
         return \Response::json([
             'status'=>'success',
             'task'=>$result,
             ]);
     }
-
 
     public function payout(Request $request)
     {
         $key = $request->zhaiyao;
-        $result=Payout::where('zhaiyao','like',"%$key%")
-        ->Orwhere('payee','like',"%$key%")
-        ->Orwhere('amount','like',"%$key%")
+        $result = Payout::where('zhaiyao', 'like', "%$key%")
+        ->Orwhere('payee', 'like', "%$key%")
+        ->Orwhere('amount', 'like', "%$key%")
     //     ->Orwhere(function ($query) use($key) {
     // $query->where('created_at', '>', "$key"."-01 00:00:00")
     //       ->Where('created_at', '<', "$key"."-31 24:00:00");})
         ->get();
+
         return \Response::json([
             'status'=>'success',
             'task'=>$result,
@@ -85,9 +82,10 @@ class SearchController extends Controller
     public function payout_with_date(Request $request)
     {
         $key = $request->zhaiyao;
-        $result=Payout::Orwhere(function ($query) use($key) {
-     $query->where('created_at', '>', "$key"."-01 00:00:00")
-           ->Where('created_at', '<', "$key"."-31 24:00:00");})
+        $result = Payout::Orwhere(function ($query) use ($key) {
+            $query->where('created_at', '>', "$key".'-01 00:00:00')
+           ->Where('created_at', '<', "$key".'-31 24:00:00');
+        })
         ->get();
 
         return \Response::json([
@@ -96,18 +94,16 @@ class SearchController extends Controller
             ]);
     }
 
-
     public function modifyacc()
     {
         return view('search.modifyacc')->render();
     }
 
-    
-
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -118,7 +114,8 @@ class SearchController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -129,8 +126,9 @@ class SearchController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -141,7 +139,8 @@ class SearchController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Model\User;
 use Validator;
-use App\Http\Controllers\Controller;
+use App\Model\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -33,6 +32,7 @@ class AuthController extends Controller
      */
     protected $redirectPath = '/geren/';
     protected $username = 'name';  // 数据库中字段的名称
+
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
@@ -41,7 +41,8 @@ class AuthController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -56,7 +57,8 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return User
      */
     protected function create(array $data)
@@ -77,9 +79,9 @@ class AuthController extends Controller
         if (method_exists($this, 'authenticated')) {
             return $this->authenticated($request, Auth::user());
         }
-        \Session::flash("success", "欢迎回来");
-        \Session::flash("danger", "为保证您个人及单位信息安全，请不要截图发送工资信息给其他人
-。首次登陆后，请立即更改您的密码，以免信息泄露 ");
+        \Session::flash('success', '欢迎回来');
+        \Session::flash('danger', '为保证您个人及单位信息安全，请不要截图发送工资信息给其他人
+。首次登陆后，请立即更改您的密码，以免信息泄露 ');
 
         return redirect()->intended($this->redirectPath());
     }

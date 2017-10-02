@@ -2,14 +2,11 @@
 
 namespace App\Model\Respostory;
 
-use Illuminate\Database\Eloquent\Model;
-
-class MemberListImport extends \Maatwebsite\Excel\Files\ExcelFile {
-
-	protected $delimiter  = ',';
-    protected $enclosure  = '"';
+class MemberListImport extends \Maatwebsite\Excel\Files\ExcelFile
+{
+    protected $delimiter = ',';
+    protected $enclosure = '"';
     protected $lineEnding = '\r\n';
-
 
     public function getFile()
     {
@@ -19,8 +16,7 @@ class MemberListImport extends \Maatwebsite\Excel\Files\ExcelFile {
     public function getFilters()
     {
         return [
-            'chunk'
+            'chunk',
         ];
     }
-
 }

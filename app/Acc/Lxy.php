@@ -2,36 +2,28 @@
 
 namespace App\Acc;
 
-use Illuminate\Http\Request;
+class Lxy
+{
+    public $llj;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+    public function __construct($llj)
+    {
+        $this->llj = $llj;
+    }
 
-class Lxy 
+    public function show($arr)
+    {
+        echo 'I am Lxy function--';
+        dump($arr);
+    }
 
-{	
+    public function do()
+    {
+        return $this->llj->show();
+    }
 
-	public $llj;
-	public function __construct($llj)
-	{
-
-		$this->llj=$llj;
-
-	}
-	public function show($arr)
-	{
-		echo "I am Lxy function--";
-		dump($arr);
-	}
-		public function do()
-	{
-		return $this->llj->show();
-	}
-
-		public function me()
-	{
-		return $this;
-	}
-
-
+    public function me()
+    {
+        return $this;
+    }
 }

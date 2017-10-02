@@ -17,11 +17,9 @@ class UserPolicy
     {
         //
     }
-    
+
     public function update(\App\Model\User $currentUser, \App\Model\User $user)
     {
-
         return $currentUser->id === $user->id;
     }
-
 }

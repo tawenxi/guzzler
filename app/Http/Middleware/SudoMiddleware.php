@@ -2,16 +2,17 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use Gate;
+use Closure;
 
 class SudoMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     protected $user;
@@ -19,7 +20,8 @@ class SudoMiddleware
     /**
      * Create a new middleware instance.
      *
-     * @param  Guard  $auth
+     * @param Guard $auth
+     *
      * @return void
      */
     public function __construct()
@@ -36,6 +38,7 @@ class SudoMiddleware
         if (Gate::denies('showGuzzle')) {
             return redirect()->route('geren');
         }
+
         return $next($request);
     }
 }

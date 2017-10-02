@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\Ardent\Ard;
+use Illuminate\Http\Request;
 
 class ArdentController extends Controller
 {
@@ -17,18 +14,18 @@ class ArdentController extends Controller
      */
     public function index()
     {
-        $user           = new Ard;
-        $user->firstname= 'Jossss';
-        $user->lastname = 'john@doe.com';       
-        $success        = $user->save([],[],[],
+        $user = new Ard;
+        $user->firstname = 'Jossss';
+        $user->lastname = 'john@doe.com';
+        $success = $user->save([],[],[],
             function ($model) { // closure for beforeSave
-            echo "saving the model object...";
-            return true;
+                echo 'saving the model object...';
+
+                return true;
             },
             function ($model) { // closure for afterSave
-            echo "done!";
+                echo 'done!';
             });
-
 
         dump($user->errors()->all());
     }
@@ -46,7 +43,8 @@ class ArdentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +55,8 @@ class ArdentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -68,7 +67,8 @@ class ArdentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -79,8 +79,9 @@ class ArdentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -91,7 +92,8 @@ class ArdentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

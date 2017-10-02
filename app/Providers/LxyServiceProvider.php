@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Acc\Lxy;
+use Illuminate\Support\ServiceProvider;
 
 class LxyServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ class LxyServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->singleton(['lxy'=>"lxysalias"],function() {
+        $this->app->singleton(['lxy'=>'lxysalias'], function () {
             return new Lxy(app('llj'));
         });
     }

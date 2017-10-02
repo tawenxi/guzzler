@@ -17,14 +17,14 @@ class CreateMembersTable extends Migration
             $table->string('name');
             $table->string('cardid');
             $table->string('bankaccount');
-            
+
             $table->string('bumen');
             $table->string('class');
             $table->string('gangwei');
             $table->string('sex');
-            $table->string('educational')->nullable();;
-            $table->date('worktime')->nullable();;
-            $table->string('ruraltime')->nullable();;
+            $table->string('educational')->nullable();
+            $table->date('worktime')->nullable();
+            $table->string('ruraltime')->nullable();
             $table->integer('xiangzhen_bz');
             $table->integer('gongche_bz');
             $table->float('sb_js')->nullable();

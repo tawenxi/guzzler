@@ -9,8 +9,6 @@ class Play3 extends Model
     //
     public function ok()
     {
-    	echo "play3";
+        echo 'play3';
     }
-
-
 }

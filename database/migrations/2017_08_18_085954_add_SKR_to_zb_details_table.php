@@ -13,12 +13,9 @@ class AddSKRToZbDetailsTable extends Migration
     public function up()
     {
         Schema::table('zb_details', function (Blueprint $table) {
-             $table->string('SKR')->nullable();
-             $table->string('SKZH')->nullable();
-             $table->string('SKRKHYH')->nullable();
-
-
-            
+            $table->string('SKR')->nullable();
+            $table->string('SKZH')->nullable();
+            $table->string('SKRKHYH')->nullable();
         });
     }
 
@@ -30,10 +27,9 @@ class AddSKRToZbDetailsTable extends Migration
     public function down()
     {
         Schema::table('zb_details', function (Blueprint $table) {
-             $table->dropColumn('SKR');
-             $table->dropColumn('SKZH');
-             $table->dropColumn('SKRKHYH');
-            
+            $table->dropColumn('SKR');
+            $table->dropColumn('SKZH');
+            $table->dropColumn('SKRKHYH');
         });
     }
 }

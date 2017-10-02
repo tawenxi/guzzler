@@ -44,7 +44,6 @@ class CreateGuzzledbsTable extends Migration
             $table->string('ZY');
             $table->string('ZBWH');
 
-
             $table->timestamps();
         });
     }

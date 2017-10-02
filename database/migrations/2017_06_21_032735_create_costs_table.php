@@ -24,8 +24,6 @@ class CreateCostsTable extends Migration
             $table->string('kemu')->nullable();
             $table->string('beizhu')->nullable();
             $table->timestamps();
-        
-
         });
     }
 

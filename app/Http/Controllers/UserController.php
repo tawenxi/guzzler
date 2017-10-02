@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 class UserController extends Controller
 {
     /**
@@ -14,7 +11,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-      public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
@@ -24,34 +22,38 @@ class UserController extends Controller
         echo $user['id'].'登录成功！';
     }
 
-        public function logout()
+    public function logout()
     {
         \Auth::logout();
-       \Session::flash('success', "您已经成功退出登录");
+        \Session::flash('success', '您已经成功退出登录');
+
         return redirect()->route('loginpage');
     }
-        public function edit()
+
+    public function edit()
     {
-        $user=\Auth::user();
-         $this->authorize('update', $user);
+        $user = \Auth::user();
+        $this->authorize('update', $user);
+
         return view('auth.edit', compact('user'));
     }
- public function update(Request $request)
+
+    public function update(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required|max:50',
             'email' => 'required|email|max:255',
-            'password' => 'required'
+            'password' => 'required',
             ]);
-            $user=\Auth::user();
-                $user ->update([
+        $user = \Auth::user();
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        
-        $request->session()->flash('success', "修改资料成功");
+
+        $request->session()->flash('success', '修改资料成功');
+
         return redirect()->route('geren');
-        
     }
 }
