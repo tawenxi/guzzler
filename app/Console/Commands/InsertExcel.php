@@ -11,7 +11,7 @@ class InsertExcel extends Command
      *
      * @var string
      */
-    protected $signature =  'insert:excel {excel?}';
+    protected $signature = 'insert:excel {excel?}';
 
     /**
      * The console command description.
@@ -38,16 +38,12 @@ class InsertExcel extends Command
     public function handle()
     {
         $excel2 = new \App\Model\Respostory\Excel($this->argument('excel'));
-         $excel2->setSkipNum()->getExcel()->map(function($v){
-        static $i;
-        \DB::table($this->argument('excel').'s')->insert($v->toArray());
-        $i++;
-        $info = isset($v['zhaiyao'])?$v['zhaiyao']:$v['name'];
-        $this->info("插入第{$i}条数据成功"."--".$info.$v['amount']);
-
-      });
-
-
-        
+        $excel2->setSkipNum()->getExcel()->map(function ($v) {
+            static $i;
+            \DB::table($this->argument('excel').'s')->insert($v->toArray());
+            $i++;
+            $info = isset($v['zhaiyao']) ? $v['zhaiyao'] : $v['name'];
+            $this->info("插入第{$i}条数据成功".'--'.$info.$v['amount']);
+        });
     }
 }

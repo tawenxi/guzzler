@@ -45,7 +45,6 @@ $factory->define(App\Model\Cost::class, function (Faker\Generator $faker) {
         'amount' => '1',
         'zhaiyao' => $faker->word,
 
-
     ];
 });
 
@@ -59,7 +58,6 @@ $factory->define(App\Model\Income::class, function (Faker\Generator $faker) {
 
     ];
 });
-
 
 $factory->define(App\Model\Account::class, function (Faker\Generator $faker) {
     return [

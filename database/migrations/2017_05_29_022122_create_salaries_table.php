@@ -18,7 +18,7 @@ class CreateSalariesTable extends Migration
             $table->string('name');
             $table->string('account');
             $table->string('bumen');
-            
+
             $table->float('yishu_bz')->nullable();
             $table->float('tuixiu_gz')->nullable();
 
@@ -28,8 +28,6 @@ class CreateSalariesTable extends Migration
             $table->float('gongche_bz')->nullable();
             $table->float('xiangzhen_bz')->nullable();
 
-
-            
             $table->float('bufa_gz')->nullable();
             $table->float('nianzhong_jj')->nullable();
             $table->float('gaowen_jiangwen')->nullable();
@@ -51,10 +49,8 @@ class CreateSalariesTable extends Migration
             $table->float('other_daikou')->nullable();
             $table->string('daikou_beizhu')->nullable();
 
-
             $table->float('tiaozheng_gjj')->nullable();
             $table->float('tiaozheng_sb')->nullable();
-
 
             $table->float('sb_js')->nullable();
             $table->float('gjj_js')->nullable();

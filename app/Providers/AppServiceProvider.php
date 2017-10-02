@@ -13,7 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
     }
 
     /**
@@ -23,10 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('App\Pay','App\Alipay');
+        $this->app->bind('App\Pay', 'App\Alipay');
         $this->app->bind(\App\Play::class);
-        $this->app->bind('play2',\App\Play2::class);
-        
+        $this->app->bind('play2', \App\Play2::class);
+
         if ($this->app->environment() == 'local') {
             $this->app->register('Wn\Generators\CommandsServiceProvider');
         }

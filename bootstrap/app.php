@@ -15,7 +15,7 @@ $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
 
-$app->detectEnvironment(function() use ($app) {
+$app->detectEnvironment(function () use ($app) {
     $env = env('APP_ENV') ?: 'local';
     $envFileName = '.env'.'.'.$env;
     $envFilePath = rtrim($app->environmentPath(), '/').'/'.$envFileName;
@@ -23,6 +23,7 @@ $app->detectEnvironment(function() use ($app) {
         $envFileName = '.env';
     }
     $app->loadEnvironmentFrom($envFileName);
+
     return $env;
 });
 

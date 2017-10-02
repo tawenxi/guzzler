@@ -37,27 +37,24 @@ class Signup extends Command
      */
     public function handle()
     {
-        Global $exce;
+        global $exce;
         $exce = 'users';
-        $import =app()->make("\App\Model\SalaryListImport");
-        $ziduan=['id','name','email','password'];//3个字段
-       $res = $import->skipRows(1)->setDateColumns(array(
+        $import = app()->make("\App\Model\SalaryListImport");
+        $ziduan = ['id', 'name', 'email', 'password']; //3个字段
+        $res = $import->skipRows(1)->setDateColumns([
             'created_at',
             'updated_at',
-        ))->get($ziduan);    
-       $res->map(function($v){
-        static $i;
-         $v['name']=str_replace(" ", '', $v['name']);
-         $v['password']=bcrypt($v['password']);
-        \App\Model\User::updateOrCreate([
+        ])->get($ziduan);
+        $res->map(function ($v) {
+            static $i;
+            $v['name'] = str_replace(' ', '', $v['name']);
+            $v['password'] = bcrypt($v['password']);
+            \App\Model\User::updateOrCreate([
             'id'=>$v['id'],
             'name'=>$v['name'],
-            ],$v->toArray());
-        $i++;
-        $this->info("插入第{$i}条数据成功"."--".$v['id'].$v['name']);
-      });
-
-
-        
+            ], $v->toArray());
+            $i++;
+            $this->info("插入第{$i}条数据成功".'--'.$v['id'].$v['name']);
+        });
     }
 }

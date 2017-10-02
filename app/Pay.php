@@ -2,13 +2,10 @@
 
 namespace App;
 
-
-
-interface Pay{
-
-    function say();
+interface Pay
+{
+    public function say();
 }
-
 
 // class Pay {
 
@@ -18,6 +15,3 @@ interface Pay{
 // 	}
 
 //}
-
-    
-

@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\Model\Tt\Data;
+use Illuminate\Http\Request;
 use App\Model\Respostory\GetSqlResult;
-
 
 class SqlController extends Controller
 {
     use Data;
+
     /**
      * Display a listing of the resource.
      *
@@ -20,22 +17,18 @@ class SqlController extends Controller
      */
     public function index(GetSqlResult $getdetail)
     {
-        
 
         // $res = $getdetail->getdata($this->mysql,[
-        //     ['mysql',"select * from  PUBAUDITLOG       where KJND='2017' and Gsdm='001' and AUDITORID = '897'"]]);  //和直接支付申请，计划申请和作废有关系 
+        //     ['mysql',"select * from  PUBAUDITLOG       where KJND='2017' and Gsdm='001' and AUDITORID = '897'"]]);  //和直接支付申请，计划申请和作废有关系
 
         // $res = $getdetail->getdata($this->mysql,[
         //     ['mysql',"select * From ZB_ZFSQDNR  where  GSDM='001'       and KJND='2017'       and ZFPZPDQJ='201708'  and LRR_ID = '897'"]]);   //只和直接支付有关系 ZFFSDM": "01",
 
-
         // $res = $getdetail->getdata($this->mysql,[
-        //     ['mysql',"select * From ZB_ZFPZFJ"]]);  
+        //     ['mysql',"select * From ZB_ZFPZFJ"]]);
 
-        $res = $getdetail->getdata($this->mysql,[
-            ['mysql',"select * From ZB_czrz where  station like 'PC-20161129CAOZ%'" ]]);  
-
-        
+        $res = $getdetail->getdata($this->mysql, [
+            ['mysql', "select * From ZB_czrz where  station like 'PC-20161129CAOZ%'"], ]);
 
         // $res = $getdetail->getdata($this->mysql,[
         //     ['mysql',"select * From ZB_VIEW_ZFPZ A  where   PDQJ='201708' and LRR_ID = '897'"]]);
@@ -55,7 +48,8 @@ class SqlController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -66,7 +60,8 @@ class SqlController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -77,7 +72,8 @@ class SqlController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -88,8 +84,9 @@ class SqlController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -100,7 +97,8 @@ class SqlController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

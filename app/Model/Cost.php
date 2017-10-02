@@ -3,14 +3,13 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\Income;
 
 class Cost extends Model
 {
-	protected $fillable = [
+    protected $fillable = [
         'date',
         'payee',
-        "payeeaccount",
+        'payeeaccount',
         'payeebanker',
         'amount',
         'zhaiyao',
@@ -18,8 +17,9 @@ class Cost extends Model
         'kemu',
         'beizhu',
         ];
+
     public function income()
     {
-    	return $this->belongsTo(Income::class);
+        return $this->belongsTo(Income::class);
     }
 }

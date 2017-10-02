@@ -2,17 +2,18 @@
 
 namespace App\Http\Middleware;
 
+use Gate;
 use Closure;
 use App\Model\User;
-use Gate;
 
 class AdminMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     protected $user;
@@ -20,7 +21,8 @@ class AdminMiddleware
     /**
      * Create a new middleware instance.
      *
-     * @param  Guard  $auth
+     * @param Guard $auth
+     *
      * @return void
      */
     public function __construct()
@@ -37,6 +39,7 @@ class AdminMiddleware
         if (Gate::denies('showAllSalary')) {
             return redirect()->route('geren');
         }
+
         return $next($request);
     }
 }

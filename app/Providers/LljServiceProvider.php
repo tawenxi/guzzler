@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Acc\Llj;
+use Illuminate\Support\ServiceProvider;
 
 class LljServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ class LljServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->singleton('llj',function() {
+        $this->app->singleton('llj', function () {
             return new Llj();
         });
     }

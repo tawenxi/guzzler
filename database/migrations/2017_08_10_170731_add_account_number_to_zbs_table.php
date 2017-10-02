@@ -13,7 +13,7 @@ class AddAccountNumberToZbsTable extends Migration
     public function up()
     {
         Schema::table('zbs', function (Blueprint $table) {
-             $table->string('account_number')->nullable();
+            $table->string('account_number')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AddAccountNumberToZbsTable extends Migration
     public function down()
     {
         Schema::table('zbs', function (Blueprint $table) {
-             $table->dropColumn('account_number');
+            $table->dropColumn('account_number');
         });
     }
 }

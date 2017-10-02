@@ -21,6 +21,7 @@ class TableConsole extends Command
      * @var string
      */
     protected $description = 'Show the records of table';
+
     /**
      * Create a new command instance.
      *
@@ -30,6 +31,7 @@ class TableConsole extends Command
     {
         parent::__construct();
     }
+
     /**
      * Execute the console command.
      *
@@ -41,8 +43,9 @@ class TableConsole extends Command
         $tbody = $this->tableRows()->toArray();
         $this->table($thead, $tbody);
     }
+
     /**
-     * Get the option field
+     * Get the option field.
      *
      * @return array
      */
@@ -50,20 +53,23 @@ class TableConsole extends Command
     {
         return explode(',', $this->option('fields'));
     }
+
     /**
-     * Get table fields
+     * Get table fields.
      *
      * @return array
      */
     protected function tableFields()
     {
         $fields = \DB::getSchemaBuilder()->getColumnListing($this->argument('table'));
+
         return $this->getFieldOptions()[0] === 'all'
             ? $fields
             : array_intersect($fields, $this->getFieldOptions());
     }
+
     /**
-     * Get all records from table
+     * Get all records from table.
      *
      * @return array
      */
@@ -71,14 +77,17 @@ class TableConsole extends Command
     {
         $tbody = \DB::table($this->argument('table'))->get();
         $tbody = collect($tbody);
+
         return $tbody->map(function ($field) {
             return $this->selectRowByField($field);
         });
     }
+
     /**
-     * Selecting table row with associated field
+     * Selecting table row with associated field.
      *
-     * @param  string $field
+     * @param string $field
+     *
      * @return array
      */
     protected function selectRowByField($field)
