@@ -14,4 +14,4 @@ finder:
     - "storage"
     - "tests"
   not-path:
-- "bootstrap/cache"
+    - "bootstrap/cache"
