@@ -118,6 +118,11 @@ class InsertSq extends Command
         }
         Test::log('注入授权数据');
         $this->info('success--'.$successi.'条数据拨款成功');
+
+        $guzz->updatedb()->pluck('KYJHJE')->each(function($val){
+            ($val>=0)?'':$this->error('出大错了，出现可用金额负数'.$val);
+        });
+
         // dump(Test::$info);
     }
 }

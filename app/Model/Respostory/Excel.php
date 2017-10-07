@@ -34,9 +34,10 @@ class Excel extends Model
     private function setDate()
     {
         $this->import = $this->import->setDateColumns([
-        'created_at',
-        'updated_at',
-        'date', ]);
+            'created_at',
+            'updated_at',
+            'date',
+        ]);
     }
 
     public function getExcel()

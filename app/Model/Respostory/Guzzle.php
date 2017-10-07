@@ -242,6 +242,8 @@ class Guzzle extends Model
 
             return $info;
         });
+
+        return $collection;
     }
 
     /**
