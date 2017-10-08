@@ -35,8 +35,8 @@ Route::get('/6323151bb', function () {
 });
 /*=====  End of log日志  ======*/
 
-Route::get('/', function () {
-    abort('404', $message = '对不起，暂停服务');
+Route::get('/1', function () {
+    return redirect()->to('/auth/login');
 });
 Route::post('/store', 'GuzzleController@store')->name('store');
 Route::get('/guzzle', 'GuzzleController@index');
