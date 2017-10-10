@@ -21,7 +21,7 @@ class Guzzledb extends Model
 
     public function getYkjhzbAttribute($amount)
     {
-        return bcdiv($this->attributes['YKJHZB'], 100, 2);
+        return \bcdiv($this->attributes['YKJHZB'], 100, 2);
     }
 
     public function setYyjhjeAttribute($amount)
@@ -31,7 +31,7 @@ class Guzzledb extends Model
 
     public function getYyjhjeAttribute($amount)
     {
-        return bcdiv($this->attributes['YYJHJE'], 100, 2);
+        return \bcdiv($this->attributes['YYJHJE'], 100, 2);
     }
 
     public function setKyjhjeAttribute($amount)
@@ -41,6 +41,6 @@ class Guzzledb extends Model
 
     public function getKyjhjeAttribute($amount)
     {
-        return bcdiv($this->attributes['KYJHJE'], 100, 2);
+        return \bcdiv($this->attributes['KYJHJE'], 100, 2);
     }
 }
