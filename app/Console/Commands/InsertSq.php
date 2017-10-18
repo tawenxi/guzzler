@@ -58,6 +58,10 @@ class InsertSq extends Command
             )->toArray();
         Test::log('获取excel数据并增加科目');
         foreach ($arr as $key => $data) {
+            $arr['key']['payeeaccount'] = trim($arr['key']['payeeaccount']);
+            $arr['key']['amount'] = trim($arr['key']['amount']);
+            $arr['key']['zbid'] = trim($arr['key']['zbid']);
+            
             $Validator = \Validator::make($data, [
                 'payeeaccount'=>'numeric',
                 'amount'      =>'numeric|between:0.01,3000000',
