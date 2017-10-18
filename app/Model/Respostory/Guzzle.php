@@ -41,8 +41,9 @@ class Guzzle extends Model
      */
     private function setAmountData($amount)
     {
-        $pattern = '/\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,2})?/';
+        $pattern = '/\d{1,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,})?,\s*\d{0,}(.[0-9]{1,})?,\s*\d{1,}(.[0-9]{1,2})?/';
         preg_match($pattern, $amount, $res);
+        //dd($amount,$res);
         if ($res[0] === $amount) {
             $this->amountData = $amount;
         } else {
